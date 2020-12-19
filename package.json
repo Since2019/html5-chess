@@ -1,0 +1,30 @@
+{
+  "name": "html5-chess",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "typescript": "^4.1.3"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.14",
+    "@types/restify": "^8.4.2",
+    "nodemon": "^2.0.6",
+    "restify": "^8.5.1",
+    "ts-node": "^9.1.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LDY1998/html5-chess.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LDY1998/html5-chess/issues"
+  },
+  "homepage": "https://github.com/LDY1998/html5-chess#readme"
+}
