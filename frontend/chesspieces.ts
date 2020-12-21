@@ -15,20 +15,6 @@ enum PlayerColor {
     'red'
 }
 
-
-// enum PieceRole {
-//     'jiang',
-//     'shi',
-//     'xiang',
-//     'ju',
-//     'ma',
-//     'pao',
-
-//     // problematic, why not just use soilder
-//     'zu',
-//     'bing'
-// }
-
 enum PieceRole {
     'General',
     'Advisor',
@@ -173,6 +159,8 @@ class Piece {
 
         var image = document.createElement("img");
         image.src = this.img_filepath;
+
+        image.className = 'classname_pieces'
     
         
         console.log(this.img_filepath)
@@ -184,15 +172,15 @@ class Piece {
 
         this.element.append(image);
 
-        document.getElementById("board")?.append(this.element)
-        this.element.id = 'test_rendering'
+        document.getElementById("board")?.appendChild(this.element)
+      
 
         console.log(`this.point`)
         console.log(this.point)
 
 
-        // $(this.element).css('left',(x_coor * SIDE_LENGTH).toString())
-        // $(this.element).css('top',(x_coor * SIDE_LENGTH).toString())
+        $(image).css('left',(x_coor * SIDE_LENGTH).toString())
+        $(image).css('top',(x_coor * SIDE_LENGTH).toString())
 
         
         $(this.element).css('left',left);
@@ -210,7 +198,7 @@ class Piece {
         // (<any>Object).assign(this.element.style, ele_style)
 
 
-        this.element.setAttribute("style",`left: ${(x_coor * SIDE_LENGTH).toString()}px;`);
+        // this.element.setAttribute("style",`left: ${(x_coor * SIDE_LENGTH).toString()}px;`);
         // this.element.setAttribute("style",`top: ${(y_coor * SIDE_LENGTH).toString()}px;`);
 
         // this.element.style.top =  (y_coor * SIDE_LENGTH).toString();
@@ -268,7 +256,11 @@ for(let i = 0; i < 9; i++){
     }
 }
 
+
 var div = document.createElement("div");
 var black_jiang = new General(board,new Point(0,4),'./img/pieces/black-jiang.png',PieceColor.black,div)
 var red_shuai = new General(board,new Point(9,4),'./img/pieces/red-shuai.png',PieceColor.red,div)
 
+
+$(".classname_pieces").css("position","absolute");
+$(".classname_pieces").css("background","red");
