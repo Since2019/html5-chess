@@ -100,37 +100,78 @@ var Board = /** @class */ (function () {
         }
         return ratio;
     };
+    Board.prototype.render = function () {
+    };
     return Board;
 }());
 var Piece = /** @class */ (function () {
-    function Piece(piece_role, board, x_coor, y_coor, img_filepath, color, element) {
+    function Piece(piece_role, board, point, img_filepath, color, element) {
         this.board = board;
         this.piece_role = piece_role;
         this.selected = false;
         this.active = false;
         this.img_filepath = img_filepath;
         this.color = color;
-        this.x_coor = x_coor;
-        this.y_coor = y_coor;
+        this.point = point;
         this.element = element;
         // this.cell = this.board.get_cell(x_coor, y_coor);
         // this.cell.set_piece(this);
+        var render = this.render(); //render the stuff
     }
+    Piece.prototype.render = function () {
+        // can't use Jquery?
+        // var image = $(`<img src='${this.img_filepath}' />`)
+        var _a;
+        var image = document.createElement("img");
+        image.src = this.img_filepath;
+        console.log(this.img_filepath);
+        var x_coor = this.point.x_coor;
+        var y_coor = this.point.y_coor;
+        var left = (x_coor * SIDE_LENGTH).toString();
+        var top = (y_coor * SIDE_LENGTH).toString();
+        this.element.append(image);
+        (_a = document.getElementById("board")) === null || _a === void 0 ? void 0 : _a.append(this.element);
+        this.element.id = 'test_rendering';
+        console.log("this.point");
+        console.log(this.point);
+        // $(this.element).css('left',(x_coor * SIDE_LENGTH).toString())
+        // $(this.element).css('top',(x_coor * SIDE_LENGTH).toString())
+        $(this.element).css('left', left);
+        $(this.element).css('top', top);
+        console.log(y_coor);
+        console.log(y_coor * SIDE_LENGTH);
+        console.log((y_coor * SIDE_LENGTH).toString());
+        console.log($(this.element));
+        console.log(this.element);
+        var ele_style = { 'left': left, 'top': top };
+        console.log(ele_style);
+        // (<any>Object).assign(this.element.style, ele_style)
+        this.element.setAttribute("style", "left: " + (x_coor * SIDE_LENGTH).toString() + "px;");
+        // this.element.setAttribute("style",`top: ${(y_coor * SIDE_LENGTH).toString()}px;`);
+        // this.element.style.top =  (y_coor * SIDE_LENGTH).toString();
+        console.log(this.element);
+        console.log((x_coor * SIDE_LENGTH).toString());
+    };
     return Piece;
 }());
 var General = /** @class */ (function (_super) {
     __extends(General, _super);
-    function General(board, x_coor, y_coor, img_filepath, color, element) {
-        var _this = _super.call(this, PieceRole.General, board, x_coor, y_coor, img_filepath, color, element) || this;
+    function General(board, point, img_filepath, color, element) {
+        var _this = _super.call(this, PieceRole.General, board, point, img_filepath, color, element) || this;
         if (_this.color == PieceColor.red) {
             _this.img_filepath = './img/pieces/red-shuai.png';
-            // this.x_coor = ;
+            _this.point = _this.board.intersections[4][9];
+            console.log("General Point");
+            console.log(_this.point);
         }
         else if (_this.color == PieceColor.black) {
             _this.img_filepath = './img/pieces/black-jiang.png';
+            _this.point = _this.board.intersections[4][0];
+            console.log("General Point");
+            console.log(_this.point);
         }
         else {
-            console.log('Something wrong');
+            console.log('Something is wrong');
         }
         return _this;
     }
@@ -148,3 +189,6 @@ for (var i = 0; i < 9; i++) {
         console.log("xcoor: " + board.intersections[i][j].x_coor + " \n                     ycoor: " + board.intersections[i][j].y_coor);
     }
 }
+var div = document.createElement("div");
+var black_jiang = new General(board, new Point(0, 4), './img/pieces/black-jiang.png', PieceColor.black, div);
+var red_shuai = new General(board, new Point(9, 4), './img/pieces/red-shuai.png', PieceColor.red, div);

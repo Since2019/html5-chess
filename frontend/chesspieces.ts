@@ -69,30 +69,6 @@ class Board {
     ratio: number;
     side_length: number;
 
-    detectZoom() {
-        var ratio = 0;
-        // screen = window.screen,
-        // ua = navigator.userAgent.toLowerCase();
-        if (window.devicePixelRatio !== undefined) {
-            ratio = window.devicePixelRatio;
-        }
-
-        // ???? not working, why?
-
-        // else if (~ua.indexOf('msie')) {
-        //     if (screen.deviceXDPI && screen.logicalXDPI) {
-        //         ratio = screen.deviceXDPI / screen.logicalXDPI;
-        //     }
-        // }
-        else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
-            ratio = window.outerWidth / window.innerWidth;
-        }
-        if (ratio) {
-            ratio = Math.round(ratio * 100);
-        }
-        return ratio;
-    }
-
 
     constructor() {
         
@@ -121,6 +97,37 @@ class Board {
             }
       }
     }
+
+    detectZoom() {
+        var ratio = 0;
+        // screen = window.screen,
+        // ua = navigator.userAgent.toLowerCase();
+        if (window.devicePixelRatio !== undefined) {
+            ratio = window.devicePixelRatio;
+        }
+
+        // ???? not working, why?
+
+        // else if (~ua.indexOf('msie')) {
+        //     if (screen.deviceXDPI && screen.logicalXDPI) {
+        //         ratio = screen.deviceXDPI / screen.logicalXDPI;
+        //     }
+        // }
+        else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
+            ratio = window.outerWidth / window.innerWidth;
+        }
+        if (ratio) {
+            ratio = Math.round(ratio * 100); 
+        }
+        return ratio;
+    }
+
+    render(){
+        
+    }
+
+
+
 }
 
 
@@ -131,18 +138,17 @@ class Piece {
     piece_role: PieceRole;
     selected: boolean;
     active: boolean;
-    img_filepath: String;
+    img_filepath: string;
 
 
-    x_coor : number;
-    y_coor : number;
+    point : Point;
 
     color: PieceColor;
     element: HTMLElement;
 
-    constructor(piece_role: PieceRole, board: Board, x_coor: number, y_coor: number,
-        img_filepath: String, color: PieceColor, element: HTMLElement) {
-
+    constructor(piece_role: PieceRole, board: Board , point : Point,
+        img_filepath: string, color: PieceColor, element: HTMLElement) {
+            
         this.board = board;
         this.piece_role = piece_role;
         this.selected = false;
@@ -151,16 +157,68 @@ class Piece {
         this.color = color;
         
 
-        this.x_coor = x_coor;
-        this.y_coor = y_coor;
-
-        // this.point = 
+        this.point = point;
 
         this.element = element;
         // this.cell = this.board.get_cell(x_coor, y_coor);
         // this.cell.set_piece(this);
+
+        let render = this.render(); //render the stuff
     }
 
+    render(){   
+
+        // can't use Jquery?
+        // var image = $(`<img src='${this.img_filepath}' />`)
+
+        var image = document.createElement("img");
+        image.src = this.img_filepath;
+    
+        
+        console.log(this.img_filepath)
+        var x_coor = this.point.x_coor;
+        var y_coor = this.point.y_coor;
+
+        let left = (x_coor * SIDE_LENGTH).toString();
+        let top = (y_coor * SIDE_LENGTH).toString();
+
+        this.element.append(image);
+
+        document.getElementById("board")?.append(this.element)
+        this.element.id = 'test_rendering'
+
+        console.log(`this.point`)
+        console.log(this.point)
+
+
+        // $(this.element).css('left',(x_coor * SIDE_LENGTH).toString())
+        // $(this.element).css('top',(x_coor * SIDE_LENGTH).toString())
+
+        
+        $(this.element).css('left',left);
+        $(this.element).css('top',top);
+
+        console.log(y_coor)
+        console.log(y_coor * SIDE_LENGTH)
+        console.log((y_coor * SIDE_LENGTH).toString())
+        console.log( $(this.element))
+        console.log(this.element)
+       
+
+        let ele_style = {'left' : left, 'top' : top}
+        console.log(ele_style);
+        // (<any>Object).assign(this.element.style, ele_style)
+
+
+        this.element.setAttribute("style",`left: ${(x_coor * SIDE_LENGTH).toString()}px;`);
+        // this.element.setAttribute("style",`top: ${(y_coor * SIDE_LENGTH).toString()}px;`);
+
+        // this.element.style.top =  (y_coor * SIDE_LENGTH).toString();
+
+       
+        console.log(this.element)
+        console.log((x_coor * SIDE_LENGTH).toString())
+    }
 
 }
 
@@ -168,16 +226,20 @@ class Piece {
 
 class General extends Piece {
 
-    constructor(board: Board, x_coor: number, y_coor: number, img_filepath: String, color: PieceColor, element : HTMLElement) {
-        super(PieceRole.General, board, x_coor, y_coor, img_filepath, color, element);
+    constructor(board: Board, point : Point, img_filepath: string, color: PieceColor, element : HTMLElement) {
+        super(PieceRole.General, board, point, img_filepath, color, element);
 
         if (this.color == PieceColor.red) {
             this.img_filepath = './img/pieces/red-shuai.png';
-            this.x_coor = this.board.intersections[5][10].x_coor;
-            this.y_coor = this.board.intersections[5][10].y_coor;
+            this.point = this.board.intersections[4][9];
+            console.log("General Point")
+            console.log(this.point)
         }
         else if(this.color == PieceColor.black){
             this.img_filepath = './img/pieces/black-jiang.png';
+            this.point = this.board.intersections[4][0];
+            console.log("General Point")
+            console.log(this.point)
         }
         else{
             console.log('Something is wrong');
@@ -205,4 +267,8 @@ for(let i = 0; i < 9; i++){
        
     }
 }
+
+var div = document.createElement("div");
+var black_jiang = new General(board,new Point(0,4),'./img/pieces/black-jiang.png',PieceColor.black,div)
+var red_shuai = new General(board,new Point(9,4),'./img/pieces/red-shuai.png',PieceColor.red,div)
 
