@@ -25,17 +25,6 @@ var PlayerColor;
     PlayerColor[PlayerColor["black"] = 0] = "black";
     PlayerColor[PlayerColor["red"] = 1] = "red";
 })(PlayerColor || (PlayerColor = {}));
-// enum PieceRole {
-//     'jiang',
-//     'shi',
-//     'xiang',
-//     'ju',
-//     'ma',
-//     'pao',
-//     // problematic, why not just use soilder
-//     'zu',
-//     'bing'
-// }
 var PieceRole;
 (function (PieceRole) {
     PieceRole[PieceRole["General"] = 0] = "General";
@@ -124,18 +113,18 @@ var Piece = /** @class */ (function () {
         var _a;
         var image = document.createElement("img");
         image.src = this.img_filepath;
+        image.className = 'classname_pieces';
         console.log(this.img_filepath);
         var x_coor = this.point.x_coor;
         var y_coor = this.point.y_coor;
         var left = (x_coor * SIDE_LENGTH).toString();
         var top = (y_coor * SIDE_LENGTH).toString();
         this.element.append(image);
-        (_a = document.getElementById("board")) === null || _a === void 0 ? void 0 : _a.append(this.element);
-        this.element.id = 'test_rendering';
+        (_a = document.getElementById("board")) === null || _a === void 0 ? void 0 : _a.appendChild(this.element);
         console.log("this.point");
         console.log(this.point);
-        // $(this.element).css('left',(x_coor * SIDE_LENGTH).toString())
-        // $(this.element).css('top',(x_coor * SIDE_LENGTH).toString())
+        $(image).css('left', (x_coor * SIDE_LENGTH).toString());
+        $(image).css('top', (x_coor * SIDE_LENGTH).toString());
         $(this.element).css('left', left);
         $(this.element).css('top', top);
         console.log(y_coor);
@@ -146,7 +135,7 @@ var Piece = /** @class */ (function () {
         var ele_style = { 'left': left, 'top': top };
         console.log(ele_style);
         // (<any>Object).assign(this.element.style, ele_style)
-        this.element.setAttribute("style", "left: " + (x_coor * SIDE_LENGTH).toString() + "px;");
+        // this.element.setAttribute("style",`left: ${(x_coor * SIDE_LENGTH).toString()}px;`);
         // this.element.setAttribute("style",`top: ${(y_coor * SIDE_LENGTH).toString()}px;`);
         // this.element.style.top =  (y_coor * SIDE_LENGTH).toString();
         console.log(this.element);
@@ -192,3 +181,5 @@ for (var i = 0; i < 9; i++) {
 var div = document.createElement("div");
 var black_jiang = new General(board, new Point(0, 4), './img/pieces/black-jiang.png', PieceColor.black, div);
 var red_shuai = new General(board, new Point(9, 4), './img/pieces/red-shuai.png', PieceColor.red, div);
+$(".classname_pieces").css("position", "absolute");
+$(".classname_pieces").css("background", "red");
