@@ -67,7 +67,7 @@ export default class Server {
                
 
                // This must be the last endpoint!
-               that.rest.get("/", Server.getStatic);
+               that.rest.get("/*", Server.getStatic);
 
                that.rest.listen(that.port, function () {
                    Log.info("Server::start() - restify listening: " + that.rest.url);
@@ -117,13 +117,17 @@ export default class Server {
         const publicDir = "frontend/";
         Log.trace("RoutHandler::getStatic::" + req.url);
         let path = publicDir + "index.html";
-
+        // Log.trace(req.url);
+        // Log.trace(path);
         if (req.url !== "/") {
-            path = publicDir + req.url?.split("/").pop();
+            // Log.trace(req.url?.split("/"));
+            path = "build/frontend/" + req.url?.split("/").pop();
+            // Log.trace(path);
         }
 
-        Log.trace(path);
+        // Log.trace(path);
         fs.readFile(path, function (err: NodeJS.ErrnoException | null, file: Buffer) {
+            // Log.trace(path);
             if (err) {
                 res.send(500);
                 Log.error(JSON.stringify(err));
