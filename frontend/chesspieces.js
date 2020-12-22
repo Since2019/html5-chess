@@ -1,3 +1,4 @@
+// import Log from "../src/Util";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -12,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 //how many px when it's zoomed 100%
-var SIDE_LENGTH = 5;
+var SIDE_LENGTH = 80;
 // used in class Piece
 var PieceColor;
 (function (PieceColor) {
@@ -38,9 +39,9 @@ var PieceRole;
 // The vertical lines are known as files (Chinese: 路; pinyin: lù; "road")
 // the horizontal lines are known as ranks 线 xiàn; "line"
 var Point = /** @class */ (function () {
-    function Point(file, rank) {
-        this.y_coor = rank; //rank -> horizontal
-        this.x_coor = file; //file -> verticle
+    function Point(col, row) {
+        this.x_coor = col; //file -> verticle
+        this.y_coor = row; //rank -> horizontal
     }
     return Point;
 }());
@@ -67,6 +68,7 @@ var Board = /** @class */ (function () {
                 this.intersections[i][j] = (new Point(i + 1, j + 1));
             }
         }
+        this.render();
     }
     Board.prototype.detectZoom = function () {
         var ratio = 0;
@@ -87,9 +89,17 @@ var Board = /** @class */ (function () {
         if (ratio) {
             ratio = Math.round(ratio * 100);
         }
-        return ratio;
+        this.ratio = ratio;
+        console.log('ratio');
+        console.log(ratio);
+        console.log(this.ratio);
     };
     Board.prototype.render = function () {
+        this.image = document.createElement("img");
+        this.image.src = './img/antontw_chinese_chess_plate.svg';
+        this.image.id = 'id_chessboard';
+        $('#board').append(this.image);
+        $("#id_chessboard").css("position", "fixed");
     };
     return Board;
 }());
@@ -105,7 +115,9 @@ var Piece = /** @class */ (function () {
         this.element = element;
         // this.cell = this.board.get_cell(x_coor, y_coor);
         // this.cell.set_piece(this);
-        var render = this.render(); //render the stuff
+        this.ratio = 100; //default ratio 100%
+        this.side_length = this.ratio * 0.01 * SIDE_LENGTH;
+        // this.render(); //render the stuff
     }
     Piece.prototype.render = function () {
         // can't use Jquery?
@@ -114,32 +126,37 @@ var Piece = /** @class */ (function () {
         var image = document.createElement("img");
         image.src = this.img_filepath;
         image.className = 'classname_pieces';
+        image.id = 'general';
         console.log(this.img_filepath);
-        var x_coor = this.point.x_coor;
-        var y_coor = this.point.y_coor;
-        var left = (x_coor * SIDE_LENGTH).toString();
-        var top = (y_coor * SIDE_LENGTH).toString();
-        this.element.append(image);
-        (_a = document.getElementById("board")) === null || _a === void 0 ? void 0 : _a.appendChild(this.element);
-        console.log("this.point");
+        console.log('192');
         console.log(this.point);
-        $(image).css('left', (x_coor * SIDE_LENGTH).toString());
-        $(image).css('top', (x_coor * SIDE_LENGTH).toString());
-        $(this.element).css('left', left);
-        $(this.element).css('top', top);
-        console.log(y_coor);
-        console.log(y_coor * SIDE_LENGTH);
-        console.log((y_coor * SIDE_LENGTH).toString());
-        console.log($(this.element));
-        console.log(this.element);
-        var ele_style = { 'left': left, 'top': top };
-        console.log(ele_style);
-        // (<any>Object).assign(this.element.style, ele_style)
-        // this.element.setAttribute("style",`left: ${(x_coor * SIDE_LENGTH).toString()}px;`);
-        // this.element.setAttribute("style",`top: ${(y_coor * SIDE_LENGTH).toString()}px;`);
-        // this.element.style.top =  (y_coor * SIDE_LENGTH).toString();
-        console.log(this.element);
-        console.log((x_coor * SIDE_LENGTH).toString());
+        var x_coor;
+        var y_coor;
+        if (this.point) {
+            x_coor = this.point.x_coor;
+            y_coor = this.point.y_coor;
+            var left = (x_coor * this.side_length);
+            var top_1 = (y_coor * this.side_length);
+            // this.element.append(image);
+            console.log("this.point");
+            console.log(this.point);
+            $(image).css('left', left);
+            $(image).css('top', top_1);
+            $(image).css('height', this.side_length);
+            $(image).css('width', this.side_length);
+            (_a = document.getElementById("board")) === null || _a === void 0 ? void 0 : _a.append(image);
+            console.log('x_coor');
+            console.log(x_coor);
+            console.log('y_coor');
+            console.log(y_coor);
+            console.log(y_coor * SIDE_LENGTH);
+            console.log((y_coor * SIDE_LENGTH).toString());
+            console.log($(this.element));
+            console.log(this.element);
+            var ele_style = { 'left': left, 'top': top_1 };
+            console.log(ele_style);
+            console.log((x_coor * SIDE_LENGTH).toString());
+        }
     };
     return Piece;
 }());
@@ -181,5 +198,78 @@ for (var i = 0; i < 9; i++) {
 var div = document.createElement("div");
 var black_jiang = new General(board, new Point(0, 4), './img/pieces/black-jiang.png', PieceColor.black, div);
 var red_shuai = new General(board, new Point(9, 4), './img/pieces/red-shuai.png', PieceColor.red, div);
+black_jiang.render();
+red_shuai.render();
 $(".classname_pieces").css("position", "absolute");
 $(".classname_pieces").css("background", "red");
+console.log("resize");
+$(window).resize(function () {
+    if (screen.width == window.innerWidth) {
+        var ratio = 0;
+        // screen = window.screen,
+        // ua = navigator.userAgent.toLowerCase();
+        if (window.devicePixelRatio !== undefined) {
+            ratio = window.devicePixelRatio;
+        }
+        // ???? not working, why?
+        // else if (~ua.indexOf('msie')) {
+        //     if (screen.deviceXDPI && screen.logicalXDPI) {
+        //         ratio = screen.deviceXDPI / screen.logicalXDPI;
+        //     }
+        // }
+        else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
+            ratio = window.outerWidth / window.innerWidth;
+        }
+        if (ratio) {
+            ratio = Math.round(ratio * 100);
+        }
+        console.log('ratio');
+        console.log(ratio);
+    }
+    else if (screen.width > window.innerWidth) {
+        console.log("you have zoomed in the page i.e more than 100%");
+        var ratio = 0;
+        // screen = window.screen,
+        // ua = navigator.userAgent.toLowerCase();
+        if (window.devicePixelRatio !== undefined) {
+            ratio = window.devicePixelRatio;
+        }
+        // ???? not working, why?
+        // else if (~ua.indexOf('msie')) {
+        //     if (screen.deviceXDPI && screen.logicalXDPI) {
+        //         ratio = screen.deviceXDPI / screen.logicalXDPI;
+        //     }
+        // }
+        else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
+            ratio = window.outerWidth / window.innerWidth;
+        }
+        if (ratio) {
+            ratio = Math.round(ratio * 100);
+        }
+        console.log('ratio');
+        console.log(ratio);
+    }
+    else {
+        console.log("you have zoomed out i.e less than 100%");
+        var ratio = 0;
+        // screen = window.screen,
+        // ua = navigator.userAgent.toLowerCase();
+        if (window.devicePixelRatio !== undefined) {
+            ratio = window.devicePixelRatio;
+        }
+        // ???? not working, why?
+        // else if (~ua.indexOf('msie')) {
+        //     if (screen.deviceXDPI && screen.logicalXDPI) {
+        //         ratio = screen.deviceXDPI / screen.logicalXDPI;
+        //     }
+        // }
+        else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
+            ratio = window.outerWidth / window.innerWidth;
+        }
+        if (ratio) {
+            ratio = Math.round(ratio * 100);
+        }
+        console.log('ratio');
+        console.log(ratio);
+    }
+});
