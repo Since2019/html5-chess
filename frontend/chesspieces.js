@@ -117,7 +117,7 @@ var Board = /** @class */ (function () {
         // $("#id_chessboard").css("width", "80vw");
         // $("#id_chessboard").css("height", "80vh");
         $("#id_chessboard").css("margin", "0");
-        $("#id_chessboard").css("padding", "35vw");
+        $("#id_chessboard").css("padding", "0vw");
     };
     return Board;
 }());
@@ -264,6 +264,7 @@ $(window).resize(function () {
         $('.classname_pieces').css('width', SIDE_LENGTH * (getZoomedRatio() / 100));
         $('.classname_pieces').css('height', SIDE_LENGTH * (getZoomedRatio() / 100));
         $("#board").css("width", $("#board").css('height'));
+        $("#id_chessboard").css("width", $("#board").css('width'));
     }
     else if (screen.width > window.innerWidth) {
         console.log("you have zoomed in the page i.e more than 100%");
@@ -275,6 +276,7 @@ $(window).resize(function () {
         $('.classname_pieces').css('width', SIDE_LENGTH * (getZoomedRatio() / 100));
         $('.classname_pieces').css('height', SIDE_LENGTH * (getZoomedRatio() / 100));
         $("#board").css("width", $("#board").css('height'));
+        $("#id_chessboard").css("width", $("#board").css('width'));
     }
     else {
         console.log("you have zoomed out i.e less than 100%");
@@ -286,12 +288,14 @@ $(window).resize(function () {
         $('.classname_pieces').css('width', SIDE_LENGTH * (getZoomedRatio() / 100));
         $('.classname_pieces').css('height', SIDE_LENGTH * (getZoomedRatio() / 100));
         $("#board").css("width", $("#board").css('height'));
+        $("#id_chessboard").css("width", $("#board").css('width'));
     }
 });
 var board_width = $("#board").css('width');
 var board_height = $("#board").css('height');
 alert(board_height);
 alert((parseInt(board_width) - parseInt(board_height)) / 2);
+$("#board").css("width", $("#board").css('height'));
 $("#board").css('margin-left', 'auto');
 $("#board").css('margin-right', 'auto');
 $("#board").css('padding', 0);
