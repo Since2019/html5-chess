@@ -12,7 +12,7 @@ export default class Server {
     private port: number;
     private rest: restify.Server = restify.createServer({
         name: "Chinese Chess HTML5",
-    });;
+    });
 
     constructor(port: number) {
         Log.info("Server::<init>( " + port + " )");
@@ -117,12 +117,8 @@ export default class Server {
         const publicDir = "frontend/";
         Log.trace("RoutHandler::getStatic::" + req.url);
         let path = publicDir + "index.html";
-        // Log.trace(req.url);
-        // Log.trace(path);
         if (req.url !== "/") {
-            // Log.trace(req.url?.split("/"));
-            path = "build/frontend/" + req.url?.split("/").pop();
-            // Log.trace(path);
+            path = "frontend/" + req.url;
         }
 
         // Log.trace(path);

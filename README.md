@@ -14,9 +14,12 @@ npm start
 ```
 Compile to whole project by:
 ```sh
-npm build
+npm run build
 ```
-This is not a good way since we want to use ts in frontend code, however it recompiles the whole project
+Now we adopt webpack, no need to compile the whole project instead when we are working on frontend the webpack can
+take care of compilation for us. Never invoke tsc directly and don't commit the compiled js file.
+
+The compiled bundle.js should located in "frontend/", and we only refer to that script in our html
 ### Project Overwiew
 
 This is a Chinese Chess game project built primarily based on ts/js and html5. Currently only a server is set up.
