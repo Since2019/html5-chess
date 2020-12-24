@@ -1,5 +1,5 @@
 module.exports = {
-    entry: "./frontend/chesspieces.ts",
+    entry: "./frontend/Game.ts",
     output: {
       path: __dirname + "/frontend",
       filename: "bundle.js",
@@ -13,4 +13,8 @@ module.exports = {
         { test: /\.tsx?$/, use: ["ts-loader"], exclude: /node_modules/ },
       ],
     },
+    watchOptions: {
+      aggregateTimeout: 200,
+      poll: 1000
+    }
 };

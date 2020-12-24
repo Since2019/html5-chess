@@ -10,7 +10,7 @@ npm install
 
 The command for running the App on localhost:
 ```sh
-npm start
+npm run start:dev
 ```
 Compile to whole project by:
 ```sh
