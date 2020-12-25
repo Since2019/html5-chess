@@ -1,13 +1,22 @@
 import { Board } from "./board";
 import { Point } from "./frontend-utils";
 import { BlackGeneral, RedGeneral } from "./General";
-
+import Log from "../src/Util";
 class Game {
 
     private board: Board;
     // Stub constructor to be a placeholder
     constructor() {
         this.board = new Board();
+    }
+
+    public canMove( p_from:Point,p_to:Point){
+        
+        Log.trace('Judging from which is the current player,')
+        Log.trace('the move logic of the piece chosen')
+        Log.trace('canMove() returns a bool whether the piece can move or not.')
+        
+        let bool_can_move_result
     }
 
 
