@@ -13,5 +13,10 @@ body {
     
     row-gap: 1px;
     column-gap: 1px;
-    background:url('./img/antontw_chinese_chess_plate.svg');  background-size:100% 100%;
+    background:url('../img/antontw_chinese_chess_plate.svg');  background-size:100% 100%;
+}
+
+.className_grid_div{
+    margin: 0;
+    padding : 0;
 }

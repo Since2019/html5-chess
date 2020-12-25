@@ -21,11 +21,38 @@ class RedGeneral extends General {
     }
 
     render() {
-        $(this.board.div_2d_array[this.point.x_coor-1][this.point.y_coor-1]).append(this.elem);
+        console.log('this.point.x_coor')
+        console.log(this.point.x_coor)
+
+        console.log('this.point.y_coor')
+        console.log(this.point.y_coor)
+
+        $(this.board.div_2d_array[this.point.x_coor ][this.point.y_coor ]).append(this.elem);
+    }   
+
+}
+
+
+class BlackGeneral extends General {
+
+    constructor(board: Board, point: Point) {
+        super(point, board);
+        this.elem.src = './img/pieces/black-jiang.png';
+    }
+
+    render() {
+        console.log('this.point.x_coor')
+        console.log(this.point.x_coor)
+
+        console.log('this.point.y_coor')
+        console.log(this.point.y_coor)
+
+        $(this.board.div_2d_array[this.point.x_coor ][this.point.y_coor ]).append(this.elem);
     }   
 
 }
 
 export {
-    RedGeneral
+    RedGeneral,
+    BlackGeneral
 }
