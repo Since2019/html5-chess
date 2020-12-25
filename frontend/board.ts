@@ -1,4 +1,5 @@
 import { getZoomedRatio, Point, SIDE_LENGTH } from "./frontend-utils";
+import Log from "../src/Util";
 
 
 class Board {
@@ -23,6 +24,10 @@ class Board {
         //A.K.A points.
         this.intersections = new Array<Array<any>>();
         this.div_2d_array = new Array<Array<any>>();
+
+
+
+  
 
         for (let i = 0; i < 9; i++) {
             this.intersections[i] = [];
@@ -58,6 +63,17 @@ class Board {
 
             }
         }
+    }
+
+    detachPieceFromGrid(){
+        Log.trace('detachPieceFromGrid()');
+        Log.trace('detach some piece from some grid');
+    }
+
+    appendPieceToGrid(piece:Piece,point:Point){
+        Log.trace('appendPieceToGrid()');
+        Log.trace('appends a piece to a specific grid');
+        // $(piece.board.div_2d_array[point.x_coor][point.y_coor]).append(piece.elem);
     }
 
     detectZoom() {

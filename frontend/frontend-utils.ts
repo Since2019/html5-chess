@@ -44,6 +44,18 @@ class Point {
     x_coor: number;
     y_coor: number;
 
+    // Points can hold pieces 
+    piece? : Piece;
+
+
+    public setPiece(piece:Piece){
+        this.piece = piece;
+    }
+
+    public getPiece(){
+        return this.piece;
+    }
+
     constructor(col: number, row: number) {
 
         this.x_coor = col; //file -> verticle
