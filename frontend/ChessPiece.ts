@@ -51,7 +51,6 @@ class Piece {
             console.log("at exact 100%");
 
             getChessBoardSize();
-
             $('.className_grid_div').css('width', SIDE_LENGTH * (getZoomedRatio()/100))
             $('.className_grid_div').css('height',SIDE_LENGTH * (getZoomedRatio()/100))
             $('.pieces').css('width', SIDE_LENGTH * (getZoomedRatio()/100))

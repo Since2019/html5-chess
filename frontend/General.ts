@@ -1,5 +1,5 @@
 import { Board } from "./board";
-import { Piece } from "./ChessPieces";
+import { Piece } from "./ChessPiece";
 import { Point } from "./frontend-utils";
 
 
