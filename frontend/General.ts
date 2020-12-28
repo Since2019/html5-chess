@@ -10,33 +10,6 @@ class General extends Piece {
         super(point, board);
     }
 
-    
-
-    
-    public canMove(){
-        this.checkRows();
-    }
-
-    //returns the grids that General can go
-    private checkRows(){
-        console.log('current point')   
-        console.log(this.point)
-
-        let X_coor = this.point.x_coor
-        let Y_coor = this.point.y_coor
-        console.log(`X: ${X_coor}`)
-        console.log(`Y: ${Y_coor}`)
-
-        console.log('moveable points')
-
-       
-       console.log(this.board.getColFromXCoordinate(X_coor))
-       console.log(this.board.getRowFromYCoordinate(Y_coor))
-    }
-
-    private checkColumns(){
-
-    }
 
     render() {
         super.render()
@@ -65,6 +38,56 @@ class RedGeneral extends General {
 
         this.point.setPiece(this) //sets the piece to the point.
     }
+
+    public canMove() {
+        this.checkColumns()
+        // this.checkRows();
+        
+    }
+
+    //returns the grids that General can go in a column
+    private checkColumns() {
+        console.log('current point')
+        console.log(this.point)
+        let Y_coor = this.point.y_coor
+        let X_coor = this.point.x_coor
+        console.log(`X: ${X_coor}`)
+        console.log(`Y: ${Y_coor}`)
+        console.log('moveable points')
+
+        let front = this.board.getPointFromCoordinates(X_coor,Y_coor - 1)
+        let back  = this.board.getPointFromCoordinates(X_coor,Y_coor + 1) //out of bound err
+        if(front){
+
+            console.log('front.getPiece()')
+            console.log(front.getPiece())
+        }
+
+        console.log(this.board.getColFromXCoordinate(X_coor))
+    }
+
+    //returns the grids that General can go in a row
+    private checkRows() {
+        console.log('current point')
+        console.log(this.point)
+        let Y_coor = this.point.y_coor
+        let X_coor = this.point.x_coor
+        console.log(`X: ${X_coor}`)
+        console.log(`Y: ${Y_coor}`)
+        console.log('moveable points')
+
+        let front = this.board.getPointFromCoordinates(X_coor,Y_coor - 1)
+        let back  = this.board.getPointFromCoordinates(X_coor,Y_coor + 1) //out of bound err
+        if(front){
+
+            console.log('front.getPiece()')
+            console.log(front.getPiece())
+        }
+
+        console.log(this.board.getColFromXCoordinate(X_coor))
+
+    }
+
 
 
 

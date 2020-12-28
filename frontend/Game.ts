@@ -39,7 +39,7 @@ class Game {
     render() {
         this.board.render();
         // let black_jiang = new General(board, new Point(0, 4),PieceColor.black)
-        let red_shuai = new RedGeneral(this.board, new Point(this.board,5, 10));
+        let red_shuai = new RedGeneral(this.board, new Point(this.board,5, 2));
         red_shuai.render();
 
         let black_jiang = new BlackGeneral(this.board, new Point(this.board,5,1));
