@@ -1,9 +1,10 @@
 import { Board } from "./board";
-import { Point } from "./frontend-utils";
+import { Point,PlayerColor } from "./frontend-utils";
 import { BlackGeneral, RedGeneral } from "./General";
 import Log from "../src/Util";
 class Game {
 
+    private currentPlayer!: PlayerColor ;
     private board: Board;
     // Stub constructor to be a placeholder
     constructor() {

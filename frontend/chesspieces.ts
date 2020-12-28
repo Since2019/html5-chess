@@ -1,20 +1,25 @@
-// import Log from "../src/Util";
+import {PieceColor} from "./frontend-utils";
 
 //how many px when it's zoomed 100%
 const SIDE_LENGTH: number = 75;
 var SIDE_LENGTH_vw: number = 70 / (getZoomedRatio() * 0.01);
 
-// used in class Piece
-enum PieceColor {
-    'black',
-    'red'
-}
 
-// used in class Game, 
-enum PlayerColor {
-    'black',
-    'red'
-}
+
+//Judao moved the following comments into 
+//frontend-utils.ts
+
+// // used in class Piece
+// enum PieceColor {
+//     'black',
+//     'red'
+// }
+
+// // used in class Game, 
+// enum PlayerColor {
+//     'black',
+//     'red'
+// }
 
 enum PieceRole {
     'General',

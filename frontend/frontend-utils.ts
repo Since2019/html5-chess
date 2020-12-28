@@ -1,5 +1,17 @@
 import Log from "../src/Util";
+import {Piece} from './ChessPiece'
 
+// used in class Piece
+enum PieceColor {
+    'black',
+    'red'
+}
+
+// used in class Game, 
+enum PlayerColor {
+    'black',
+    'red'
+}
 
 function getZoomedRatio() {
     let ratio = 0;
@@ -83,5 +95,8 @@ export {
     getChessBoardSize,
     Point,
     SIDE_LENGTH,
-    SIDE_LENGTH_vw
+    SIDE_LENGTH_vw,
+
+    PieceColor,
+    PlayerColor,
 }
