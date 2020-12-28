@@ -1,5 +1,6 @@
 import { Board } from "./board";
 import { getZoomedRatio, getChessBoardSize, Point, SIDE_LENGTH } from "./frontend-utils";
+import Log from "../src/Util";
 
 
 
@@ -59,6 +60,7 @@ class Piece {
         this.side_length = this.ratio * 0.01 * SIDE_LENGTH;
         this.board = board;
         this.elem = document.createElement("img");
+
     }
 
 
@@ -110,8 +112,39 @@ class Piece {
     }
 
     render() {
+        this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.append(this.elem) // encapsulates the next line of code;
+        console.log('render')
         this.elem.className = "pieces";
         $(window).resize(Piece.adjustResize);
+
+        console.log('this.elem')
+        console.log(this.elem)
+
+        var isDragging = false;
+        // $(this.elem)
+        //     .on('mousedown',function () {
+        //         isDragging = false;
+        //         console.log(isDragging)
+        //     })
+        //     .on('mousemove',function () {
+        //         isDragging = true;
+        //         console.log(isDragging)
+        //     })
+        //     .on('mouseup',function () {
+        //         var wasDragging = isDragging;
+        //         isDragging = false;
+        //         console.log(isDragging)
+        //         if (!wasDragging) {
+        //             console.log('dragging')
+        //             $("#throbble").toggle();
+        //         }
+        //     });
+        // click events:
+        $(this.elem).on('click',(e) => {
+            Log.trace('clicked')
+            console.log('clicked on Piece')
+        })
+
     }
 }
 
