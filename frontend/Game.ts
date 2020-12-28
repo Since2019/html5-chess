@@ -5,6 +5,7 @@ import Log from "../src/Util";
 class Game {
 
     private currentPlayer!: PlayerColor ;
+
     private board: Board;
     // Stub constructor to be a placeholder
     constructor() {
@@ -19,6 +20,20 @@ class Game {
         
     //     let bool_can_move_result
     // }
+
+
+    // gets the public player
+    public getCurrentPlayer(){
+        return this.currentPlayer
+    }
+
+    //switch current player to the other player
+    public alternatePlayer(){
+        if(this.currentPlayer == PlayerColor.red)
+            this.currentPlayer = PlayerColor.black;
+        else
+            this.currentPlayer = PlayerColor.red;
+    }
 
 
     render() {
