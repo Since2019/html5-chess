@@ -10,14 +10,14 @@ class Game {
         this.board = new Board();
     }
 
-    public canMove( p_from:Point,p_to:Point){
+    // public canMove( p_from:Point,p_to:Point){
         
-        Log.trace('Judging from which is the current player,')
-        Log.trace('the move logic of the piece chosen')
-        Log.trace('canMove() returns a bool whether the piece can move or not.')
+    //     Log.trace('Judging from which is the current player,')
+    //     Log.trace('the move logic of the piece chosen')
+    //     Log.trace('canMove() returns a bool whether the piece can move or not.')
         
-        let bool_can_move_result
-    }
+    //     let bool_can_move_result
+    // }
 
 
     render() {
