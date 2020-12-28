@@ -29,7 +29,7 @@ class Game {
 
     //switch current player to the other player
     public alternatePlayer(){
-        if(this.currentPlayer == PlayerColor.red)
+        if(this.currentPlayer === PlayerColor.red)
             this.currentPlayer = PlayerColor.black;
         else
             this.currentPlayer = PlayerColor.red;
