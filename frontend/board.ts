@@ -5,7 +5,6 @@ import {Piece,PieceRole} from './ChessPiece'
 class Board {
 
     intersections: Array<Array<any>>;
-    // div_2d_array!: Array<Array<any>>; // no longer used, but cannot be removed, why?
 
 
     //how to get ratio : https://www.jianshu.com/p/6db40c482899
