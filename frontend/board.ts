@@ -16,9 +16,10 @@ class Board {
 
     //invokes functions in Piece and Point simutaniously
     public movePieceFromSrcToDest(piece:Piece,point_source:Point,point_dest:Point){
-        point_source.setPiece(null);
-        piece.moveToPoint(point_dest);
-        point_dest.setPiece(piece); //not working, why?
+        
+        point_source.setPiece(null);  //the piece is moving out to another grid, so it's set to null.
+        piece.moveToPoint(point_dest);// the piece now knows which new place it's in
+        point_dest.setPiece(piece);   // the point the piece moves in knows which piece it's receiving.
     }
 
     constructor() {
