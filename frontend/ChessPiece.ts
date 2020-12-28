@@ -27,14 +27,7 @@ enum PieceRole {
 
 
 class Piece {
-    // protected board: Board;
-    // protected selected: boolean;
-    // protected active: boolean;
-    // private side_length: number;
-    // private ratio: number;
-    // protected point: Point;
 
-    // protected elem: HTMLImageElement;
 
      board: Board;
      selected: boolean;
@@ -43,17 +36,16 @@ class Piece {
      ratio: number;
      point: Point;
 
-     elem: HTMLImageElement;
+     elem: HTMLImageElement; 
+
+    getElement(){
+        return this.elem;
+    }
+    
 
     constructor(point: Point, board: Board) {
         this.point = point;
 
-        // $.when(this.point == point)
-        //     .then(() => {
-        //         ;
-        //     })
-
-            // this.point.setPiece(this:Piece)
         this.selected = false;
         this.active = false;
         this.ratio = 100;
@@ -117,5 +109,7 @@ class Piece {
 }
 
 export {
-    Piece
+    Piece,
+    PieceRole,
+    PieceColor
 }

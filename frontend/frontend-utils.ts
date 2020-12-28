@@ -3,19 +3,12 @@ import Log from "../src/Util";
 
 function getZoomedRatio() {
     let ratio = 0;
-        // screen = window.screen,
-        // ua = navigator.userAgent.toLowerCase();
+
         if (window.devicePixelRatio !== undefined) {
             ratio = window.devicePixelRatio;
         }
 
-        // ???? not working, why?
 
-        // else if (~ua.indexOf('msie')) {
-        //     if (screen.deviceXDPI && screen.logicalXDPI) {
-        //         ratio = screen.deviceXDPI / screen.logicalXDPI;
-        //     }
-        // }
         else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
             ratio = window.outerWidth / window.innerWidth;
         }
@@ -43,9 +36,10 @@ function getChessBoardSize() {
 class Point {
     x_coor: number;
     y_coor: number;
+    elem : HTMLElement; // HTML <div> elements are bound with each point
 
-    // Points can hold pieces 
-    piece? : Piece;
+    
+    piece? : Piece; // Points can hold pieces 
 
 
     public setPiece(piece:Piece){
@@ -58,8 +52,19 @@ class Point {
 
     constructor(col: number, row: number) {
 
-        this.x_coor = col; //file -> verticle
-        this.y_coor = row; //rank -> horizontal
+        this.x_coor = col ; //col -> verticle
+        this.y_coor = row ; //row -> horizontal
+        this.elem = document.createElement('div');
+        let grid_div = this.elem
+
+        /* code previously found in board initialization, with div_2d_array
+           now divs are bound to specific points.
+        */ 
+        grid_div.id = `grid_div_${col + 1}_${row + 1}`;
+        grid_div.className = 'className_grid_div'
+        $(grid_div).css('grid-column', col + 1);
+        $(grid_div).css('grid-row', row + 1);
+        $('#board').append(grid_div);
     }
 }
 

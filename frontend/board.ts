@@ -1,6 +1,6 @@
 import { getZoomedRatio, Point, SIDE_LENGTH } from "./frontend-utils";
 import Log from "../src/Util";
-
+import {Piece} from './ChessPiece'
 
 class Board {
     // xCoor:Number
@@ -45,19 +45,20 @@ class Board {
                 // 8
                 // 9
                 // 10
-                this.intersections[i][j] = (new Point(i + 1, j + 1));
 
-                let grid_div = document.createElement('div');
+                this.intersections[i][j] = (new Point((i  ), (j  )));
 
-                grid_div.id = `grid_div_${i + 1}_${j + 1}`;
-                grid_div.className = 'className_grid_div'
+                // let grid_div = document.createElement('div');
 
-                $(grid_div).css('grid-column', i + 1);
-                $(grid_div).css('grid-row', j + 1);
+                // grid_div.id = `grid_div_${i + 1}_${j + 1}`;
+                // grid_div.className = 'className_grid_div'
 
-                this.div_2d_array[i][j] = grid_div;
+                // $(grid_div).css('grid-column', i + 1);
+                // $(grid_div).css('grid-row', j + 1);
 
-                $('#board').append(this.div_2d_array[i][j]);
+                // this.div_2d_array[i][j] = grid_div;
+
+                // $('#board').append(this.div_2d_array[i][j]);
 
 
 
@@ -70,10 +71,13 @@ class Board {
         Log.trace('detach some piece from some grid');
     }
 
+
     appendPieceToGrid(piece:Piece,point:Point){
+        let div_2d_array = $(this.div_2d_array)
         Log.trace('appendPieceToGrid()');
+
         Log.trace('appends a piece to a specific grid');
-        // $(piece.board.div_2d_array[point.x_coor][point.y_coor]).append(piece.elem);
+        $(this.div_2d_array[point.x_coor][point.y_coor]).append(piece.elem);
     }
 
     detectZoom() {

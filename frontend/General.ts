@@ -1,7 +1,7 @@
 import { Board } from "./board";
-import { Piece } from "./ChessPiece";
+import { Piece ,PieceRole,PieceColor} from "./ChessPiece";
 import { Point } from "./frontend-utils";
-
+// import {PieceRole} from "./ChessPiece"
 
 class General extends Piece {
     
@@ -28,19 +28,19 @@ class RedGeneral extends General {
         this.piece_role = PieceRole.General;
         this.color = PieceColor.red;
         this.board = board;
-        // this.this_obj = this;
+  
         this.point.setPiece(this) //sets the piece to the point.
     }
 
     render() {
-        console.log('this.point.x_coor')
+        console.log('red this.point.x_coor')
         console.log(this.point.x_coor)
 
-        console.log('this.point.y_coor')
+        console.log('red this.point.y_coor')
         console.log(this.point.y_coor)
 
-        // this.board.appendPieceToGrid(this,this.point); // encapsulates the next line of code;
-        $(this.board.div_2d_array[this.point.x_coor ][this.point.y_coor ]).append(this.elem);
+        this.board.intersections[this.point.x_coor-1 ][this.point.y_coor-1].elem.append(this.elem) // encapsulates the next line of code;
+        
     }   
 
 }
@@ -54,13 +54,14 @@ class BlackGeneral extends General {
     }
 
     render() {
-        console.log('this.point.x_coor')
+        console.log('black this.point.x_coor')
         console.log(this.point.x_coor)
 
-        console.log('this.point.y_coor')
+        console.log('black this.point.y_coor')
         console.log(this.point.y_coor)
 
-        $(this.board.div_2d_array[this.point.x_coor ][this.point.y_coor ]).append(this.elem);
+        //In arrays, indexes are 1 less than the actual coordinates.
+        this.board.intersections[this.point.x_coor-1 ][this.point.y_coor-1].elem.append(this.elem)
     }   
 
 }
