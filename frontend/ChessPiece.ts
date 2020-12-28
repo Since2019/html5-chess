@@ -6,8 +6,8 @@ import Log from "../src/Util";
 
 // used in class Piece
 enum PieceColor {
-    'black',
-    'red'
+    'BLACK',
+    'RED'
 }
 
 // used in class Game, 
@@ -114,7 +114,13 @@ class Piece {
     render() {
         this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.append(this.elem) // encapsulates the next line of code;
         console.log('render')
-        this.elem.className = "pieces";
+
+        $(this.elem).addClass('pieces');
+
+ 
+
+  
+
         $(window).resize(Piece.adjustResize);
 
         console.log('this.elem')
@@ -142,7 +148,8 @@ class Piece {
         // click events:
         $(this.elem).on('click',(e) => {
             Log.trace('clicked')
-            console.log('clicked on Piece')
+            this.canMove();
+            
         })
 
     }

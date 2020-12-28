@@ -1,4 +1,5 @@
 import Log from "../src/Util";
+import { Board } from "./board";
 import {Piece} from './ChessPiece'
 
 // used in class Piece
@@ -50,6 +51,7 @@ class Point {
     y_coor: number;
     elem : HTMLElement; // HTML <div> elements are bound with each point
 
+    board : Board;
     
     piece? : Piece|null; // Points can hold pieces 
 
@@ -68,21 +70,26 @@ class Point {
         return this.piece;
     }
 
-    constructor(col: number, row: number) {
-
+    constructor(board:Board, col: number, row: number) {
+        this.board = board;
         this.x_coor = col ; //col -> verticle
         this.y_coor = row ; //row -> horizontal
         this.elem = document.createElement('div');
         let grid_div = this.elem
 
+        
+
         /* code previously found in board initialization, with div_2d_array
            now divs are bound to specific points.
         */ 
-        grid_div.id = `grid_div_${col + 1}_${row + 1}`;
+        grid_div.id = `grid_div_${col}_${row}`;
+        $(`#${grid_div.id}`).remove(); //must remove the original one, in order to make it unique.
         grid_div.className = 'className_grid_div'
-        $(grid_div).css('grid-column', col + 1);
-        $(grid_div).css('grid-row', row + 1);
+        $(grid_div).css('grid-column', col);
+        $(grid_div).css('grid-row', row);
         $('#board').append(grid_div);
+
+        this.board.intersections[col-1][row-1] = this; //replace the original point with the newly updated point.
     }
 }
 

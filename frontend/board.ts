@@ -1,6 +1,6 @@
 import { getZoomedRatio, Point, SIDE_LENGTH } from "./frontend-utils";
 import Log from "../src/Util";
-import {Piece,PieceRole} from './ChessPiece'
+import { Piece, PieceRole } from './ChessPiece'
 
 class Board {
 
@@ -14,11 +14,38 @@ class Board {
     image?: HTMLImageElement;
 
     //invokes functions in Piece and Point simutaniously
-    public movePieceFromSrcToDest(piece:Piece,point_source:Point,point_dest:Point){
-        
+    public movePieceFromSrcToDest(piece: Piece, point_source: Point, point_dest: Point) {
+
         point_source.setPiece(null);  //the piece is moving out to another grid, so it's set to null.
         piece.moveToPoint(point_dest);// the piece now knows which new place it's in
         point_dest.setPiece(piece);   // the point the piece moves in knows which piece it's receiving.
+    }
+
+    //get a specific point from coordinates
+    public getPointFromCoordinates(x_coor: number, y_coor: number) {
+        return this.intersections[x_coor - 1][y_coor - 1]
+    }
+
+    //get a row from y_coor(nth row)
+    public getRowFromYCoordinate(y_coor: number) {
+        let row = []
+        console.log('getRowFromYCoordinate')
+        for (let i = 0; i < 9; i++) {
+            console.log(i)
+            row.push(this.intersections[i][y_coor - 1])
+        }
+        return row;
+    }
+
+    //get a column from x_coor(nth col)
+    public getColFromXCoordinate(x_coor: number) {
+        let col = []
+        console.log('getColFromYCoordinate')
+        for (let j = 0; j < 10; j++) {
+            console.log(j)
+            col.push(this.intersections[x_coor - 1][j])
+        }
+        return col;
     }
 
     constructor() {
@@ -32,7 +59,7 @@ class Board {
 
 
 
-  
+
 
         for (let i = 0; i < 9; i++) {
             this.intersections[i] = [];
@@ -50,7 +77,7 @@ class Board {
                 // 9
                 // 10
 
-                this.intersections[i][j] = (new Point((i  ), (j  )));
+                this.intersections[i][j] = (new Point(this,(i+1), (j+1)));
 
 
 
@@ -58,7 +85,7 @@ class Board {
         }
     }
 
-    detachPieceFromGrid(){
+    detachPieceFromGrid() {
         Log.trace('detachPieceFromGrid()');
         Log.trace('detach some piece from some grid');
     }
@@ -95,7 +122,7 @@ class Board {
     render() {
         let board = $('#board');
 
-      
+
         $(board).css('height', 'fit-content');
 
         $("#id_chessboard").css("position", "fixed");
@@ -108,7 +135,7 @@ class Board {
 
         $("#board").css('margin-left', 'auto');
         $("#board").css('margin-right', 'auto');
-        
+
         $("#board").css('padding', 0);
 
         //for testing purposes, added some color to the background
@@ -132,15 +159,15 @@ class Board {
                     $('.className_grid_div').css('z-index', 10)
                     $('.className_grid_div').css('margin', 0)
                 })
-                .then(()=>{
-                    $('.pieces').css('width', parseInt($('.className_grid_div').css('width'))/2)
-                    $('.pieces').css('height',parseInt($('.className_grid_div').css('width'))/2)
+                .then(() => {
+                    $('.pieces').css('width', parseInt($('.className_grid_div').css('width')) / 2)
+                    $('.pieces').css('height', parseInt($('.className_grid_div').css('width')) / 2)
                 })
-                .then(()=>{
+                .then(() => {
                     board.css('max-width', board.css('height'))
                 })
 
-         
+
 
 
         });
