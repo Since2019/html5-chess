@@ -178,8 +178,10 @@ class Piece {
 
     color: PieceColor;
 
-
-
+    //sets the 
+    public moveToPoint(point:Point){
+        this.point = point;
+    }
 
     constructor(piece_role: PieceRole, board: Board, point: Point,
         color: PieceColor) {

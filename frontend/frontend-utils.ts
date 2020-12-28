@@ -39,13 +39,19 @@ class Point {
     elem : HTMLElement; // HTML <div> elements are bound with each point
 
     
-    piece? : Piece; // Points can hold pieces 
+    piece? : Piece|null; // Points can hold pieces 
 
-
-    public setPiece(piece:Piece){
+    /** when piece moves in
+        it binds the piece with the grid.
+        notice when the piece is moving out from a grid
+        the piece should be set to null.
+        @param piece: a nullable Piece object  
+    */ 
+    public setPiece(piece:Piece|null){
         this.piece = piece;
     }
 
+    //gets the piece in the current grid
     public getPiece(){
         return this.piece;
     }

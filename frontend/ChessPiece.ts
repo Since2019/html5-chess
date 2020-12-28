@@ -29,19 +29,26 @@ enum PieceRole {
 class Piece {
 
 
-     board: Board;
-     selected: boolean;
-     active: boolean;
-     side_length: number;
-     ratio: number;
-     point: Point;
+    board: Board;
+    selected: boolean;
+    active: boolean;
+    side_length: number;
+    ratio: number;
+    point: Point;
 
-     elem: HTMLImageElement; 
+    piece_role!: PieceRole;
+    color!: PieceColor;
 
-    getElement(){
+    elem: HTMLImageElement;
+
+    getElement?() {
         return this.elem;
     }
-    
+
+    //sets the point of the piece
+    public moveToPoint(point: Point) {
+        this.point = point;
+    }
 
     constructor(point: Point, board: Board) {
         this.point = point;
