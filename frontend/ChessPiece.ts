@@ -1,4 +1,4 @@
-import { Board } from "./board";
+import { Board } from "./Board";
 import { getZoomedRatio, getChessBoardSize, Point, SIDE_LENGTH } from "./frontend-utils";
 import Log from "../src/Util";
 

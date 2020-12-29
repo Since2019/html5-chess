@@ -29,7 +29,6 @@ class Board {
     //get a row from y_coor(nth row)
     public getRowFromYCoordinate(y_coor: number) {
         let row = []
-        console.log('getRowFromYCoordinate')
         for (let i = 0; i < 9; i++) {
             console.log(i)
             row.push(this.intersections[i][y_coor - 1])
@@ -40,9 +39,7 @@ class Board {
     //get a column from x_coor(nth col)
     public getColFromXCoordinate(x_coor: number) {
         let col = []
-        console.log('getColFromYCoordinate')
         for (let j = 0; j < 10; j++) {
-            console.log(j)
             col.push(this.intersections[x_coor - 1][j])
         }
         return col;
@@ -55,10 +52,6 @@ class Board {
 
         //A.K.A points.
         this.intersections = new Array<Array<any>>();
-
-
-
-
 
 
         for (let i = 0; i < 9; i++) {
@@ -77,10 +70,7 @@ class Board {
                 // 9
                 // 10
 
-                this.intersections[i][j] = (new Point(this,(i+1), (j+1)));
-
-
-
+                this.intersections[i][j] = (new Point((i+1), (j+1)));
             }
         }
     }

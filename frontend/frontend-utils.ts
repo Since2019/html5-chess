@@ -1,5 +1,5 @@
 import Log from "../src/Util";
-import { Board } from "./board";
+import { Board } from "./Board";
 import {Piece} from './ChessPiece'
 
 // used in class Piece
@@ -51,7 +51,7 @@ class Point {
     y_coor: number;
     elem : HTMLElement; // HTML <div> elements are bound with each point
 
-    board : Board;
+    // board : Board;
     
     piece? : Piece|null; // Points can hold pieces 
 
@@ -70,26 +70,50 @@ class Point {
         return this.piece;
     }
 
-    constructor(board:Board, col: number, row: number) {
-        this.board = board;
+    constructor(col: number, row: number) {
+        // this.board = board;
         this.x_coor = col ; //col -> verticle
         this.y_coor = row ; //row -> horizontal
-        this.elem = document.createElement('div');
-        let grid_div = this.elem
+
+        // A dummy element for initialization first and then update in method
+        this.elem = new HTMLElement();
+        // this.elem = document.createElement('div');
+        // let grid_div = this.elem
 
         
+
+        // /* code previously found in board initialization, with div_2d_array
+        //    now divs are bound to specific points.
+        // */ 
+        // grid_div.id = `grid_div_${col}_${row}`;
+        // $(`#${grid_div.id}`).remove(); //must remove the original one, in order to make it unique.
+        // grid_div.className = 'className_grid_div'
+        // $(grid_div).css('grid-column', col);
+        // $(grid_div).css('grid-row', row);
+        // $('#board').append(grid_div);
+
+        // this.board.intersections[col-1][row-1] = this; //replace the original point with the newly updated point.
+        this.updateElement(col, row);
+    }
+
+    private updateElement(newCol: number, newRow: number): void {
+        this.elem = document.createElement('div');
+        let grid_div = this.elem;
+
+        const oldCol = this.x_coor;
+        const oldRow = this.y_coor;
 
         /* code previously found in board initialization, with div_2d_array
            now divs are bound to specific points.
         */ 
-        grid_div.id = `grid_div_${col}_${row}`;
+        grid_div.id = `grid_div_${oldCol}_${oldRow}`;
         $(`#${grid_div.id}`).remove(); //must remove the original one, in order to make it unique.
-        grid_div.className = 'className_grid_div'
-        $(grid_div).css('grid-column', col);
-        $(grid_div).css('grid-row', row);
+        grid_div.className = 'className_grid_div';
+        $(grid_div).css('grid-column', newCol);
+        $(grid_div).css('grid-row', newRow);
         $('#board').append(grid_div);
 
-        this.board.intersections[col-1][row-1] = this; //replace the original point with the newly updated point.
+        // this.board.intersections[newCol-1][newRow-1] = this; //replace the original point with the newly updated point.
     }
 }
 
@@ -103,7 +127,6 @@ export {
     Point,
     SIDE_LENGTH,
     SIDE_LENGTH_vw,
-
     PieceColor,
     PlayerColor,
 }

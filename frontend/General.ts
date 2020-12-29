@@ -1,4 +1,4 @@
-import { Board } from "./board";
+import { Board } from "./Board";
 import { Piece, PieceRole, PieceColor } from "./ChessPiece";
 import { Point } from "./frontend-utils";
 import Log from "../src/Util";
@@ -13,9 +13,6 @@ class General extends Piece {
 
     render() {
         super.render()
-        console.log('this.piece_role')
-        console.log(PieceRole[this.piece_role].toString())
-        console.log(PieceColor[this.color].toString())
         $(this.elem).addClass(PieceRole[this.piece_role].toString()); //add className for the HTML <img> of the piece - PieceRole
         $(this.elem).addClass(PieceColor[this.color].toString());     //add className for the HTML <img> of the piece - PieceColor
     }
@@ -47,44 +44,34 @@ class RedGeneral extends General {
 
     //returns the grids that General can go in a column
     private checkColumns() {
-        console.log('current point')
-        console.log(this.point)
         let Y_coor = this.point.y_coor
         let X_coor = this.point.x_coor
-        console.log(`X: ${X_coor}`)
-        console.log(`Y: ${Y_coor}`)
-        console.log('moveable points')
 
         let front = this.board.getPointFromCoordinates(X_coor,Y_coor - 1)
         let back  = this.board.getPointFromCoordinates(X_coor,Y_coor + 1) //out of bound err
         if(front){
 
-            console.log('front.getPiece()')
-            console.log(front.getPiece())
+            console.log('front.getPiece()');
+            console.log(front.getPiece());
         }
 
-        console.log(this.board.getColFromXCoordinate(X_coor))
+        console.log(this.board.getColFromXCoordinate(X_coor));
     }
 
     //returns the grids that General can go in a row
     private checkRows() {
-        console.log('current point')
-        console.log(this.point)
-        let Y_coor = this.point.y_coor
-        let X_coor = this.point.x_coor
-        console.log(`X: ${X_coor}`)
-        console.log(`Y: ${Y_coor}`)
-        console.log('moveable points')
+        let Y_coor = this.point.y_coor;
+        let X_coor = this.point.x_coor;
 
-        let front = this.board.getPointFromCoordinates(X_coor,Y_coor - 1)
-        let back  = this.board.getPointFromCoordinates(X_coor,Y_coor + 1) //out of bound err
+        let front = this.board.getPointFromCoordinates(X_coor,Y_coor - 1);
+        let back  = this.board.getPointFromCoordinates(X_coor,Y_coor + 1); //out of bound err
         if(front){
 
-            console.log('front.getPiece()')
-            console.log(front.getPiece())
+            console.log('front.getPiece()');
+            console.log(front.getPiece());
         }
 
-        console.log(this.board.getColFromXCoordinate(X_coor))
+        console.log(this.board.getColFromXCoordinate(X_coor));
 
     }
 

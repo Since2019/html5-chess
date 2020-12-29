@@ -119,7 +119,15 @@ export default class Server {
         let path = publicDir + "index.html";
         if (req.url !== "/") {
             path = "frontend/" + req.url;
+
+            if (req.url?.includes("svg")) {
+                res.setHeader("content-type", "image/svg+xml");
+            } else if (req.url?.includes("css")) {
+                res.setHeader("content-type", "text/css");
+            }
         }
+
+
 
         // Log.trace(path);
         fs.readFile(path, function (err: NodeJS.ErrnoException | null, file: Buffer) {
