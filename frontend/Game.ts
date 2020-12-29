@@ -1,7 +1,6 @@
 import { Board } from "./Board";
 import { Point,PlayerColor } from "./frontend-utils";
 import { BlackGeneral, RedGeneral } from "./General";
-import Log from "../src/Util";
 class Game {
 
     private currentPlayer!: PlayerColor ;

@@ -4,6 +4,8 @@ module.exports = {
       path: __dirname + "/frontend",
       filename: "bundle.js",
     },
+
+    devtool: 'source-map',
     resolve: {
       extensions: [".tsx", ".ts", ".js", ".json"],
     },

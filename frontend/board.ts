@@ -30,7 +30,6 @@ class Board {
     public getRowFromYCoordinate(y_coor: number) {
         let row = []
         for (let i = 0; i < 9; i++) {
-            console.log(i)
             row.push(this.intersections[i][y_coor - 1])
         }
         return row;

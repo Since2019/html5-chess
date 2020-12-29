@@ -36,10 +36,10 @@ function getChessBoardSize() {
     Log.trace('chessboard size:');
     let chessboard = $('#id_chessboard');
 
-    Log.trace( 'chessboad width');
+    Log.trace('chessboad width');
     Log.trace(chessboard.css('width'));
 
-    Log.trace( 'chessboad height');
+    Log.trace('chessboad height');
     Log.trace(chessboard.css('height'));
 }
 
@@ -76,7 +76,7 @@ class Point {
         this.y_coor = row ; //row -> horizontal
 
         // A dummy element for initialization first and then update in method
-        this.elem = new HTMLElement();
+        this.elem = document.createElement('div');
         // this.elem = document.createElement('div');
         // let grid_div = this.elem
 
@@ -97,7 +97,6 @@ class Point {
     }
 
     private updateElement(newCol: number, newRow: number): void {
-        this.elem = document.createElement('div');
         let grid_div = this.elem;
 
         const oldCol = this.x_coor;
