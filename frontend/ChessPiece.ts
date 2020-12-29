@@ -113,20 +113,9 @@ class Piece {
 
     render() {
         this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.append(this.elem) // encapsulates the next line of code;
-        console.log('render')
 
         $(this.elem).addClass('pieces');
-
- 
-
-  
-
         $(window).resize(Piece.adjustResize);
-
-        console.log('this.elem')
-        console.log(this.elem)
-
-        var isDragging = false;
         // $(this.elem)
         //     .on('mousedown',function () {
         //         isDragging = false;
@@ -147,11 +136,8 @@ class Piece {
         //     });
         // click events:
         $(this.elem).on('click',(e) => {
-            Log.trace('clicked')
             this.canMove();
-            
-        })
-
+        });
     }
 }
 
