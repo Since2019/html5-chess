@@ -11,16 +11,6 @@ class Game {
         this.board = new Board();
     }
 
-    // public canMove( p_from:Point,p_to:Point){
-        
-    //     Log.trace('Judging from which is the current player,')
-    //     Log.trace('the move logic of the piece chosen')
-    //     Log.trace('canMove() returns a bool whether the piece can move or not.')
-        
-    //     let bool_can_move_result
-    // }
-
-
     // gets the public player
     public getCurrentPlayer(){
         return this.currentPlayer
@@ -37,7 +27,7 @@ class Game {
 
     render() {
         this.board.render();
-        
+
         let red_shuai = new RedGeneral(this.board, this.board.getPointFromCoordinates(5,2)); //new Point() doesn't make sense.
         red_shuai.render();
 
@@ -50,8 +40,3 @@ class Game {
 
 const game = new Game();
 game.render();
-
-
-// $(window).resize(function () {
-//     $('#board').css($('#board').css('height'),$('#board').css('width'))
-// });
