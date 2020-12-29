@@ -1,4 +1,4 @@
-import { Board } from "./Board";
+import { Board } from "./board";
 import { Point,PlayerColor } from "./frontend-utils";
 import { BlackGeneral, RedGeneral } from "./General";
 class Game {
@@ -37,11 +37,11 @@ class Game {
 
     render() {
         this.board.render();
-        // let black_jiang = new General(board, new Point(0, 4),PieceColor.black)
-        let red_shuai = new RedGeneral(this.board, new Point(5, 2));
+        
+        let red_shuai = new RedGeneral(this.board, this.board.getPointFromCoordinates(5,2)); //new Point() doesn't make sense.
         red_shuai.render();
 
-        let black_jiang = new BlackGeneral(this.board, new Point(5,1));
+        let black_jiang = new BlackGeneral(this.board, this.board.getPointFromCoordinates(5,1)); // using getPoint from coor now
         black_jiang.render();
     }
 }

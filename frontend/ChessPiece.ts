@@ -1,4 +1,4 @@
-import { Board } from "./Board";
+import { Board } from "./board";
 import { getZoomedRatio, getChessBoardSize, Point, SIDE_LENGTH } from "./frontend-utils";
 import Log from "../src/Util";
 
@@ -115,7 +115,8 @@ class Piece {
         this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.append(this.elem) // encapsulates the next line of code;
 
         $(this.elem).addClass('pieces');
-        $(window).resize(Piece.adjustResize);
+        // $(window).on('resize',Piece.adjustResize);
+        
         // $(this.elem)
         //     .on('mousedown',function () {
         //         isDragging = false;

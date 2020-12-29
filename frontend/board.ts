@@ -112,7 +112,7 @@ class Board {
         let board = $('#board');
 
 
-        $(board).css('height', 'fit-content');
+        // $(board).css('height', 'fit-content');
 
         $("#id_chessboard").css("position", "fixed");
         $("#id_chessboard").css("max-height", '100vh');
@@ -132,35 +132,47 @@ class Board {
 
 
 
-        $(window).resize(function () {
+        function fitSize(){
             let board = $('#board')
 
             $.when()
+                //fiting size for the board
                 .then(() => {
-
                     board.css('width', board.css('height'))
                     board.css('height', board.css('width'))
 
                 })
+                //fiting sizes for the grids
                 .then(() => {
                     $('.className_grid_div').css('width', parseInt(board.css('width')) / 11)
                     $('.className_grid_div').css('height', parseInt(board.css('height')) / 10)
                     $('.className_grid_div').css('z-index', 10)
                     $('.className_grid_div').css('margin', 0)
                 })
+                //fiting sizes for the pieces
                 .then(() => {
-                    $('.pieces').css('width', parseInt($('.className_grid_div').css('width')) / 2)
-                    $('.pieces').css('height', parseInt($('.className_grid_div').css('width')) / 2)
+                    $('.pieces').css('width', parseInt($('.className_grid_div').css('width')) )
+                    $('.pieces').css('height', parseInt($('.className_grid_div').css('width')) )
                 })
                 .then(() => {
                     board.css('max-width', board.css('height'))
+
+
                 })
 
+        }
 
-
-
+        //fits the size when resizing
+        $(window).on('resize',function () {
+            fitSize()
         });
 
+        //fixed the size issue upon entry
+        $(document).on('ready',()=>{
+            Log.trace('fitSize()')
+            fitSize()
+        })
+        
 
 
 

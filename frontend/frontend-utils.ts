@@ -1,5 +1,5 @@
 import Log from "../src/Util";
-import { Board } from "./Board";
+import { Board } from "./board";
 import {Piece} from './ChessPiece'
 
 // used in class Piece
@@ -51,7 +51,7 @@ class Point {
     y_coor: number;
     elem : HTMLElement; // HTML <div> elements are bound with each point
 
-    // board : Board;
+    board! : Board;
     
     piece? : Piece|null; // Points can hold pieces 
 
@@ -96,6 +96,7 @@ class Point {
         this.updateElement(col, row);
     }
 
+    
     private updateElement(newCol: number, newRow: number): void {
         let grid_div = this.elem;
 
@@ -110,6 +111,9 @@ class Point {
         grid_div.className = 'className_grid_div';
         $(grid_div).css('grid-column', newCol);
         $(grid_div).css('grid-row', newRow);
+
+        Log.trace(grid_div)
+        
         $('#board').append(grid_div);
 
         // this.board.intersections[newCol-1][newRow-1] = this; //replace the original point with the newly updated point.
