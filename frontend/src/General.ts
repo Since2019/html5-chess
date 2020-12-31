@@ -80,7 +80,7 @@ class RedGeneral extends General {
     }
 
     protected isValidGeneralPosition(x: number, y: number) {
-        return (y >= 8) && (y <= 10) && (x >= 4) && (x <= 6) && (x>0 && y>0);
+        return (y >= 8) && (y <= 10) && (x >= 4) && (x <= 6) && !(x>0 && y>0);
     }
 }
 
@@ -95,7 +95,7 @@ class BlackGeneral extends General {
     }
 
     protected isValidGeneralPosition(x: number, y: number) {
-        return (y >= 1) && (y <= 3) && (x >= 4) && (x <= 6) && (x>0 && y>0);
+        return (y >= 1) && (y <= 3) && (x >= 4) && (x <= 6) && !(x>0 && y>0);
     }
 
 

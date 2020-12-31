@@ -42,7 +42,6 @@ class Game {
         let red_shuai = new RedGeneral(this.board, this.board.getPointFromCoordinates(5,10)); //new Point() doesn't make sense.
         red_shuai.render();
 
-        console.log(this.board.getPointFromCoordinates(5,1));
         let black_jiang = new BlackGeneral(this.board, this.board.getPointFromCoordinates(5,1)); // using getPoint from coor now
         black_jiang.render();
     }
