@@ -1,6 +1,5 @@
 import { Board } from "./Boards";
 import { getZoomedRatio, getChessBoardSize, Point, SIDE_LENGTH } from "./frontend-utils";
-import Log from "../src/Util";
 
 
 
@@ -27,8 +26,7 @@ enum PieceRole {
 }
 
 
-class Piece {
-
+abstract class Piece {
 
     protected board: Board;
     protected selected: boolean;
@@ -42,14 +40,7 @@ class Piece {
 
     protected elem: HTMLImageElement;
 
-    getElement?() {
-        return this.elem;
-    }
 
-    //sets the point of the piece
-    public moveToPoint(point: Point) {
-        this.point = point;
-    }
 
     constructor(point: Point, board: Board, role: PieceRole, color: PieceColor) {
         this.point = point;
@@ -61,15 +52,46 @@ class Piece {
         this.elem = document.createElement("img");
         this.piece_role = role;
         this.color = color;
-
     }
 
-
-    public canMove() {
-        console.log('returns a bool whether the piece can move or not.');
+    protected getElement(): HTMLImageElement {
+        return this.elem;
     }
 
+    public getRole(): PieceRole {
+        return this.piece_role;
+    }
 
+    public getColor(): PieceColor {
+        return this.color;
+    }
+
+    //sets the point of the piece
+    public moveToPoint(point: Point) {
+        this.point = point;
+    }
+
+    
+
+
+    /**
+     * @param dest The destination point we are moving to
+     * @returns A boolean to indicate if it's a valid move or not
+     */
+    public abstract canMove(dest: Point): boolean;
+
+    /**
+     * @param point Check if a point has a piece with the same side
+     * 
+     */
+    protected checkSameColorPiece(point: Point): boolean {
+        const piece = point.getPiece();
+        if (!piece) {
+            return false;
+        }
+
+        return piece.getColor() === this.color;
+    }
 
     private static adjustResize: () => void = () => {
         if (screen.width == window.innerWidth) {
@@ -116,6 +138,14 @@ class Piece {
         this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.append(this.elem) // encapsulates the next line of code;
 
         $(this.elem).addClass('pieces');
+
+        //add className for the HTML <img> of the piece - PieceRole
+        $(this.elem).addClass(PieceRole[this.piece_role].toString());
+
+        //add className for the HTML <img> of the piece - PieceColor
+        $(this.elem).addClass(PieceColor[this.color].toString());
+
+        
         // $(window).on('resize',Piece.adjustResize);
         
         // $(this.elem)
@@ -136,10 +166,11 @@ class Piece {
         //             $("#throbble").toggle();
         //         }
         //     });
-        // click events:
-        $(this.elem).on('click',(e) => {
-            this.canMove();
-        });
+
+
+        
+        // TODO: click events:
+        
     }
 }
 
