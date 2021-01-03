@@ -1,5 +1,4 @@
 import { fitSize, getZoomedRatio, Point, SIDE_LENGTH } from "./frontend-utils";
-import Log from "../src/Util";
 import { Piece, PieceRole } from './ChessPiece'
 
 class Board {
@@ -13,46 +12,7 @@ class Board {
 
     image?: HTMLImageElement;
 
-    //invokes functions in Piece and Point simutaniously
-    public movePieceFromSrcToDest(piece: Piece, point_source: Point, point_dest: Point) {
 
-        point_source.setPiece(null);  //the piece is moving out to another grid, so it's set to null.
-        piece.moveToPoint(point_dest);// the piece now knows which new place it's in
-        point_dest.setPiece(piece);   // the point the piece moves in knows which piece it's receiving.
-    }
-
-    //get a specific point from coordinates
-    public getPointFromCoordinates(x_coor: number, y_coor: number) {
-        if (!this.validateXCoordinate(x_coor) || !this.validateYCoordinate(y_coor))
-            return null;
-        return this.intersections[x_coor - 1][y_coor - 1];
-    }
-
-    private validateXCoordinate(x: number): boolean {
-        return x > 1 && x < 10; 
-    }
-
-    private validateYCoordinate(y: number):boolean {
-        return y > 1 && y < 11;
-    }
-
-    //get a row from y_coor(nth row)
-    public getRowFromYCoordinate(y_coor: number) {
-        let row = []
-        for (let i = 0; i < 9; i++) {
-            row.push(this.intersections[i][y_coor - 1])
-        }
-        return row;
-    }
-
-    //get a column from x_coor(nth col)
-    public getColFromXCoordinate(x_coor: number) {
-        let col = []
-        for (let j = 0; j < 10; j++) {
-            col.push(this.intersections[x_coor - 1][j])
-        }
-        return col;
-    }
 
     constructor() {
 
@@ -83,6 +43,52 @@ class Board {
             }
         }
     }
+
+
+    //invokes functions in Piece and Point simutaniously
+    public movePieceFromSrcToDest(piece: Piece, point_source: Point, point_dest: Point) {
+
+        point_source.setPiece(null);  //the piece is moving out to another grid, so it's set to null.
+        piece.moveToPoint(point_dest);// the piece now knows which new place it's in
+        point_dest.setPiece(piece);   // the point the piece moves in knows which piece it's receiving.
+    }
+
+    //get a specific point from coordinates
+    public getPointFromCoordinates(x_coor: number, y_coor: number) {
+        if (!this.validateXCoordinate(x_coor) || !this.validateYCoordinate(y_coor))
+            return null;
+        return this.intersections[x_coor - 1][y_coor - 1];
+    }
+
+    // Check for valid x coordinate
+    private validateXCoordinate(x: number): boolean {
+        return x >= 1 && x <= 9; 
+    }
+
+    // Check for valid y coordinate
+    private validateYCoordinate(y: number):boolean {
+        return y >= 1 && y <= 10;
+    }
+
+    //get a row from y_coor(nth row)
+    public getRowFromYCoordinate(y_coor: number) {
+        let row = []
+        for (let i = 0; i < 9; i++) {
+            row.push(this.intersections[i][y_coor - 1])
+        }
+        return row;
+    }
+
+    //get a column from x_coor(nth col)
+    public getColFromXCoordinate(x_coor: number) {
+        let col = []
+        for (let j = 0; j < 10; j++) {
+            col.push(this.intersections[x_coor - 1][j])
+        }
+        return col;
+    }
+
+    
 
 
     detectZoom() {

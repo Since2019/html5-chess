@@ -2,38 +2,53 @@ import { Board } from "./Boards";
 import { Piece, PieceRole, PieceColor } from "./ChessPiece";
 import { Point } from "./frontend-utils";
 
-class General extends Piece {
+abstract class General extends Piece {
 
     constructor(point: Point, board: Board, color: PieceColor) {
         super(point, board, PieceRole.General, color);
     }
 
+    /**
+     * 
+     * @param x 
+     * @param y 
+     * @returns boolean to indicate if the pass in coordinate is valid general position
+     */
+    protected abstract isValidGeneralPosition(x: number, y: number): boolean;
 
-    render() {
-        super.render();
-        $(this.elem).addClass(PieceRole[this.piece_role].toString()); //add className for the HTML <img> of the piece - PieceRole
-        $(this.elem).addClass(PieceColor[this.color].toString());     //add className for the HTML <img> of the piece - PieceColor
+
+    public canMove(dest: Point): boolean {
+        let x = dest.x_coor;
+        let y = dest.y_coor;
+
+        //If the dest is not inside of the "田" shaped space of the board
+        //Returns false.
+        if (!this.isValidGeneralPosition(x, y))
+            return false;
+
+        //If the place is outside of reach from the General,
+        //It returns false.
+        if (Math.abs(x - this.point.x_coor) > 1 || Math.abs(y - this.point.y_coor) > 1)
+            return false;
+
+
+
+        // We will add more logic for checking valid move later
+        // Current check is only for a valid position and no same side piece
+        return !super.checkSameColorPiece(dest);
     }
-
 
 }
 
 class RedGeneral extends General {
 
-    // this_obj:RedGeneral;
     protected board: Board;
     constructor(board: Board, point: Point) {
         super(point, board, PieceColor.RED);
-        this.elem.src = './img/pieces/red-shuai.png';
+        this.elem.src = '../img/pieces/red-shuai.png';
         this.board = board;
 
         this.point.setPiece(this); //sets the piece to the point.
-    }
-
-    public canMove() {
-        this.checkColumns();
-        // this.checkRows();
-        
     }
 
     //returns the grids that General can go in a column
@@ -68,6 +83,10 @@ class RedGeneral extends General {
         console.log(this.board.getColFromXCoordinate(X_coor));
 
     }
+
+    protected isValidGeneralPosition(x: number, y: number) {
+        return (y >= 8) && (y <= 10) && (x >= 4) && (x <= 6) && !(x>0 && y>0);
+    }
 }
 
 
@@ -75,9 +94,13 @@ class BlackGeneral extends General {
 
     constructor(board: Board, point: Point) {
         super(point, board, PieceColor.BLACK);
-        this.elem.src = './img/pieces/black-jiang.png';
+        this.elem.src = '../img/pieces/black-jiang.png';
         this.board = board;
         this.point.setPiece(this); //sets the piece to the point.
+    }
+
+    protected isValidGeneralPosition(x: number, y: number) {
+        return (y >= 1) && (y <= 3) && (x >= 4) && (x <= 6) && !(x>0 && y>0);
     }
 
 

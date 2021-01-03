@@ -1,4 +1,4 @@
-import Log from "../src/Util";
+import Log from "../../src/Util";
 import { Board } from "./Boards";
 import {Piece} from './ChessPiece'
 
@@ -63,6 +63,10 @@ class Point {
     */ 
     public setPiece(piece:Piece|null){
         this.piece = piece;
+    }
+
+    public hasPiece(): boolean {
+        return this.piece? true : false;
     }
 
     //gets the piece in the current grid
