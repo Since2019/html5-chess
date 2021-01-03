@@ -1,4 +1,4 @@
-import { getZoomedRatio, Point, SIDE_LENGTH } from "./frontend-utils";
+import { fitSize, getZoomedRatio, Point, SIDE_LENGTH } from "./frontend-utils";
 import Log from "../src/Util";
 import { Piece, PieceRole } from './ChessPiece'
 
@@ -23,7 +23,17 @@ class Board {
 
     //get a specific point from coordinates
     public getPointFromCoordinates(x_coor: number, y_coor: number) {
-        return this.intersections[x_coor - 1][y_coor - 1]
+        if (!this.validateXCoordinate(x_coor) || !this.validateYCoordinate(y_coor))
+            return null;
+        return this.intersections[x_coor - 1][y_coor - 1];
+    }
+
+    private validateXCoordinate(x: number): boolean {
+        return x > 1 && x < 10; 
+    }
+
+    private validateYCoordinate(y: number):boolean {
+        return y > 1 && y < 11;
     }
 
     //get a row from y_coor(nth row)
@@ -74,11 +84,6 @@ class Board {
         }
     }
 
-    detachPieceFromGrid() {
-        Log.trace('detachPieceFromGrid()');
-        Log.trace('detach some piece from some grid');
-    }
-
 
     detectZoom() {
         let ratio = 0;
@@ -101,16 +106,10 @@ class Board {
         }
 
         this.ratio = ratio;
-        console.log('ratio')
-        console.log(ratio)
-        console.log(this.ratio)
-
-
     }
 
     render() {
         let board = $('#board');
-
 
         // $(board).css('height', 'fit-content');
 
@@ -122,59 +121,23 @@ class Board {
         $("#id_chessboard").css("padding", "0vw");
 
 
-        $("#board").css('margin-left', 'auto');
-        $("#board").css('margin-right', 'auto');
+        board.css('margin-left', 'auto');
+        board.css('margin-right', 'auto');
 
-        $("#board").css('padding', 0);
+        board.css('padding', 0);
 
         //for testing purposes, added some color to the background
-        $('.className_grid_div').css('background-color', 'rgba(255,0,0,0.3)')
-
-
-
-        function fitSize(){
-            let board = $('#board')
-
-            $.when()
-                //fiting size for the board
-                .then(() => {
-                    board.css('width', board.css('height'))
-                    board.css('height', board.css('width'))
-
-                })
-                //fiting sizes for the grids
-                .then(() => {
-                    $('.className_grid_div').css('width', parseInt(board.css('width')) / 11)
-                    $('.className_grid_div').css('height', parseInt(board.css('height')) / 10)
-                    $('.className_grid_div').css('z-index', 10)
-                    $('.className_grid_div').css('margin', 0)
-                })
-                //fiting sizes for the pieces
-                .then(() => {
-                    $('.pieces').css('width', parseInt($('.className_grid_div').css('width')) )
-                    $('.pieces').css('height', parseInt($('.className_grid_div').css('width')) )
-                })
-                .then(() => {
-                    board.css('max-width', board.css('height'))
-
-
-                })
-
-        }
+        $('.className_grid_div').css('background-color', 'rgba(255,0,0,0.3)');
 
         //fits the size when resizing
         $(window).on('resize',function () {
-            fitSize()
+            fitSize();
         });
 
         //fixed the size issue upon entry
         $(document).on('ready',()=>{
-            Log.trace('fitSize()')
-            fitSize()
-        })
-        
-
-
+            fitSize();
+        });
 
         $("#board").css("max-width", "100vh");
     }

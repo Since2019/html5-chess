@@ -1,18 +1,16 @@
-import { Board } from "./board";
+import { Board } from "./Boards";
 import { Piece, PieceRole, PieceColor } from "./ChessPiece";
 import { Point } from "./frontend-utils";
-import Log from "../src/Util";
-// import {PieceRole} from "./ChessPiece"
 
 class General extends Piece {
 
-    constructor(point: Point, board: Board) {
-        super(point, board);
+    constructor(point: Point, board: Board, color: PieceColor) {
+        super(point, board, PieceRole.General, color);
     }
 
 
     render() {
-        super.render()
+        super.render();
         $(this.elem).addClass(PieceRole[this.piece_role].toString()); //add className for the HTML <img> of the piece - PieceRole
         $(this.elem).addClass(PieceColor[this.color].toString());     //add className for the HTML <img> of the piece - PieceColor
     }
@@ -23,21 +21,17 @@ class General extends Piece {
 class RedGeneral extends General {
 
     // this_obj:RedGeneral;
-    piece_role: PieceRole;
-    color: PieceColor;
-    public board: Board;
+    protected board: Board;
     constructor(board: Board, point: Point) {
-        super(point, board);
+        super(point, board, PieceColor.RED);
         this.elem.src = './img/pieces/red-shuai.png';
-        this.piece_role = PieceRole.General;
-        this.color = PieceColor.RED;
         this.board = board;
 
-        this.point.setPiece(this) //sets the piece to the point.
+        this.point.setPiece(this); //sets the piece to the point.
     }
 
     public canMove() {
-        this.checkColumns()
+        this.checkColumns();
         // this.checkRows();
         
     }
@@ -74,24 +68,16 @@ class RedGeneral extends General {
         console.log(this.board.getColFromXCoordinate(X_coor));
 
     }
-
-
-
-
 }
 
 
 class BlackGeneral extends General {
 
-    piece_role: PieceRole;
-    color: PieceColor;
     constructor(board: Board, point: Point) {
-        super(point, board);
+        super(point, board, PieceColor.BLACK);
         this.elem.src = './img/pieces/black-jiang.png';
-        this.piece_role = PieceRole.General;
-        this.color = PieceColor.BLACK;
         this.board = board;
-        this.point.setPiece(this) //sets the piece to the point.
+        this.point.setPiece(this); //sets the piece to the point.
     }
 
 

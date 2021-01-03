@@ -1,9 +1,9 @@
-import { Board } from "./board";
+import { Board } from "./Boards";
 import { Point,PlayerColor } from "./frontend-utils";
 import { BlackGeneral, RedGeneral } from "./General";
 class Game {
 
-    private currentPlayer!: PlayerColor ;
+    private currentPlayer: PlayerColor = PlayerColor.red;
 
     private board: Board;
     // Stub constructor to be a placeholder
@@ -12,12 +12,12 @@ class Game {
     }
 
     // gets the public player
-    public getCurrentPlayer(){
-        return this.currentPlayer
+    public getCurrentPlayer(): PlayerColor {
+        return this.currentPlayer;
     }
 
     //switch current player to the other player
-    public alternatePlayer(){
+    public alternatePlayer(): void {
         if(this.currentPlayer === PlayerColor.red)
             this.currentPlayer = PlayerColor.black;
         else
@@ -25,7 +25,7 @@ class Game {
     }
 
 
-    render() {
+    public render(): void {
         this.board.render();
 
         let red_shuai = new RedGeneral(this.board, this.board.getPointFromCoordinates(5,2)); //new Point() doesn't make sense.
@@ -39,4 +39,6 @@ class Game {
 
 
 const game = new Game();
+
 game.render();
+

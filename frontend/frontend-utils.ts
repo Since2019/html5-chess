@@ -1,5 +1,5 @@
 import Log from "../src/Util";
-import { Board } from "./board";
+import { Board } from "./Boards";
 import {Piece} from './ChessPiece'
 
 // used in class Piece
@@ -77,22 +77,6 @@ class Point {
 
         // A dummy element for initialization first and then update in method
         this.elem = document.createElement('div');
-        // this.elem = document.createElement('div');
-        // let grid_div = this.elem
-
-        
-
-        // /* code previously found in board initialization, with div_2d_array
-        //    now divs are bound to specific points.
-        // */ 
-        // grid_div.id = `grid_div_${col}_${row}`;
-        // $(`#${grid_div.id}`).remove(); //must remove the original one, in order to make it unique.
-        // grid_div.className = 'className_grid_div'
-        // $(grid_div).css('grid-column', col);
-        // $(grid_div).css('grid-row', row);
-        // $('#board').append(grid_div);
-
-        // this.board.intersections[col-1][row-1] = this; //replace the original point with the newly updated point.
         this.updateElement(col, row);
     }
 
@@ -110,10 +94,7 @@ class Point {
         $(`#${grid_div.id}`).remove(); //must remove the original one, in order to make it unique.
         grid_div.className = 'className_grid_div';
         $(grid_div).css('grid-column', newCol);
-        $(grid_div).css('grid-row', newRow);
-
-        Log.trace(grid_div)
-        
+        $(grid_div).css('grid-row', newRow);        
         $('#board').append(grid_div);
 
         // this.board.intersections[newCol-1][newRow-1] = this; //replace the original point with the newly updated point.
@@ -124,9 +105,39 @@ class Point {
 const SIDE_LENGTH: number = 75;
 const SIDE_LENGTH_vw: number = 70 / (getZoomedRatio() * 0.01);
 
+
+function fitSize() {
+    let board = $('#board')
+
+    $.when()
+        //fiting size for the board
+        .then(() => {
+            board.css('width', board.css('height'))
+            board.css('height', board.css('width'))
+
+        })
+        //fiting sizes for the grids
+        .then(() => {
+            $('.className_grid_div').css('width', parseInt(board.css('width')) / 11)
+            $('.className_grid_div').css('height', parseInt(board.css('height')) / 10)
+            $('.className_grid_div').css('z-index', 10)
+            $('.className_grid_div').css('margin', 0)
+        })
+        //fiting sizes for the pieces
+        .then(() => {
+            $('.pieces').css('width', parseInt($('.className_grid_div').css('width')) )
+            $('.pieces').css('height', parseInt($('.className_grid_div').css('width')) )
+        })
+        .then(() => {
+            board.css('max-width', board.css('height'));
+        })
+
+}
+
 export {
     getZoomedRatio,
     getChessBoardSize,
+    fitSize,
     Point,
     SIDE_LENGTH,
     SIDE_LENGTH_vw,
