@@ -53,56 +53,57 @@ class RedChariot extends Chariot {
         this.board = board;
 
         this.point.setPiece(this); //sets the piece to the point.
-        
 
 
-        $(this.elem).on('click',()=>{  
-            Log.trace("invoked this.checkColumns()")
-            Log.trace(this.checkColumns())
+
+        $(this.elem).on('click', () => {
+            // Log.trace("invoked this.checkColumns()")
+            Log.trace(this.checkColumn())
+            Log.trace(this.checkRow())
         });
 
     }
 
     //returns the grids that General can go in a column
-    private checkColumns():Point[] {
-        Log.trace("checkColumns")
+    private checkColumn(): Point[] {
+        Log.trace("in checkColumns")
         let Y_coor = this.point.y_coor
         let X_coor = this.point.x_coor
 
         let piece_col = this.board.getColFromXCoordinate(this.point.x_coor); //Checks the points in this column
-        let piece_row  = this.board.getRowFromYCoordinate(this.point.y_coor);//Checks the points in this row
+        let piece_row = this.board.getRowFromYCoordinate(this.point.y_coor);//Checks the points in this row
 
-        let start_flag:number=0;
-        let end_flag:number=0;
-        
+        let start_flag: number = 0; //row 1
+        let end_flag: number = 9;   //row 10 
+
         //trasversing the column (Point [])
-        for(let index in piece_col){
+        for (let index in piece_col) {
             //if the piece in that point is not null, do some checking
-            if(piece_col[index].piece != null){
+            if (piece_col[index].piece != null) {
                 //checks the indices that are smaller than the point
-                if(parseInt(index) < Y_coor-1){
+                if (parseInt(index) < Y_coor - 1) {
                     //if the point holds a friendly piece:
-                    if(piece_col[index].piece.color == PieceColor.RED)
+                    if (piece_col[index].piece.color == PieceColor.RED)
                         start_flag = parseInt(index) + 1; // the index is not added, but the next one is.
                     else
                         start_flag = parseInt(index)
 
-                    if(start_flag === Y_coor - 1) // if a friendly piece is blocking right abovbe it
+                    if (start_flag === Y_coor - 1) // if a friendly piece is blocking right abovbe it
                         start_flag = Y_coor       // start_flag is set to the next row 
 
                     Log.trace("start_flag:" + start_flag)
                 }
                 //checks those larger than that point
-                else if(parseInt(index) > Y_coor-1){
+                else if (parseInt(index) > Y_coor - 1) {
                     //if the point holds a friendly piece:
-                    if(piece_col[index].piece.color == PieceColor.RED)
-                        end_flag = parseInt(index) - 1 ; // the index is not added, but the last one is.
+                    if (piece_col[index].piece.color == PieceColor.RED)
+                        end_flag = parseInt(index) - 1; // the index is not added, but the last one is.
                     else
-                        end_flag = parseInt(index)  
+                        end_flag = parseInt(index)
 
-                        
-                    if(end_flag === Y_coor - 1) // if a friendly piece is blocking right below it
-                    start_flag = Y_coor - 2;  // start_flag is set to the next row 
+
+                    if (end_flag === Y_coor - 1) // if a friendly piece is blocking right below it
+                        end_flag = Y_coor - 2;  // start_flag is set to the next row 
 
                     Log.trace("end_flag:" + end_flag)
                     break;
@@ -110,57 +111,114 @@ class RedChariot extends Chariot {
 
             }
         }
-        
+
         // an array to store all the movable points in a column
-        let movable_points_in_this_column:Point[]= [];
+        let movable_points_in_this_column: Point[] = [];
         $.when(movable_points_in_this_column)
-        .then(()=>{
-            
-            
-            for(let i = start_flag; i <= end_flag; i++){
-                //If the coordinate is the one that piece is in
-                //It does not push it into the array.
-                if(Y_coor-1 === i ){
-                    // Log.trace('skip');
-                    continue
-                    
+            .then(() => {
+
+
+                for (let i = start_flag; i <= end_flag; i++) {
+                    //If the coordinate is the one that piece is in
+                    //It does not push it into the array.
+                    if (Y_coor - 1 === i) {
+                        // Log.trace('skip');
+                        continue
+                    }
+                    movable_points_in_this_column.push(piece_col[i]);
                 }
-                movable_points_in_this_column.push(piece_col[i]);
-            }
- 
-        })
-        .then(()=>{
 
-            Log.trace(movable_points_in_this_column)
-            return  movable_points_in_this_column
-        })
+            })
+            .then(() => {
+                // Log.trace(movable_points_in_this_column)
+                return movable_points_in_this_column
+            })
 
 
-        
-        return  movable_points_in_this_column
+
+        return movable_points_in_this_column
         // console.log(this.board.getColFromXCoordinate(X_coor));
     }
 
     //returns the grids that the General can go in a row
-    private checkRows() {
-        let Y_coor = this.point.y_coor;
-        let X_coor = this.point.x_coor;
+    private checkRow(): Point[] {
+        Log.trace("in checkRows()")
+        // let Y_coor = this.point.y_coor
+        let X_coor = this.point.x_coor
 
-        let front = this.board.getPointFromCoordinates(X_coor,Y_coor - 1);
-        let back  = this.board.getPointFromCoordinates(X_coor,Y_coor + 1); //out of bound err
+        // let piece_col = this.board.getColFromXCoordinate(this.point.x_coor); //Checks the points in this column
+        let piece_row = this.board.getRowFromYCoordinate(this.point.y_coor);//Checks the points in this row
 
-        if(front){
+        let start_flag: number = 0;
+        let end_flag: number = 8;
 
-            console.log('front.getPiece()');
-            console.log(front.getPiece());
+        //trasversing the column (Point [])
+        for (let index in piece_row) {
+            console.log(index);
+            //if the piece in that point is not null, do some checking
+            if (piece_row[index].piece != null) {
+                //checks the indices that are smaller than the point
+                if (parseInt(index) < X_coor - 1) {
+                    //if the point holds a friendly piece:
+                    if (piece_row[index].piece.color == PieceColor.RED)
+                        start_flag = parseInt(index) + 1; // the index is not added, but the next one is.
+                    else
+                        start_flag = parseInt(index)
+
+                    if (start_flag === X_coor - 1) // if a friendly piece is blocking right abovbe it
+                        start_flag = X_coor       // start_flag is set to the next row 
+
+                    Log.trace("start_flag:" + start_flag)
+                }
+                //checks those larger than that point
+                else if (parseInt(index) > X_coor - 1) {
+                    //if the point holds a friendly piece:
+                    if (piece_row[index].piece.color == PieceColor.RED)
+                        end_flag = parseInt(index) - 1; // the index is not added, but the last one is.
+                    else
+                        end_flag = parseInt(index)
+
+
+                    if (end_flag === X_coor - 1) // if a friendly piece is blocking right below it
+                        end_flag = X_coor - 2;  // start_flag is set to the next row 
+
+                    Log.trace("end_flag:" + end_flag)
+                    break;
+                }
+
+            }
         }
 
-        console.log(this.board.getColFromXCoordinate(X_coor));
+        // an array to store all the movable points in a column
+        let movable_points_in_this_row: Point[] = [];
+        $.when(movable_points_in_this_row)
+            .then(() => {
+
+                console.log('start_flag:' + start_flag)
+                console.log('end_flag:' + end_flag) 
+
+                for (let i = start_flag; i <= end_flag; i++) {
+                    //If the coordinate is the one that piece is in
+                    //It does not push it into the array.
+                    if (X_coor - 1 === i) {
+                        // Log.trace('skip');
+                        continue
+                    }
+                    movable_points_in_this_row.push(piece_row[i]);
+                }
+
+            })
+            .then(() => {
+                // Log.trace(movable_points_in_this_row)
+                return movable_points_in_this_row
+            })
+
+        return movable_points_in_this_row
 
     }
 
     protected isValidChariotPosition(x: number, y: number) {
-        return (y >= 8) && (y <= 10) && (x >= 4) && (x <= 6) && !(x>0 && y>0);
+        return (y >= 8) && (y <= 10) && (x >= 4) && (x <= 6) && !(x > 0 && y > 0);
     }
 }
 
@@ -175,7 +233,7 @@ class BlackChariot extends Chariot {
     }
 
     protected isValidChariotPosition(x: number, y: number) {
-        return (y >= 0) && (y <= 10) && (x >= 0) && (x <= 9) && !(x>0 && y>0);
+        return (y >= 0) && (y <= 10) && (x >= 0) && (x <= 9) && !(x > 0 && y > 0);
     }
 
 
