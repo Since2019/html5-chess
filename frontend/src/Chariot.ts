@@ -58,14 +58,72 @@ class RedChariot extends Chariot {
 
         $(this.elem).on('click', () => {
             // Log.trace("invoked this.checkColumns()")
-            Log.trace(this.checkColumn())
-            Log.trace(this.checkRow())
+            // Log.trace(this.checkColumn())
+            // Log.trace(this.checkRow())
+            
+            this.movablePoints().then((movable_grids)=>{
+                Log.trace('movable_grids in the listener')
+                Log.trace(movable_grids)
+                
+                // let movable_arr:Point[] = movable_grids
+                // for(let grid of movable_arr){
+
+                // }
+
+            })
+
+
+
         });
 
     }
 
+    private async movablePoints() {
+        // Log.trace('inside this.movablePoints()')
+
+
+        let moveable_points: Point[] = [];
+
+
+        let async = $.when(moveable_points).then(() => {
+
+            this.checkColumn().then((col_movable) => {
+                Log.trace('col_movable')
+                Log.trace(col_movable)
+                moveable_points = moveable_points.concat(col_movable)
+            })
+
+        })
+        .then(()=>{
+            
+            this.checkRow().then((row_movable) => {
+           
+                Log.trace('row_movable')
+                Log.trace(row_movable)    
+                moveable_points = moveable_points.concat(row_movable)
+                // Log.trace(moveable_points)
+            })
+        })
+
+        .then(()=>{
+            return moveable_points
+        })
+
+        
+
+
+        await async
+
+
+
+        // Log.trace('moveable_points is empty here !!!!')
+        // Log.trace(moveable_points)
+        return moveable_points
+
+    }
+
     //returns the grids that General can go in a column
-    private checkColumn(): Point[] {
+    private async checkColumn() {
         Log.trace("in checkColumns")
         let Y_coor = this.point.y_coor
         let X_coor = this.point.x_coor
@@ -91,7 +149,7 @@ class RedChariot extends Chariot {
                     if (start_flag === Y_coor - 1) // if a friendly piece is blocking right abovbe it
                         start_flag = Y_coor       // start_flag is set to the next row 
 
-                    Log.trace("start_flag:" + start_flag)
+                    // Log.trace("start_flag:" + start_flag)
                 }
                 //checks those larger than that point
                 else if (parseInt(index) > Y_coor - 1) {
@@ -105,7 +163,7 @@ class RedChariot extends Chariot {
                     if (end_flag === Y_coor - 1) // if a friendly piece is blocking right below it
                         end_flag = Y_coor - 2;  // start_flag is set to the next row 
 
-                    Log.trace("end_flag:" + end_flag)
+                    // Log.trace("end_flag:" + end_flag)
                     break;
                 }
 
@@ -114,7 +172,7 @@ class RedChariot extends Chariot {
 
         // an array to store all the movable points in a column
         let movable_points_in_this_column: Point[] = [];
-        $.when(movable_points_in_this_column)
+        let async = $.when(movable_points_in_this_column)
             .then(() => {
 
 
@@ -134,6 +192,7 @@ class RedChariot extends Chariot {
                 return movable_points_in_this_column
             })
 
+        await async;
 
 
         return movable_points_in_this_column
@@ -141,7 +200,7 @@ class RedChariot extends Chariot {
     }
 
     //returns the grids that the General can go in a row
-    private checkRow(): Point[] {
+    private async checkRow() {
         Log.trace("in checkRows()")
         // let Y_coor = this.point.y_coor
         let X_coor = this.point.x_coor
@@ -154,7 +213,7 @@ class RedChariot extends Chariot {
 
         //trasversing the column (Point [])
         for (let index in piece_row) {
-            console.log(index);
+            
             //if the piece in that point is not null, do some checking
             if (piece_row[index].piece != null) {
                 //checks the indices that are smaller than the point
@@ -191,11 +250,11 @@ class RedChariot extends Chariot {
 
         // an array to store all the movable points in a column
         let movable_points_in_this_row: Point[] = [];
-        $.when(movable_points_in_this_row)
+        let async = $.when(movable_points_in_this_row)
             .then(() => {
 
-                console.log('start_flag:' + start_flag)
-                console.log('end_flag:' + end_flag) 
+                // console.log('start_flag:' + start_flag)
+                // console.log('end_flag:' + end_flag)
 
                 for (let i = start_flag; i <= end_flag; i++) {
                     //If the coordinate is the one that piece is in
@@ -213,7 +272,9 @@ class RedChariot extends Chariot {
                 return movable_points_in_this_row
             })
 
-        return movable_points_in_this_row
+        await async
+
+        return async
 
     }
 
