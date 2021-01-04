@@ -57,14 +57,14 @@ class RedChariot extends Chariot {
 
 
         $(this.elem).on('click',()=>{  
-            
-            this.checkColumns();
+            Log.trace("invoked this.checkColumns()")
+            Log.trace(this.checkColumns())
         });
 
     }
 
     //returns the grids that General can go in a column
-    private checkColumns() {
+    private checkColumns():Point[] {
         Log.trace("checkColumns")
         let Y_coor = this.point.y_coor
         let X_coor = this.point.x_coor
@@ -110,13 +110,16 @@ class RedChariot extends Chariot {
 
             }
         }
-
+        
+        // an array to store all the movable points in a column
         let movable_points_in_this_column:Point[]= [];
         $.when(movable_points_in_this_column)
         .then(()=>{
             
+            
             for(let i = start_flag; i <= end_flag; i++){
-                
+                //If the coordinate is the one that piece is in
+                //It does not push it into the array.
                 if(Y_coor-1 === i ){
                     // Log.trace('skip');
                     continue
@@ -127,22 +130,25 @@ class RedChariot extends Chariot {
  
         })
         .then(()=>{
+
             Log.trace(movable_points_in_this_column)
+            return  movable_points_in_this_column
         })
 
 
         
-
+        return  movable_points_in_this_column
         // console.log(this.board.getColFromXCoordinate(X_coor));
     }
 
-    //returns the grids that General can go in a row
+    //returns the grids that the General can go in a row
     private checkRows() {
         let Y_coor = this.point.y_coor;
         let X_coor = this.point.x_coor;
 
         let front = this.board.getPointFromCoordinates(X_coor,Y_coor - 1);
         let back  = this.board.getPointFromCoordinates(X_coor,Y_coor + 1); //out of bound err
+
         if(front){
 
             console.log('front.getPiece()');
