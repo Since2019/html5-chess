@@ -84,13 +84,32 @@ abstract class Piece {
      * @param point Check if a point has a piece with the same side
      * 
      */
-    protected checkSameColorPiece(point: Point): boolean {
+    protected checkSameColorPieceInPoint(point: Point): boolean {
         const piece = point.getPiece();
         if (!piece) {
             return false;
         }
 
         return piece.getColor() === this.color;
+    }
+
+
+        /**
+     * @param point Check if a point has a piece with the same side
+     * 
+     */
+    protected isFriendly(piece:Piece): boolean {
+        if (!piece) {
+            return false;
+        }
+        return piece.getColor() === this.color;
+    }
+
+    protected isEnemy(piece:Piece): boolean {
+        if (!piece) {
+            return false;
+        }
+        return piece.getColor() != this.color;
     }
 
     private static adjustResize: () => void = () => {
