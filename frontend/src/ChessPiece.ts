@@ -56,13 +56,13 @@ abstract class Piece {
 
 
         $(window).on('mousedown',(e)=>{
-            e.preventDefault();  //get rid of non-game experience
+            e.preventDefault(); //get rid of non-game experience (selecting pictures and stuff)
         })
 
         $(this.elem).on('click', (e) => {
             e.preventDefault(); 
 
-            //1. clearing all the background first:
+            //1. clearing all the colored background first:
             $('.className_grid_div').css('background','rgba(3, 181, 252,0.0)')
 
        
@@ -78,10 +78,8 @@ abstract class Piece {
             //3. attach another listener which listens to the next click:
             setTimeout(() => {
                 $('.className_grid_div').on('click',(e)=>{
-                    // console.log('clicked!')
-                        
-                    $('.className_grid_div').unbind('click');
-                    $('.className_grid_div').css('background','rgba(3, 181, 252,0.0)')
+                    $('.className_grid_div').unbind('click');  // after clicking, we need to get rid of the listener
+                    $('.className_grid_div').css('background','rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
                 })
             }, 100);
             
