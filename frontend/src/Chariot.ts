@@ -93,9 +93,6 @@ class RedChariot extends Chariot {
                 moveable_points = moveable_points.concat(col_movable)
             })
 
-        })
-        .then(()=>{
-            
             this.checkRow().then((row_movable) => {
            
                 Log.trace('row_movable')
@@ -103,6 +100,11 @@ class RedChariot extends Chariot {
                 moveable_points = moveable_points.concat(row_movable)
                 // Log.trace(moveable_points)
             })
+
+        })
+        .then(()=>{
+            
+
         })
 
         .then(()=>{
@@ -274,7 +276,7 @@ class RedChariot extends Chariot {
 
         await async
 
-        return async
+        return movable_points_in_this_row
 
     }
 
