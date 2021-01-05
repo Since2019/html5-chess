@@ -1,3 +1,4 @@
+import Log from "../../src/Util";
 import { Board } from "./Boards";
 import { getZoomedRatio, getChessBoardSize, Point, SIDE_LENGTH } from "./frontend-utils";
 
@@ -52,6 +53,44 @@ abstract class Piece {
         this.elem = document.createElement("img");
         this.piece_role = role;
         this.color = color;
+
+
+        $(window).on('mousedown',(e)=>{
+            e.preventDefault();  //get rid of non-game experience
+        })
+
+        $(this.elem).on('click', (e) => {
+            e.preventDefault(); 
+
+            //1. clearing all the background first:
+            $('.className_grid_div').css('background','rgba(3, 181, 252,0.0)')
+
+       
+            let movable_points= []
+            movable_points = this.movablePoints();
+            console.log(movable_points)
+
+            //2. highlight all the movalbe positions
+            movable_points.forEach(point => {
+                $(point.elem).css('background','rgba(3, 181, 252,0.5')
+            });
+
+            //3. attach another listener which listens to the next click:
+            setTimeout(() => {
+                $('.className_grid_div').on('click',(e)=>{
+                    // console.log('clicked!')
+                        
+                    $('.className_grid_div').unbind('click');
+                    $('.className_grid_div').css('background','rgba(3, 181, 252,0.0)')
+                })
+            }, 100);
+            
+        })
+    }
+
+    public movablePoints():Point[]{
+        Log.trace('movable points of a piece')
+        return []
     }
 
     protected getElement(): HTMLImageElement {

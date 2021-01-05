@@ -35,7 +35,7 @@ abstract class General extends Piece {
 
         // We will add more logic for checking valid move later
         // Current check is only for a valid position and no same side piece
-        return !super.checkSameColorPiece(dest);
+        return !super.checkSameColorPieceInPoint(dest);
     }
 
 }

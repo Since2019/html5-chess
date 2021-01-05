@@ -98,7 +98,8 @@ class Point {
         $(`#${grid_div.id}`).remove(); //must remove the original one, in order to make it unique.
         grid_div.className = 'className_grid_div';
         $(grid_div).css('grid-column', newCol);
-        $(grid_div).css('grid-row', newRow);        
+        $(grid_div).css('grid-row', newRow); 
+               
         $('#board').append(grid_div);
 
         // this.board.intersections[newCol-1][newRow-1] = this; //replace the original point with the newly updated point.
@@ -116,8 +117,15 @@ function fitSize() {
     $.when()
         //fiting size for the board
         .then(() => {
+            console.log('background-size')
+            console.log(board.css('background-size'))
+            
             board.css('width', board.css('height'))
             board.css('height', board.css('width'))
+            // board.css('row-gap','0px')
+            board.css('column-gap','0px')
+            
+            console.log(board.css('row-gap'))
 
         })
         //fiting sizes for the grids
