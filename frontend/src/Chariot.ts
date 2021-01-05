@@ -231,11 +231,6 @@ class BlackChariot extends Chariot {
         this.elem.src = '../img/pieces/black-ju.png';
         this.board = board;
         this.point.setPiece(this); //sets the piece to the point.
-
-        $(this.elem).on('click', () => {
-            console.log("inside click BlackChariot listener")
-            console.log(this.movablePoints())
-        })
     }
 
 

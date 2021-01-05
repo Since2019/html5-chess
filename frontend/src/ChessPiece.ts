@@ -30,8 +30,9 @@ enum PieceRole {
 abstract class Piece {
 
     protected board: Board;
-    protected selected: boolean;
+
     protected active: boolean;
+    protected has_moved: boolean;
     protected side_length: number;
     protected ratio: number;
     protected point: Point;
@@ -40,12 +41,12 @@ abstract class Piece {
     protected color: PieceColor;
 
     protected elem: HTMLImageElement;
-
+    protected state:number;
 
 
     constructor(point: Point, board: Board, role: PieceRole, color: PieceColor) {
         this.point = point;
-        this.selected = false;
+        this.has_moved = false;
         this.active = false;
         this.ratio = 100;
         this.side_length = this.ratio * 0.01 * SIDE_LENGTH;
@@ -54,39 +55,97 @@ abstract class Piece {
         this.piece_role = role;
         this.color = color;
 
+        // 0 -> not selected
+        // 1 -> selected, not moved
+        // 2 -> moved, refesh state to 0
+        this.state = 0; 
 
-        $(window).on('mousedown',(e)=>{
+
+        $(window).on('mousedown', (e) => {
             e.preventDefault(); //get rid of non-game experience (selecting pictures and stuff)
         })
 
+        $(window).on('change', (e) => {
+            e.preventDefault(); //get rid of non-game experience (selecting pictures and stuff)
+            console.log('changed')
+        })
+
+
+        this.listenerManager()
+
+
+    
+    }
+
+    private listenerManager() {
+
+        
+        this.attachSelectPieceListener()
+        this.attachMoveToGridListener()
+        this.removeMoveToGridListener()
+
+    }
+
+    /** 
+     *  I. When the player clicks on a piece,
+     *  The listener invokes the method to determine movable grids,
+     *  then it highlights all the grids
+     */
+    private attachSelectPieceListener() {
         $(this.elem).on('click', (e) => {
-            e.preventDefault(); 
+            e.preventDefault();
 
-            //1. clearing all the colored background first:
-            $('.className_grid_div').css('background','rgba(3, 181, 252,0.0)')
+            // 1. clearing all the colored background first:
+            $('.className_grid_div').css('background', 'rgba(3, 181, 252,0.0)')
 
-       
-            let movable_points= []
+
+            // 2. highlight all the movalbe positions
+            let movable_points = []
             movable_points = this.movablePoints();
             console.log(movable_points)
 
-            //2. highlight all the movalbe positions
+            // 3. highlight all the movalbe positions
             movable_points.forEach(point => {
-                $(point.elem).css('background','rgba(3, 181, 252,0.5')
+                $(point.elem).css('background', 'rgba(3, 181, 252,0.5')
             });
 
-            //3. attach another listener which listens to the next click:
-            setTimeout(() => {
-                $('.className_grid_div').on('click',(e)=>{
-                    $('.className_grid_div').unbind('click');  // after clicking, we need to get rid of the listener
-                    $('.className_grid_div').css('background','rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
-                })
-            }, 100);
-            
+            this.active = true;
+
+
         })
     }
 
-    public movablePoints():Point[]{
+    /**
+     *  II. once the user has selected the piece,
+     *  a listener is attached to the grid to check 
+     *  which grid the user is moving to 
+     */
+    private attachMoveToGridListener() {
+        //3. attach another listener which listens to the next click:
+
+        $('.className_grid_div').on('click', (e) => {
+            console.log('clicked')
+            // $('.className_grid_div').unbind('click');  // after clicking, we need to get rid of the listener
+            $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
+        })
+
+    }
+
+    //upon finishing the listener, it removes the listener from the grid
+    private removeMoveToGridListener() {
+        //4. remove the click listener from the grids
+        $('.className_grid_div').on('click', (e) => {
+            console.log('clicked')
+            // $('.className_grid_div').unbind('click');  // after clicking, we need to get rid of the listener
+            $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
+        })
+
+    }
+
+
+
+
+    public movablePoints(): Point[] {
         Log.trace('movable points of a piece')
         return []
     }
@@ -108,7 +167,7 @@ abstract class Piece {
         this.point = point;
     }
 
-    
+
 
 
     /**
@@ -131,18 +190,18 @@ abstract class Piece {
     }
 
 
-        /**
-     * @param point Check if a point has a piece with the same side
-     * 
-     */
-    protected isFriendly(piece:Piece): boolean {
+    /**
+ * @param point Check if a point has a piece with the same side
+ * 
+ */
+    protected isFriendly(piece: Piece): boolean {
         if (!piece) {
             return false;
         }
         return piece.getColor() === this.color;
     }
 
-    protected isEnemy(piece:Piece): boolean {
+    protected isEnemy(piece: Piece): boolean {
         if (!piece) {
             return false;
         }
@@ -201,9 +260,9 @@ abstract class Piece {
         //add className for the HTML <img> of the piece - PieceColor
         $(this.elem).addClass(PieceColor[this.color].toString());
 
-        
+
         // $(window).on('resize',Piece.adjustResize);
-        
+
         // $(this.elem)
         //     .on('mousedown',function () {
         //         isDragging = false;
@@ -224,9 +283,9 @@ abstract class Piece {
         //     });
 
 
-        
+
         // TODO: click events:
-        
+
     }
 }
 
