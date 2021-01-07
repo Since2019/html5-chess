@@ -12,6 +12,8 @@ class Board {
 
     image?: HTMLImageElement;
 
+    active_piece?:Piece;
+
 
 
     constructor() {
@@ -21,7 +23,7 @@ class Board {
 
         //A.K.A points.
         this.intersections = new Array<Array<any>>();
-
+        
 
         for (let i = 0; i < 9; i++) {
             this.intersections[i] = [];

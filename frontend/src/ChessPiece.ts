@@ -81,8 +81,8 @@ abstract class Piece {
 
         
         this.attachSelectPieceListener()
-        this.attachMoveToGridListener()
-        this.removeMoveToGridListener()
+        // this.attachMoveToGridListener()
+        // this.removeMoveToGridListener()
 
     }
 
@@ -110,6 +110,11 @@ abstract class Piece {
             });
 
             this.active = true;
+            this.board.active_piece = this;
+
+
+            this.attachMoveToGridListener() 
+
 
 
         })
@@ -124,19 +129,32 @@ abstract class Piece {
         //3. attach another listener which listens to the next click:
 
         $('.className_grid_div').on('click', (e) => {
-            console.log('clicked')
+           
+            //if the piece is selected
+            if(this.board.active_piece){
+                console.log('the piece is selected?' + this.active)
+                console.log('clicked')
+            }
+            else{
+                console.log('the piece is selected?' + this.active)
+                console.log('doing nothing')
+                $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
+
+            }
+            this.removeMoveToGridListener()
             // $('.className_grid_div').unbind('click');  // after clicking, we need to get rid of the listener
-            $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
+            // $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
         })
 
     }
 
     //upon finishing the listener, it removes the listener from the grid
     private removeMoveToGridListener() {
+        this.board.active_piece = null as any;
         //4. remove the click listener from the grids
         $('.className_grid_div').on('click', (e) => {
             console.log('clicked')
-            // $('.className_grid_div').unbind('click');  // after clicking, we need to get rid of the listener
+            $('.className_grid_div').unbind('click');  // after clicking, we need to get rid of the listener
             $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
         })
 
