@@ -10,10 +10,11 @@ enum PieceColor {
 
 // used in class Game, 
 enum PlayerColor {
-    'black',
-    'red'
+    'BLACK',
+    'RED'
 }
 
+// 得到当前的放大倍率
 function getZoomedRatio() {
     let ratio = 0;
 
@@ -32,6 +33,7 @@ function getZoomedRatio() {
 }
 
 
+// 得到棋盘的当前大小
 function getChessBoardSize() {
     Log.trace('chessboard size:');
     let chessboard = $('#id_chessboard');
@@ -47,11 +49,13 @@ function getChessBoardSize() {
 // The vertical lines are known as files (Chinese: 路; pinyin: lù; "road")
 // the horizontal lines are known as ranks 线 xiàn; "line"
 class Point {
+    // 坐标
     x_coor: number;
     y_coor: number;
+
     elem : HTMLElement; // HTML <div> elements are bound with each point
 
-    board! : Board;
+    board! : Board;     // 棋子所属的棋盘
     
     piece? : Piece|null; // Points can hold pieces 
 
@@ -84,7 +88,7 @@ class Point {
         this.updateElement(col, row);
     }
 
-    
+    // 更新渲染
     private updateElement(newCol: number, newRow: number): void {
         let grid_div = this.elem;
 
@@ -110,11 +114,14 @@ class Point {
 const SIDE_LENGTH: number = 75;
 const SIDE_LENGTH_vw: number = 70 / (getZoomedRatio() * 0.01);
 
-
+/**
+ * 固定大小用的function
+ * 
+*/
 function fitSize() {
     let board = $('#board')
 
-    $.when()
+    $.when(board)
         //fiting size for the board
         .then(() => {
             console.log('background-size')

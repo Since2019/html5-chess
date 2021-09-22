@@ -1,6 +1,7 @@
 import { fitSize, getZoomedRatio, Point, SIDE_LENGTH } from "./frontend-utils";
 import { Piece, PieceRole } from './ChessPiece'
 
+// 棋盘
 class Board {
 
     intersections: Array<Array<any>>;
@@ -14,6 +15,7 @@ class Board {
 
     active_piece?:Piece;
 
+    next_coordinate: number[];
 
 
     constructor() {
@@ -21,9 +23,11 @@ class Board {
         this.ratio = 100; //default ratio 100%
         this.side_length = this.ratio * 0.01 * SIDE_LENGTH;
 
+        // 玩家选择的下一个位置
+        this.next_coordinate = [-1 , -1]
+
         //A.K.A points.
         this.intersections = new Array<Array<any>>();
-        
 
         for (let i = 0; i < 9; i++) {
             this.intersections[i] = [];
@@ -60,6 +64,19 @@ class Board {
         if (!this.validateXCoordinate(x_coor) || !this.validateYCoordinate(y_coor))
             return null;
         return this.intersections[x_coor - 1][y_coor - 1];
+    }
+
+    // 从HTML Element的ID中获取坐标
+    public getCoordinateFromElemId(id:string){
+        // grid_div_5_6
+        console.log(id)
+        let split_arr = id.split('_');
+        
+        let coor_x =  split_arr[2];
+        let coor_y =  split_arr[3];
+
+        return [parseInt(coor_x) ,parseInt(coor_y)]
+
     }
 
     // Check for valid x coordinate

@@ -3,57 +3,87 @@ import { Board } from "./Boards";
 import { RedChariot,BlackChariot } from "./Chariot";
 import { Point,PlayerColor } from "./frontend-utils";
 import { BlackGeneral, RedGeneral } from "./General";
+
+
 class Game {
+    private currentPlayer: PlayerColor = PlayerColor.RED; // 先走的一方是红方  Player RED goes first.
 
-    private currentPlayer: PlayerColor = PlayerColor.red;
-
-    private board: Board;
+    private board: Board; // 唯一的棋盘   The only Chessborad of the Game
+    
     // Stub constructor to be a placeholder
+    // 
     constructor() {
         this.board = new Board();
     }
 
     // gets the public player
+    // 获取当前玩家
     public getCurrentPlayer(): PlayerColor {
         return this.currentPlayer;
     }
 
-    //switch current player to the other player
+    //Switch current player to the other player
+    //到另一个人下
     public alternatePlayer(): void {
-        if(this.currentPlayer === PlayerColor.red)
-            this.currentPlayer = PlayerColor.black;
+        if(this.currentPlayer === PlayerColor.RED)
+            this.currentPlayer = PlayerColor.BLACK;
         else
-            this.currentPlayer = PlayerColor.red;
+            this.currentPlayer = PlayerColor.RED;
     }
 
-
+    
     public render(): void {
+
         this.board.render();
 
         
+
+        // ============================= 棋子初始化 Initialization of ChessPieces =====================================================
+        //                               先横坐标后纵坐标
+        //                              1 2 3 4 5 6 7 8 9
+        //                              2
+        //                              3
+        //                              4
+        //                              5
+
+        //                              6
+        //                              7
+        //                              8
+        //                              9
+        //                              10
+                 
+        // 将/帅   Generals:
         let red_shuai = new RedGeneral(this.board, this.board.getPointFromCoordinates(5,10)); //new Point() doesn't make sense.
         red_shuai.render();
 
         let black_jiang = new BlackGeneral(this.board, this.board.getPointFromCoordinates(5,1)); // using getPoint from coor now
         black_jiang.render();
 
+        // 红车    Red Chariots
+        let red_ju_one = new RedChariot(this.board, this.board.getPointFromCoordinates(1,10));
+        let red_ju_two = new RedChariot(this.board, this.board.getPointFromCoordinates(9,10));
 
-        let red_ju_one = new RedChariot(this.board, this.board.getPointFromCoordinates(1,1));
-        let red_ju_two = new RedChariot(this.board, this.board.getPointFromCoordinates(9,1));
+        // let red_ju_test = new RedChariot(this.board, this.board.getPointFromCoordinates(9,3));
+        // let red_ju_test2 = new RedChariot(this.board, this.board.getPointFromCoordinates(9,4));
 
-        let red_ju_test = new RedChariot(this.board, this.board.getPointFromCoordinates(9,3));
-        let red_ju_test2 = new RedChariot(this.board, this.board.getPointFromCoordinates(9,4));
+        // 黑车    Black Chariots
+        let black_ju_one = new BlackChariot(this.board, this.board.getPointFromCoordinates(1,1));
+        let black_ju_two = new BlackChariot(this.board, this.board.getPointFromCoordinates(9,1));
 
-        let black_ju_one = new BlackChariot(this.board, this.board.getPointFromCoordinates(1,10));
-        let black_ju_two = new BlackChariot(this.board, this.board.getPointFromCoordinates(9,10));
+        // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 棋子初始化 Initialization of ChessPieces ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+
+        // 红车
         red_ju_one.render();
         red_ju_two.render();
+        
+        // 黑车
         black_ju_one.render();
         black_ju_two.render();
 
-        red_ju_test.render();
-        red_ju_test2.render();
+        
+        // red_ju_test.render();
+        // red_ju_test2.render();
 
     }
 }
