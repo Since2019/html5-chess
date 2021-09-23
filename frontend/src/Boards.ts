@@ -15,7 +15,7 @@ class Board {
 
     active_piece?:Piece;
 
-    next_coordinate: number[];
+    target_coordinate: number[];
 
 
     constructor() {
@@ -24,7 +24,7 @@ class Board {
         this.side_length = this.ratio * 0.01 * SIDE_LENGTH;
 
         // 玩家选择的下一个位置
-        this.next_coordinate = [-1 , -1]
+        this.target_coordinate = [-1 , -1]
 
         //A.K.A points.
         this.intersections = new Array<Array<any>>();

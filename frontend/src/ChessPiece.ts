@@ -55,9 +55,11 @@ abstract class Piece {
         this.ratio = 100;                                    // TODO:放大倍率 ?
         this.side_length = this.ratio * 0.01 * SIDE_LENGTH;  // 棋子的边长
         this.board = board;
-        this.elem = document.createElement("img");
         this.piece_role = role;
         this.color = color;
+
+        this.elem = document.createElement("img");
+
 
         // 0 -> not selected
         // 1 -> selected, not moved
@@ -96,29 +98,37 @@ abstract class Piece {
      *  then it highlights all the grids
      */
     private attachSelectPieceListener() {
+        // 点击了棋子的img之后
         $(this.elem).on('click', (e) => {
+            console.log('点击了棋子：')
+            console.log(this.elem)
+
             e.preventDefault();
 
             // 1. clearing all the colored background first:
             $('.className_grid_div').css('background', 'rgba(3, 181, 252,0.0)')
 
 
-            // 2. highlight all the movalbe positions
+            // 2. put all the movalbe positions into an array
             let movable_points = []
             movable_points = this.movablePoints();
-            console.log(movable_points)
+            // console.log(movable_points)
 
             // 3. highlight all the movalbe positions
             movable_points.forEach(point => {
                 $(point.elem).css('background', 'rgba(3, 181, 252,0.5')
             });
 
+            // 设置自己被选中，告知棋盘选中的是自己
             this.active = true;
             this.board.active_piece = this;
 
 
             // TODO:找到ListenerManager的问题所在，并且把这个移动到那里面。
-            this.attachMoveToGridListener() 
+            // 下一步是Move To Grid
+            setTimeout(() => {
+                this.attachMoveToGridListener() 
+            }, 100);
 
 
         })
@@ -136,7 +146,7 @@ abstract class Piece {
         //3. attach another listener which listens to the next click:
 
         $('.className_grid_div').on('click', (e) => {
-            console.log(`clicked on`)
+            console.log(`点击了格子:`)
             console.log(e.target)
             console.log(e.target.id)
             console.log(e.target.className)
@@ -146,21 +156,34 @@ abstract class Piece {
                 console.log('the piece is selected?' + this.active);
                 console.log(`active piece:`);
                 console.log(this.board.active_piece);
-                console.log(this.board.next_coordinate )
+                console.log(this.board.target_coordinate )
+
+                // 点击了坐标：
+                this.board.target_coordinate  = this.board.getCoordinateFromElemId(e.target.id);
                 
                 // 如果不是 [-1, -1], 说明玩家选择了某个格子
-                if(this.board.next_coordinate[0] != -1 && this.board.next_coordinate[1] != -1 ) {
-                    console.log(this.board.next_coordinate );
-                    let next_x_coor = this.board.next_coordinate[0]
-                    let next_y_coor = this.board.next_coordinate[1]
-                    // 移动到下一个
-                    this.board.active_piece.moveToPoint(this.board.getPointFromCoordinates(next_x_coor, next_y_coor));
+                if(this.board.target_coordinate[0] != -1 && this.board.target_coordinate[1] != -1 ) {
+                    console.log(this.board.target_coordinate );
+                    let next_x_coor = this.board.target_coordinate[0]
+                    let next_y_coor = this.board.target_coordinate[1]
                     
+                    
+                    // 棋子属性、Element移动到目标点
+                    this.board.active_piece.moveToPoint(this.board.getPointFromCoordinates(next_x_coor, next_y_coor));
+                    $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
+
+
+                    // // 棋子Element移动到目标点
+                    // this.elem   
+
+
+
                     // 重新归[-1, -1]
-                    this.board.next_coordinate = [-1,-1]
+                    this.board.target_coordinate = [-1,-1]
                 }
                     
             }
+            // 还没有选中棋子
             else{
                 console.log('the piece is selected?' + this.active);
                 console.log('doing nothing');  
@@ -168,7 +191,6 @@ abstract class Piece {
                 
                 // 既然已经确认了要走到那里，就要移动到指定的格子。
 
-                this.board.next_coordinate  = this.board.getCoordinateFromElemId(e.target.id);
 
                 $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
 
@@ -214,7 +236,14 @@ abstract class Piece {
 
     //sets the point of the piece
     public moveToPoint(point: Point) {
+
+        // 删除原来的元素
+        this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.remove(this.elem)  
+        
+        // 更换到新的点
         this.point = point;
+        this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.append(this.elem)  
+
     }
 
 
@@ -300,6 +329,8 @@ abstract class Piece {
             $("#id_chessboard").css("width", $("#board").css('width'))
         }
     }
+
+
 
     render() {
         this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.append(this.elem) // encapsulates the next line of code;
