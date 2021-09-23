@@ -1,3 +1,4 @@
+import { Console } from "console";
 import Log from "../../src/Util";
 import { Board } from "./Boards";
 import { getZoomedRatio, getChessBoardSize, Point, SIDE_LENGTH } from "./frontend-utils";
@@ -35,7 +36,7 @@ abstract class Piece {
     protected board: Board; // 棋盘ptr
 
     protected active: boolean; // 是否处于被选中状态 
-    protected has_moved: boolean; // 已经移动了？
+    // protected has_moved: boolean; // 已经移动了？
     protected side_length: number; // 棋子边长
     protected ratio: number;       //
     protected point: Point;        // 现在所处的位置
@@ -48,17 +49,22 @@ abstract class Piece {
 
 
     constructor(point: Point, board: Board, role: PieceRole, color: PieceColor) {
-        // 初始状态 
+        // 与移动相关      
         this.point = point;                                  // 被置于某个点
-        this.has_moved = false;                              // 是否已经被移动
+        // this.has_moved = false;                              // 是否已经被移动
         this.active = false;                                 // 是否被选中
-        this.ratio = 100;                                    // TODO:放大倍率 ?
-        this.side_length = this.ratio * 0.01 * SIDE_LENGTH;  // 棋子的边长
+
+
+        // 与棋子属性相关
         this.board = board;
         this.piece_role = role;
         this.color = color;
 
         this.elem = document.createElement("img");
+
+        // 与棋子大小有关
+        this.ratio = 100;                                    // TODO:放大倍率 ?
+        this.side_length = this.ratio * 0.01 * SIDE_LENGTH;  // 棋子的边长
 
 
         // 0 -> not selected
@@ -142,14 +148,13 @@ abstract class Piece {
      *  选择了棋子之后 再选择移动到哪个格子
      */
     private attachMoveToGridListener() {
-
+        console.log(this.point);
         //3. attach another listener which listens to the next click:
 
         $('.className_grid_div').on('click', (e) => {
             console.log(`点击了格子:`)
             console.log(e.target)
-            console.log(e.target.id)
-            console.log(e.target.className)
+
 
             //if the piece is selected
             if(this.board.active_piece){
@@ -159,7 +164,11 @@ abstract class Piece {
                 console.log(this.board.target_coordinate )
 
                 // 点击了坐标：
+                console.log("点击了坐标:")
+                console.log(this.board.target_coordinate)
+
                 this.board.target_coordinate  = this.board.getCoordinateFromElemId(e.target.id);
+                console.log(this.board.target_coordinate)
                 
                 // 如果不是 [-1, -1], 说明玩家选择了某个格子
                 if(this.board.target_coordinate[0] != -1 && this.board.target_coordinate[1] != -1 ) {
@@ -178,13 +187,23 @@ abstract class Piece {
 
 
 
-                    // 重新归[-1, -1]
-                    this.board.target_coordinate = [-1,-1]
+                    
+                    this.board.target_coordinate = [-1,-1] // 重新归[-1, -1]
+                    // this.board.active_piece = null as any;   // 没有active棋子了
+                    this.active = false;                   // 棋子状态为不再选中
+
+                    console.log('the piece is selected?' + this.active);
+                    console.log(`active piece:`);
+                    console.log(this.board.active_piece);
+                    console.log(this.board.target_coordinate )
+    
                 }
                     
             }
+
             // 还没有选中棋子
             else{
+                console.log("还没有选择棋子......")
                 console.log('the piece is selected?' + this.active);
                 console.log('doing nothing');  
                 
@@ -195,6 +214,8 @@ abstract class Piece {
                 $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
 
             }
+
+
             this.removeMoveToGridListener()
             // $('.className_grid_div').unbind('click');  // HACK after clicking, we need to get rid of the listener
             // $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
@@ -206,11 +227,15 @@ abstract class Piece {
     private removeMoveToGridListener() {
         this.board.active_piece = null as any;
         //4. remove the click listener from the grids
-        $('.className_grid_div').on('click', (e) => {
-            console.log('clicked')
-            $('.className_grid_div').unbind('click');  // after clicking, we need to get rid of the listener
-            $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
-        })
+        console.log('已经点击了移动目标格,现在移除MoveToGridListener')
+        
+        $('.className_grid_div').off('click');  // after clicking, we need to get rid of the listener
+        $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
+
+
+        // $('.className_grid_div').on('click', (e) => {
+
+        // })
 
     }
 
@@ -238,12 +263,16 @@ abstract class Piece {
     public moveToPoint(point: Point) {
 
         // 删除原来的元素
-        this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.remove(this.elem)  
+        this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.remove(this.elem);  
         
         // 更换到新的点
         this.point = point;
-        this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.append(this.elem)  
+        this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.append(this.elem);
 
+        console.log(this.board.intersections);
+        console.log(this.point);
+        console.log(this.point.x_coor);
+        console.log(this.point.y_coor);
     }
 
 
@@ -298,8 +327,8 @@ abstract class Piece {
             $('.className_grid_div').css('height', SIDE_LENGTH * (getZoomedRatio() / 100))   // 更新棋盘的高度
             $('.pieces').css('width', SIDE_LENGTH * (getZoomedRatio() / 100))                // 更新棋子的高度
             $('.pieces').css('height', SIDE_LENGTH * (getZoomedRatio() / 100))               // 更新棋子的宽度
-            $("#board").css("width", $("#board").css('height'));
-
+            
+            $("#board").css("width", $("#board").css('height'));                            
             $("#id_chessboard").css("width", $("#board").css('width'))                       // 棋盘的宽度和高度统一 
 
 
