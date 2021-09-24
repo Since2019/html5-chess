@@ -118,10 +118,16 @@ abstract class Piece {
             movable_points = this.movablePoints();
             // console.log(movable_points)
 
+
             // 3. highlight all the movalbe positions
-            movable_points.forEach(point => {
-                $(point.elem).css('background', 'rgba(3, 181, 252,0.5')
-            });
+            // If the currentPlayer's color is the same as the piece color   
+            if( this.getCurrentPlayer() == this.color) {
+                movable_points.forEach(point => {
+                    $(point.elem).css('background', 'rgba(3, 181, 252,0.5')
+                });
+            }
+                
+
 
             // 设置自己被选中，告知棋盘选中的是自己
             this.active = true;
@@ -190,10 +196,11 @@ abstract class Piece {
                     this.board.target_coordinate = [-1,-1] // 重新归[-1, -1]
                     this.active = false;                   // 棋子状态为不再选中
 
-                    console.log('the piece is selected?' + this.active);
-                    console.log(`active piece:`);
-                    console.log(this.board.active_piece);
-                    console.log(this.board.target_coordinate )
+                    // TODO >>>>>  Remove if not needed anymore <<<<<<<<<
+                    // console.log('the piece is selected?' + this.active);
+                    // console.log(`active piece:`);
+                    // console.log(this.board.active_piece);
+                    // console.log(this.board.target_coordinate )
                     
                     this.board.game.alternatePlayer();     // 切换到下一个玩家
                 }
@@ -272,6 +279,9 @@ abstract class Piece {
         return this.color;
     }
 
+    public getCurrentPlayer():PlayerColor{
+        return this.board.game.getCurrentPlayer()
+    }
 
 
 
