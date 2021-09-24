@@ -1,11 +1,11 @@
 import Log from "../../src/Util";
 import { Board } from "./Boards";
-import { Piece, PieceRole, PieceColor } from "./ChessPiece";
+import { Piece, PieceRole, PlayerColor } from "./ChessPiece";
 import { Point } from "./frontend-utils";
 
 abstract class Chariot extends Piece {
 
-    constructor(point: Point, board: Board, color: PieceColor) {
+    constructor(point: Point, board: Board, color: PlayerColor) {
         super(point, board, PieceRole.General, color);
 
     }
@@ -48,7 +48,7 @@ class RedChariot extends Chariot {
 
     protected board: Board;
     constructor(board: Board, point: Point) {
-        super(point, board, PieceColor.RED);
+        super(point, board, PlayerColor.RED);
         this.elem.src = '../img/pieces/red-ju.png';
         this.board = board;
 
@@ -104,7 +104,7 @@ class RedChariot extends Chariot {
                 //checks the indices that are smaller than the point
                 if (parseInt(index) < Y_coor - 1) {
                     //if the point holds a friendly piece:
-                    if (piece_col[index].piece.color == PieceColor.RED)
+                    if (piece_col[index].piece.color == PlayerColor.RED)
                         start_flag = parseInt(index) + 1; // the index is not added, but the next one is.
                     else
                         start_flag = parseInt(index)
@@ -117,7 +117,7 @@ class RedChariot extends Chariot {
                 //checks those larger than that point
                 else if (parseInt(index) > Y_coor - 1) {
                     //if the point holds a friendly piece:
-                    if (piece_col[index].piece.color == PieceColor.RED)
+                    if (piece_col[index].piece.color == PlayerColor.RED)
                         end_flag = parseInt(index) - 1; // the index is not added, but the last one is.
                     else
                         end_flag = parseInt(index)
@@ -169,7 +169,7 @@ class RedChariot extends Chariot {
                 //checks the indices that are smaller than the point
                 if (parseInt(index) < X_coor - 1) {
                     //if the point holds a friendly piece:
-                    if (piece_row[index].piece.color == PieceColor.RED)
+                    if (piece_row[index].piece.color == PlayerColor.RED)
                         start_flag = parseInt(index) + 1; // the index is not added, but the next one is.
                     else
                         start_flag = parseInt(index)
@@ -182,7 +182,7 @@ class RedChariot extends Chariot {
                 //checks those larger than that point
                 else if (parseInt(index) > X_coor - 1) {
                     //if the point holds a friendly piece:
-                    if (piece_row[index].piece.color == PieceColor.RED)
+                    if (piece_row[index].piece.color == PlayerColor.RED)
                         end_flag = parseInt(index) - 1; // the index is not added, but the last one is.
                     else
                         end_flag = parseInt(index)
@@ -227,7 +227,7 @@ class RedChariot extends Chariot {
 class BlackChariot extends Chariot {
 
     constructor(board: Board, point: Point) {
-        super(point, board, PieceColor.BLACK);
+        super(point, board, PlayerColor.BLACK);
         this.elem.src = '../img/pieces/black-ju.png';
         this.board = board;
         this.point.setPiece(this); //sets the piece to the point.
@@ -272,7 +272,7 @@ class BlackChariot extends Chariot {
                 //checks the indices that are smaller than the point
                 if (parseInt(index) < Y_coor - 1) {
                     //if the point holds a friendly piece:
-                    if (piece_col[index].piece.color == PieceColor.BLACK)
+                    if (piece_col[index].piece.color == PlayerColor.BLACK)
                         start_flag = parseInt(index) + 1; // the index is not added, but the next one is.
                     else
                         start_flag = parseInt(index)
@@ -285,7 +285,7 @@ class BlackChariot extends Chariot {
                 //checks those larger than that point
                 else if (parseInt(index) > Y_coor - 1) {
                     //if the point holds a friendly piece:
-                    if (piece_col[index].piece.color == PieceColor.BLACK)
+                    if (piece_col[index].piece.color == PlayerColor.BLACK)
                         end_flag = parseInt(index) - 1; // the index is not added, but the last one is.
                     else
                         end_flag = parseInt(index)

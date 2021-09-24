@@ -6,14 +6,13 @@ import { BlackGeneral, RedGeneral } from "./General";
 
 
 class Game {
-    private currentPlayer: PlayerColor = PlayerColor.RED; // 先走的一方是红方  Player RED goes first.
+    private currentPlayer: PlayerColor; // 红方先行  Player RED goes first.
 
     private board: Board; // 唯一的棋盘   The only Chessborad of the Game
-    
-    // Stub constructor to be a placeholder
-    // 
+
     constructor() {
-        this.board = new Board();
+        this.currentPlayer = PlayerColor.RED;
+        this.board = new Board(this);
     }
 
     // gets the public player
@@ -94,3 +93,6 @@ const game = new Game();
 
 game.render();
 
+export {
+    Game
+}

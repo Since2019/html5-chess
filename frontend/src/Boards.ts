@@ -1,6 +1,8 @@
 import { fitSize, getZoomedRatio, Point, SIDE_LENGTH } from "./frontend-utils";
 import { Piece, PieceRole } from './ChessPiece'
 
+import {Game} from './Game'
+
 // 棋盘
 class Board {
 
@@ -17,9 +19,14 @@ class Board {
 
     target_coordinate: number[];
 
+    game : Game;
 
-    constructor() {
 
+    constructor(game:Game) {
+        // 游戏和棋盘要耦合
+        this.game = game;
+
+        // 缩放相关
         this.ratio = 100; //default ratio 100%
         this.side_length = this.ratio * 0.01 * SIDE_LENGTH;
 

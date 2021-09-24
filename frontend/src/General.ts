@@ -1,10 +1,10 @@
 import { Board } from "./Boards";
-import { Piece, PieceRole, PieceColor } from "./ChessPiece";
+import { Piece, PieceRole, PlayerColor } from "./ChessPiece";
 import { Point } from "./frontend-utils";
 
 abstract class General extends Piece {
 
-    constructor(point: Point, board: Board, color: PieceColor) {
+    constructor(point: Point, board: Board, color: PlayerColor) {
         super(point, board, PieceRole.General, color);
     }
 
@@ -44,7 +44,7 @@ class RedGeneral extends General {
 
     protected board: Board;
     constructor(board: Board, point: Point) {
-        super(point, board, PieceColor.RED);
+        super(point, board, PlayerColor.RED);
         this.elem.src = '../img/pieces/red-shuai.png';
         this.board = board;
 
@@ -93,7 +93,7 @@ class RedGeneral extends General {
 class BlackGeneral extends General {
 
     constructor(board: Board, point: Point) {
-        super(point, board, PieceColor.BLACK);
+        super(point, board, PlayerColor.BLACK);
         this.elem.src = '../img/pieces/black-jiang.png';
         this.board = board;
         this.point.setPiece(this); //sets the piece to the point.

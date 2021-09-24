@@ -2,11 +2,11 @@ import Log from "../../src/Util";
 import { Board } from "./Boards";
 import {Piece} from './ChessPiece'
 
-// used in class Piece
-enum PieceColor {
-    'black',
-    'red'
-}
+// // used in class Piece
+// enum PieceColor {
+//     'black',
+//     'red'
+// }
 
 // used in class Game, 
 enum PlayerColor {
@@ -160,6 +160,6 @@ export {
     Point,
     SIDE_LENGTH,
     SIDE_LENGTH_vw,
-    PieceColor,
+    // PieceColor,
     PlayerColor,
 }
