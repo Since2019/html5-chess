@@ -1,16 +1,16 @@
 import { Console } from "console";
 import Log from "../../src/Util";
 import { Board } from "./Boards";
-import { getZoomedRatio, getChessBoardSize, Point, SIDE_LENGTH } from "./frontend-utils";
+import { getZoomedRatio, getChessBoardSize, Point, SIDE_LENGTH, PlayerColor } from "./frontend-utils";
 
 
 
 // used in class Piece
 // 棋子颜色
-enum PlayerColor {
-    'BLACK',
-    'RED'
-}
+// enum PlayerColor {
+//     'BLACK',
+//     'RED'
+// }
 
 // used in class Game, 
 // 玩家颜色
@@ -45,7 +45,7 @@ abstract class Piece {
     protected color: PlayerColor;
 
     protected elem: HTMLImageElement;
-    protected state:number;
+    protected state: number;
 
 
     constructor(point: Point, board: Board, role: PieceRole, color: PlayerColor) {
@@ -70,7 +70,7 @@ abstract class Piece {
         // 0 -> not selected
         // 1 -> selected, not moved
         // 2 -> moved, refesh state to 0
-        this.state = 0; 
+        this.state = 0;
 
 
         $(window).on('mousedown', (e) => {
@@ -84,12 +84,12 @@ abstract class Piece {
 
         // 运行这个，就会把所有的Listener都加上
         this.listenerManager();
-    
+
     }
 
     private listenerManager() {
 
-        
+
         this.attachSelectPieceListener()
         // this.attachMoveToGridListener()
         // this.removeMoveToGridListener()
@@ -121,12 +121,12 @@ abstract class Piece {
 
             // 3. highlight all the movalbe positions
             // If the currentPlayer's color is the same as the piece color   
-            if( this.getCurrentPlayer() == this.color) {
+            if (this.getCurrentPlayer() == this.color) {
                 movable_points.forEach(point => {
                     $(point.elem).css('background', 'rgba(3, 181, 252,0.5')
                 });
             }
-                
+
 
 
             // 设置自己被选中，告知棋盘选中的是自己
@@ -137,7 +137,7 @@ abstract class Piece {
             // TODO:找到ListenerManager的问题所在，并且把这个移动到那里面。
             // 下一步是Move To Grid
             setTimeout(() => {
-                this.attachMoveToGridListener() 
+                this.attachMoveToGridListener()
             }, 100);
 
 
@@ -166,34 +166,34 @@ abstract class Piece {
             console.log(e.target)
 
             // ① if the piece is selected
-            if(this.board.active_piece &&                               // Condition #1 : 选中了棋子
-               this.board.game.getCurrentPlayer() == this.color){       // Condition #2 : 是当前玩家走
+            if (this.board.active_piece &&                               // Condition #1 : 选中了棋子
+                this.board.game.getCurrentPlayer() == this.color) {       // Condition #2 : 是当前玩家走
 
                 console.log('the piece is selected?' + this.active);
                 console.log(`active piece:`);
 
                 console.log(this.board.active_piece);
-                console.log(this.board.target_coordinate )
+                console.log(this.board.target_coordinate)
 
-                this.board.target_coordinate  = this.board.getCoordinateFromElemId(e.target.id);
- 
-                
+                this.board.target_coordinate = this.board.getCoordinateFromElemId(e.target.id);
+
+
                 // ①.a 如果不是 [-1, -1], 说明玩家选择了某个格子
-                if(this.board.target_coordinate[0] != -1 && this.board.target_coordinate[1] != -1 ) {
-                    console.log(this.board.target_coordinate );
+                if (this.board.target_coordinate[0] != -1 && this.board.target_coordinate[1] != -1) {
+                    console.log(this.board.target_coordinate);
                     let next_x_coor = this.board.target_coordinate[0]
                     let next_y_coor = this.board.target_coordinate[1]
-                    
-                    
+
+
                     // 棋子属性、Element移动到目标点, 详见moveToPoint
                     this.board.active_piece.moveToPoint(this.board.getPointFromCoordinates(next_x_coor, next_y_coor));
                     $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
-                    
 
 
 
-                    
-                    this.board.target_coordinate = [-1,-1] // 重新归[-1, -1]
+
+
+                    this.board.target_coordinate = [-1, -1] // 重新归[-1, -1]
                     this.active = false;                   // 棋子状态为不再选中
 
                     // TODO >>>>>  Remove if not needed anymore <<<<<<<<<
@@ -201,17 +201,17 @@ abstract class Piece {
                     // console.log(`active piece:`);
                     // console.log(this.board.active_piece);
                     // console.log(this.board.target_coordinate )
-                    
+
                     this.board.game.alternatePlayer();     // 切换到下一个玩家
                 }
-                    
+
             }
 
             // ② 还没有选中棋子
-            else{
+            else {
                 console.log("还没有选择棋子......")
                 console.log('Is the piece is selected? ' + this.active);
-                console.log('Doing nothing...');  
+                console.log('Doing nothing...');
 
                 $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
 
@@ -230,7 +230,7 @@ abstract class Piece {
         this.board.active_piece = null as any;
         //4. remove the click listener from the grids
         console.log('已经点击了移动目标格,现在移除MoveToGridListener')
-        
+
         $('.className_grid_div').off('click');  // after clicking, we need to get rid of the listener
         $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
     }
@@ -248,11 +248,15 @@ abstract class Piece {
     public moveToPoint(point: Point) {
 
         // 删除原来的元素
-        this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.remove(this.elem);  
-        
+        this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.removeChild(this.elem);
+        delete this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].piece;
+
+        console.log("===================== debug ==============================");
+        console.log(this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1])
+
         // 更换到新的点
         this.point = point;
-        this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.append(this.elem);
+        this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.appendChild(this.elem);
 
         console.log(this.board.intersections);
         console.log(this.point);
@@ -279,7 +283,7 @@ abstract class Piece {
         return this.color;
     }
 
-    public getCurrentPlayer():PlayerColor{
+    public getCurrentPlayer(): PlayerColor {
         return this.board.game.getCurrentPlayer()
     }
 
@@ -326,21 +330,21 @@ abstract class Piece {
 
     // 调整棋盘、棋子的大小
     private static adjustResize: () => void = () => {
-    
+
         if (screen.width == window.innerWidth) {
             console.log("at exact 100%");
-             
+
             getChessBoardSize(); // 判断棋盘的大小
 
             $('.className_grid_div').css('width', SIDE_LENGTH * (getZoomedRatio() / 100))    // 更新棋盘的宽度
             $('.className_grid_div').css('height', SIDE_LENGTH * (getZoomedRatio() / 100))   // 更新棋盘的高度
             $('.pieces').css('width', SIDE_LENGTH * (getZoomedRatio() / 100))                // 更新棋子的高度
             $('.pieces').css('height', SIDE_LENGTH * (getZoomedRatio() / 100))               // 更新棋子的宽度
-            
-            $("#board").css("width", $("#board").css('height'));                            
+
+            $("#board").css("width", $("#board").css('height'));
             $("#id_chessboard").css("width", $("#board").css('width'))                       // 棋盘的宽度和高度统一 
 
-        
+
         } else if (screen.width > window.innerWidth) {
             console.log("you have zoomed in the page i.e more than 100%");
             getZoomedRatio();

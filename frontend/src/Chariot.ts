@@ -62,7 +62,7 @@ class RedChariot extends Chariot {
             // Log.trace(this.checkRow())
 
             this.movablePoints()
-            
+
 
 
         });
@@ -335,11 +335,14 @@ class BlackChariot extends Chariot {
         let end_flag: number = 8;
 
         //trasversing the column (Point [])
+        //遍历横行
         for (let index in piece_row) {
 
             //if the piece in that point is not null, do some checking
+            //发现该点内有棋子，判断是敌是友
             if (piece_row[index].piece != null) {
                 //checks the indices that are smaller than the point
+                // 该枚车的左边
                 if (parseInt(index) < X_coor - 1) {
                     //if the point holds a friendly piece:
                     if (piece_row[index].piece.isFriendly())
@@ -353,6 +356,7 @@ class BlackChariot extends Chariot {
                     Log.trace("start_flag:" + start_flag)
                 }
                 //checks those larger than that point
+                // 检查该车的右边
                 else if (parseInt(index) > X_coor - 1) {
                     //if the point holds a friendly piece:
                     if (piece_row[index].piece.isFriendly())
