@@ -11,7 +11,8 @@ import {Piece} from './ChessPiece'
 // used in class Game, 
 enum PlayerColor {
     'BLACK',
-    'RED'
+    'RED',
+    'NEUTRAL'    // 双方都可以控制
 }
 
 // 得到当前的放大倍率
@@ -26,6 +27,7 @@ function getZoomedRatio() {
         else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
             ratio = window.outerWidth / window.innerWidth;
         }
+        
         if (ratio) {
             ratio = Math.round(ratio * 100);
         }
