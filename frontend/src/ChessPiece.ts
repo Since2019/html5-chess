@@ -110,21 +110,13 @@ abstract class Piece {
         $(this.elem).on('click', (e) => {
 
             if (this.board.active_piece) {
-                console.log("别人还没走呢！")
+                console.log("其他棋子还没走呢！")
             }
             else {
-                console.log("别人走过了？？")
+                console.log("其他棋子走过了");
 
-
-
-
-
-
-
-
-
-                console.log('点击了棋子：')
-                console.log(this.elem)
+                console.log('点击了棋子：');
+                console.log(this.elem);
 
                 e.preventDefault();
 
@@ -185,18 +177,18 @@ abstract class Piece {
      */
     private attachMoveToGridListener() {
 
-
-
-
         console.log(this.point);
         //1. attach another listener which listens to the next click:
         $('.className_grid_div').on('click', (e) => {
 
             console.log("点击了棋子:")
             console.log(e.target)
+            console.log(e.target.tagName)
 
             console.log(`棋子所在的格子:`)
             console.log(e.target.parentNode)
+            console.log(e.target.parentElement)
+
 
 
             // ① if the piece is selected, then go on and see if the grid is moveable
@@ -210,20 +202,53 @@ abstract class Piece {
                 console.log(this.board.active_piece);
                 console.log(this.board.target_coordinate)
 
-                this.board.target_coordinate = this.board.getCoordinateFromElemId(e.target.id);
+                // 如果点击的是棋子，而不是空的格子
+                // 判断条件：HTML元素是IMG而不是DIV
+                if ((e.target.tagName).toUpperCase() == 'IMG') {
 
-                console.log("====debug====")
+                    console.log("点击了另一个棋子")
+                    let parentNode = e.target.parentElement
+
+
+                    if (parentNode != null) {
+                        console.log("棋子所在的格子：")
+                        console.log(parentNode)
+                        // 记录下一步要走的坐标
+                        this.board.target_coordinate = this.board.getCoordinateFromElemId(parentNode.id);
+                    }
+
+                }
+                else {
+                    console.log("点击了一个空的格子")
+                    this.board.target_coordinate = this.board.getCoordinateFromElemId(e.target.id);
+                }
+
+
                 console.log(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]))
 
                 // ①.a 如果不是 [-1, -1], 说明玩家选择了某个格子
                 if (this.board.target_coordinate[0] != -1 && this.board.target_coordinate[1] != -1) {
 
-
-
-
                     // TODO：增加一个判断条件，看这个位置是否有棋子
-                    if (this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).piece != null) {
+                    if (this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).hasPiece()) {
                         console.log("该点有棋子")
+
+                        console.log("=========================== debug =================================")
+                        console.log(this.isFriendly(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).getPiece()))
+
+                        // 棋子是自己人的
+                        if (this.isFriendly(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).getPiece())) {
+                            alert("You Can't Move Here, A Friendly Piece is at this Position")
+                            return //直接结束
+                        }
+                        // 不是自己人的，要提子
+                        else if (!this.isFriendly(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).getPiece())) {
+                            console.log(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).getPiece().isFriendly())
+                            alert("正在提子")
+                        }
+
+
+
                     }
                     else {
                         console.log(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]))
@@ -301,8 +326,8 @@ abstract class Piece {
         this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.removeChild(this.elem);
         delete this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].piece;
 
-        console.log("===================== debug ==============================");
-        console.log(this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1])
+        // console.log("===================== debug ==============================");
+        // console.log(this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1])
 
         // 更换到新的点
         this.point = point;
@@ -336,6 +361,23 @@ abstract class Piece {
     public getCurrentPlayer(): PlayerColor {
         return this.board.game.getCurrentPlayer()
     }
+    // 
+
+    // ------------------ 下一目标点 ------------------------
+    // 目标点的坐标
+    public getTargetPointCoordinate() {
+        return this.board.target_coordinate
+    }
+
+    // 获得目标点的 X 坐标
+    public getTargetPointXCoordinate() {
+        return this.board.target_coordinate[0]
+    }
+
+    // 获得目标点的 Y 坐标
+    public getTargetPointYCoordinate() {
+        return this.board.target_coordinate[1]
+    }
 
 
 
@@ -365,7 +407,11 @@ abstract class Piece {
     * @param point Check if a point has a piece with the same side
     */
     protected isFriendly(piece: Piece): boolean {
+        console.log(piece)
+
         if (!piece) {
+
+            console.log("没有棋子！")
             return false;
         }
         return piece.getColor() === this.color;

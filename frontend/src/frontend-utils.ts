@@ -1,6 +1,6 @@
 import Log from "../../src/Util";
 import { Board } from "./Boards";
-import {Piece} from './ChessPiece'
+import { Piece } from './ChessPiece'
 
 // // used in class Piece
 // enum PieceColor {
@@ -12,26 +12,27 @@ import {Piece} from './ChessPiece'
 enum PlayerColor {
     'BLACK',
     'RED',
-    'NEUTRAL'    // 双方都可以控制
+    'NEUTRAL',    // Controls both sides 双方都可以控制
+    'SPECTATOR'   // Cannot control either side. 双方都不可以控制
 }
+
 
 // 得到当前的放大倍率
 function getZoomedRatio() {
     let ratio = 0;
 
-        if (window.devicePixelRatio !== undefined) {
-            ratio = window.devicePixelRatio;
-        }
+    if (window.devicePixelRatio !== undefined) {
+        ratio = window.devicePixelRatio;
+    }
 
+    else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
+        ratio = window.outerWidth / window.innerWidth;
+    }
 
-        else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
-            ratio = window.outerWidth / window.innerWidth;
-        }
-        
-        if (ratio) {
-            ratio = Math.round(ratio * 100);
-        }
-        return ratio;
+    if (ratio) {
+        ratio = Math.round(ratio * 100);
+    }
+    return ratio;
 }
 
 
@@ -55,35 +56,37 @@ class Point {
     x_coor: number;
     y_coor: number;
 
-    elem : HTMLElement; // HTML <div> elements are bound with each point
+    elem: HTMLElement; // HTML <div> elements are bound with each point
 
-    board! : Board;     // 棋子所属的棋盘
-    
-    piece? : Piece|null; // Points can hold pieces 
+    board!: Board;     // 棋子所属的棋盘
+
+    piece?: Piece | null; // Points can hold pieces 
 
     /** when piece moves in
         it binds the piece with the grid.
         notice when the piece is moving out from a grid
         the piece should be set to null.
         @param piece: a nullable Piece object  
-    */ 
-    public setPiece(piece:Piece|null){
+    */
+    public setPiece(piece: Piece | null) {
         this.piece = piece;
     }
 
+
+    // 判断点上是否有棋子
     public hasPiece(): boolean {
-        return this.piece? true : false;
+        return this.piece ? true : false;
     }
 
     //gets the piece in the current grid
-    public getPiece(){
+    public getPiece() {
         return this.piece;
     }
 
     constructor(col: number, row: number) {
         // this.board = board;
-        this.x_coor = col ; //col -> verticle
-        this.y_coor = row ; //row -> horizontal
+        this.x_coor = col; //col -> verticle
+        this.y_coor = row; //row -> horizontal
 
         // A dummy element for initialization first and then update in method
         this.elem = document.createElement('div');
@@ -99,13 +102,13 @@ class Point {
 
         /* code previously found in board initialization, with div_2d_array
            now divs are bound to specific points.
-        */ 
+        */
         grid_div.id = `grid_div_${oldCol}_${oldRow}`;
         $(`#${grid_div.id}`).remove(); //must remove the original one, in order to make it unique.
         grid_div.className = 'className_grid_div';
         $(grid_div).css('grid-column', newCol);
-        $(grid_div).css('grid-row', newRow); 
-               
+        $(grid_div).css('grid-row', newRow);
+
         $('#board').append(grid_div);
 
         // this.board.intersections[newCol-1][newRow-1] = this; //replace the original point with the newly updated point.
@@ -128,12 +131,12 @@ function fitSize() {
         .then(() => {
             console.log('background-size')
             console.log(board.css('background-size'))
-            
+
             board.css('width', board.css('height'))
             board.css('height', board.css('width'))
             // board.css('row-gap','0px')
-            board.css('column-gap','0px')
-            
+            board.css('column-gap', '0px')
+
             console.log(board.css('row-gap'))
 
         })
@@ -146,8 +149,8 @@ function fitSize() {
         })
         //fiting sizes for the pieces
         .then(() => {
-            $('.pieces').css('width', parseInt($('.className_grid_div').css('width')) )
-            $('.pieces').css('height', parseInt($('.className_grid_div').css('width')) )
+            $('.pieces').css('width', parseInt($('.className_grid_div').css('width')))
+            $('.pieces').css('height', parseInt($('.className_grid_div').css('width')))
         })
         .then(() => {
             board.css('max-width', board.css('height'));
