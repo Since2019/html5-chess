@@ -51,7 +51,7 @@ abstract class Piece {
     constructor(point: Point, board: Board, role: PieceRole, color: PlayerColor) {
         // 与移动相关      
         this.point = point;                                  // 被置于某个点
-        // this.has_moved = false;                              // 是否已经被移动
+        // this.has_moved = false;                           // 是否已经被移动
         this.active = false;                                 // 是否被选中
 
 
@@ -102,46 +102,71 @@ abstract class Piece {
      *  then it highlights all the grids
      */
     private attachSelectPieceListener() {
+        console.log("attachSelectPieceListener, check active:")
+        console.log(this.board.active_piece)
+        // TODO：需要写一个逻辑，判断是否之前已经点过一个棋子
+
         // 点击了棋子的img之后
         $(this.elem).on('click', (e) => {
-            console.log('点击了棋子：')
-            console.log(this.elem)
 
-            e.preventDefault();
-
-            // 1. clearing all the colored background first:
-            $('.className_grid_div').css('background', 'rgba(3, 181, 252,0.0)')
-
-
-            // 2. put all the movalbe positions into an array
-            let movable_points = []
-            movable_points = this.movablePoints();
-            // console.log(movable_points)
+            if (this.board.active_piece) {
+                console.log("别人还没走呢！")
+            }
+            else {
+                console.log("别人走过了？？")
 
 
-            // 3. highlight all the movalbe positions
-            // If the currentPlayer's color is the same as the piece color   
-            if (this.getCurrentPlayer() == this.color) {
-                movable_points.forEach(point => {
-                    $(point.elem).css('background', 'rgba(3, 181, 252,0.5')
-                });
+
+
+
+
+
+
+
+                console.log('点击了棋子：')
+                console.log(this.elem)
+
+                e.preventDefault();
+
+                // 1. clearing all the colored background first:
+                $('.className_grid_div').css('background', 'rgba(3, 181, 252,0.0)')
+
+
+                // 2. put all the movalbe positions into an array
+                let movable_points = []
+                movable_points = this.movablePoints();
+                // console.log(movable_points)
+
+
+                // 3. highlight all the movalbe positions
+                // If the currentPlayer's color is the same as the piece color   
+                if (this.getCurrentPlayer() == this.color) {
+                    movable_points.forEach(point => {
+                        $(point.elem).css('background', 'rgba(3, 181, 252,0.5')
+                    });
+                }
+
+
+
+                // 设置自己被选中，告知棋盘选中的是自己
+                this.active = true;
+                this.board.active_piece = this;
+
+
+                // TODO:找到ListenerManager的问题所在，并且把这个移动到那里面。
+                // 下一步是Move To Grid
+                setTimeout(() => {
+                    this.attachMoveToGridListener()
+                }, 100);
             }
 
 
 
-            // 设置自己被选中，告知棋盘选中的是自己
-            this.active = true;
-            this.board.active_piece = this;
-
-
-            // TODO:找到ListenerManager的问题所在，并且把这个移动到那里面。
-            // 下一步是Move To Grid
-            setTimeout(() => {
-                this.attachMoveToGridListener()
-            }, 100);
-
-
         })
+
+
+
+
     }
 
     /**
@@ -159,13 +184,23 @@ abstract class Piece {
      *  再用attachMoveToGridListener() 选择移动到哪个格子
      */
     private attachMoveToGridListener() {
+
+
+
+
         console.log(this.point);
         //1. attach another listener which listens to the next click:
         $('.className_grid_div').on('click', (e) => {
-            console.log(`点击了格子:`)
+
+            console.log("点击了棋子:")
             console.log(e.target)
 
-            // ① if the piece is selected
+            console.log(`棋子所在的格子:`)
+            console.log(e.target.parentNode)
+
+
+            // ① if the piece is selected, then go on and see if the grid is moveable
+            // ① 如果已经选择了某个棋子，判断是否能够走
             if (this.board.active_piece &&                               // Condition #1 : 选中了棋子
                 this.board.game.getCurrentPlayer() == this.color) {       // Condition #2 : 是当前玩家走
 
@@ -177,9 +212,23 @@ abstract class Piece {
 
                 this.board.target_coordinate = this.board.getCoordinateFromElemId(e.target.id);
 
+                console.log("====debug====")
+                console.log(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]))
 
                 // ①.a 如果不是 [-1, -1], 说明玩家选择了某个格子
                 if (this.board.target_coordinate[0] != -1 && this.board.target_coordinate[1] != -1) {
+
+
+
+
+                    // TODO：增加一个判断条件，看这个位置是否有棋子
+                    if (this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).piece != null) {
+                        console.log("该点有棋子")
+                    }
+                    else {
+                        console.log(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]))
+                    }
+
                     console.log(this.board.target_coordinate);
                     let next_x_coor = this.board.target_coordinate[0]
                     let next_y_coor = this.board.target_coordinate[1]
@@ -222,6 +271,7 @@ abstract class Piece {
             // $('.className_grid_div').unbind('click');  // HACK after clicking, we need to get rid of the listener
             // $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
         })
+
 
     }
 

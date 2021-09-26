@@ -74,6 +74,7 @@ class RedChariot extends Chariot {
 
         let moveable_points: Point[] = [];
         // moveable_points.length = 0;
+
         moveable_points = moveable_points.concat(this.checkRow());
         moveable_points = moveable_points.concat(this.checkColumn());
 
@@ -179,6 +180,7 @@ class RedChariot extends Chariot {
 
                     Log.trace("start_flag:" + start_flag)
                 }
+
                 //checks those larger than that point
                 else if (parseInt(index) > X_coor - 1) {
                     //if the point holds a friendly piece:
