@@ -229,7 +229,8 @@ abstract class Piece {
                 // ①.a 如果不是 [-1, -1], 说明玩家选择了某个格子
                 if (this.board.target_coordinate[0] != -1 && this.board.target_coordinate[1] != -1) {
 
-                    // TODO：增加一个判断条件，看这个位置是否有棋子
+                    // 增加一个判断条件，看这个位置是否有棋子
+                    // TODO: check if the point's 'piece' key is available at all?
                     if (this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).hasPiece()) {
                         console.log("该点有棋子")
 
@@ -242,16 +243,40 @@ abstract class Piece {
                             return //直接结束
                         }
                         // 不是自己人的，要提子
+                        // TODO:增加提子逻辑
                         else if (!this.isFriendly(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).getPiece())) {
-                            console.log(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).getPiece().isFriendly())
-                            alert("正在提子")
+                            // alert("正在提子")
+
+                            // 目标Point中移除piece
+                            delete this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).piece
+
+                            console.log("=========  debug ===========")
+                            console.log(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]))
+
+
+                            // 目标Point.elem 移除 HTML元素
+                            this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).elem.innerHTML = '';
+
+                        }
+                        else {
+                            // 目标Point中移除piece
+                            delete this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).piece
+
+                            console.log("=========  debug ===========")
+                            console.log(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]))
+
+
+                            // 目标Point.elem 移除 HTML元素
+                            this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).elem.innerHTML = '';
                         }
 
 
 
+
                     }
+                    // 
                     else {
-                        console.log(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]))
+                        this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).elem.innerHTML = '';
                     }
 
                     console.log(this.board.target_coordinate);
