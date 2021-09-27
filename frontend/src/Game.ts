@@ -5,6 +5,7 @@ import { Point, PlayerColor } from "./frontend-utils";
 import { BlackGeneral, RedGeneral } from "./General";
 import { BlackCannon, RedCannon } from "./Cannon"; './Cannon';
 
+import { RedFootSoldier, BlackFootSoldier } from './FootSoldier'
 
 
 class Game {
@@ -81,6 +82,11 @@ class Game {
         let black_cannon_two = new BlackCannon(this.board, this.board.getPointFromCoordinates(2, 4))
 
 
+        let red_bing_one = new RedFootSoldier(this.board, this.board.getPointFromCoordinates(1, 7));
+
+        let black_zu_one = new BlackFootSoldier(this.board, this.board.getPointFromCoordinates(1, 4));
+
+
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 棋子初始化 Initialization of ChessPieces ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
@@ -99,6 +105,13 @@ class Game {
 
         black_cannon_one.render();
         black_cannon_two.render();
+
+        // 红兵
+        red_bing_one.render();
+
+        // 黑兵
+        black_zu_one.render();
+
 
     }
 }
