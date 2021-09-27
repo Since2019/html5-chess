@@ -3,7 +3,7 @@ import { Board } from "./Boards";
 import { RedChariot, BlackChariot } from "./Chariot";
 import { Point, PlayerColor } from "./frontend-utils";
 import { BlackGeneral, RedGeneral } from "./General";
-import { BlackCannon } from './Cannon';
+import { BlackCannon, RedCannon } from "./Cannon"; './Cannon';
 
 
 
@@ -67,10 +67,14 @@ class Game {
         // let red_ju_test = new RedChariot(this.board, this.board.getPointFromCoordinates(9,3));
         // let red_ju_test2 = new RedChariot(this.board, this.board.getPointFromCoordinates(9,4));
 
-        // 黑车    Black Chariots
+        // 黑车  Black Chariots
         let black_ju_one = new BlackChariot(this.board, this.board.getPointFromCoordinates(1, 1));
         let black_ju_two = new BlackChariot(this.board, this.board.getPointFromCoordinates(9, 1));
 
+
+        // 红炮 RedCannons
+        let red_cannon_one = new RedCannon(this.board, this.board.getPointFromCoordinates(8, 3))
+        let red_cannon_two = new RedCannon(this.board, this.board.getPointFromCoordinates(8, 4))
 
         // 黑炮 BlackCannon
         let black_cannon_one = new BlackCannon(this.board, this.board.getPointFromCoordinates(2, 3))
@@ -90,6 +94,9 @@ class Game {
 
 
         // 炮
+        red_cannon_one.render();
+        red_cannon_two.render();
+
         black_cannon_one.render();
         black_cannon_two.render();
 

@@ -21,7 +21,9 @@ abstract class Cannon extends Piece {
      * @param y 
      * @returns boolean to indicate if the pass in coordinate is valid general position
      */
-    protected abstract isValidCannonPosition(x: number, y: number): boolean;
+    protected isValidCannonPosition(x: number, y: number) {
+        return (y >= 0) && (y <= 10) && (x >= 0) && (x <= 9);
+    }
 
 
     public canMove(dest: Point): boolean {
@@ -304,7 +306,6 @@ abstract class Cannon extends Piece {
         //trasversing the column (Point [])
         //遍历横行
         for (let index in piece_row) {
-
             //if the piece in that point is not null, do some checking
             //发现该点内有棋子，判断是敌是友
             if (piece_row[index].piece != null) {
@@ -390,13 +391,34 @@ class BlackCannon extends Cannon {
         });
     }
 
-    protected isValidCannonPosition(x: number, y: number) {
-        return (y >= 0) && (y <= 10) && (x >= 0) && (x <= 9);
-    }
+    // protected isValidCannonPosition(x: number, y: number) {
+    //     return (y >= 0) && (y <= 10) && (x >= 0) && (x <= 9);
+    // }
 
 }
 
-export {
+class RedCannon extends Cannon {
 
+    protected board: Board;
+
+    constructor(board: Board, point: Point) {
+        super(point, board, PlayerColor.RED);
+        this.elem.src = '../img/pieces/red-pao.png';
+        this.board = board;
+        this.point.setPiece(this); //sets the piece to the point.
+
+
+        $(this.elem).on('click', () => {
+            super.movablePoints();
+        });
+    }
+
+
+
+}
+
+
+export {
+    RedCannon,
     BlackCannon
 }
