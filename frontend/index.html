@@ -18,6 +18,27 @@
 
         </div>
 
+
+        <!-- id 的名字应该 intuitive -->
+        <div id='button-container-div'>
+
+            <button id='start-button'>
+                Start
+            </button>
+
+            <!-- 放弃 -->
+            <button id='surrender-button'>
+                Give Up
+            </button>
+
+            <!-- 重开 -->
+            <button id='restart-button'>
+                Restart
+            </button>
+
+        </div>
+
+
     </div>
     <!-- Assume index.js is the compiled output of index.ts -->
     <!-- <script src="../build/index.js"></script> -->
@@ -60,6 +81,18 @@
 
     }
 
+
+    // ============== UCI engine related ======================
+    let start_button = document.getElementById('start-button')
+    start_button.addEventListener('click', (e) => {
+        // 开始
+    })
+
+    let restart_button = document.getElementById('restart-button')
+    restart_button.addEventListener('click', (e) => {
+        // 重开
+    })
+    // ^^^^^^^^^^^^^^^ UCI engine related ^^^^^^^^^^^^^^^^^^^^^
 
 
 

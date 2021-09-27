@@ -83,6 +83,15 @@ class Point {
         return this.piece;
     }
 
+    public getX() {
+        return this.x_coor;
+    }
+
+    public getY() {
+        return this.y_coor;
+    }
+
+
     constructor(col: number, row: number) {
         // this.board = board;
         this.x_coor = col; //col -> verticle

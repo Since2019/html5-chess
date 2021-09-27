@@ -32,6 +32,7 @@ enum PieceRole {
 
 
 abstract class Piece {
+    // TODO : Lacking of a function that does valid position check
 
     protected board: Board; // 棋盘ptr
 
