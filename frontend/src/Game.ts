@@ -8,6 +8,8 @@ import { BlackCannon, RedCannon } from "./Cannon"; './Cannon';
 import { RedFootSoldier, BlackFootSoldier } from './FootSoldier'
 
 
+import { RedAdvisor, BlackAdvisor } from './Advisor';
+
 class Game {
     private currentPlayer: PlayerColor; // 红方先行  Player RED goes first.
 
@@ -82,11 +84,19 @@ class Game {
         let black_cannon_two = new BlackCannon(this.board, this.board.getPointFromCoordinates(2, 4))
 
 
+        // 兵、卒 FOOTSOLDIERS
         let red_bing_one = new RedFootSoldier(this.board, this.board.getPointFromCoordinates(1, 7));
 
         let black_zu_one = new BlackFootSoldier(this.board, this.board.getPointFromCoordinates(1, 4));
 
 
+        // 红士 RedAdvisor
+        let red_advisor_one = new RedAdvisor(this.board, this.board.getPointFromCoordinates(4, 10));
+        let red_advisor_two = new RedAdvisor(this.board, this.board.getPointFromCoordinates(6, 10));
+
+        // 黑仕 BlackAdvisor
+        let black_advisor_one = new BlackAdvisor(this.board, this.board.getPointFromCoordinates(4, 1))
+        let black_advisor_two = new BlackAdvisor(this.board, this.board.getPointFromCoordinates(6, 1))
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 棋子初始化 Initialization of ChessPieces ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
@@ -111,6 +121,14 @@ class Game {
 
         // 黑兵
         black_zu_one.render();
+
+
+        // 
+        red_advisor_one.render();
+        red_advisor_two.render();
+
+        black_advisor_one.render();
+        black_advisor_two.render();
 
 
     }
