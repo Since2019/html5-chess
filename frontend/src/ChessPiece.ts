@@ -239,9 +239,13 @@ abstract class Piece {
                         console.log(this.isFriendly(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).getPiece()))
 
                         // 棋子是自己人的
+                        // 那么选中的棋子则换为该棋子
                         if (this.isFriendly(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).getPiece())) {
                             alert("You Can't Move Here, A Friendly Piece is at this Position")
+                            this.removeMoveToGridListener()
+
                             return //直接结束
+
                         }
                         // 不是自己人的，要提子
                         // TODO:增加提子逻辑
