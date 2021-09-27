@@ -23,7 +23,7 @@ import { getZoomedRatio, getChessBoardSize, Point, SIDE_LENGTH, PlayerColor } fr
 enum PieceRole {
     'General',
     'Advisor',
-    'Elephant',
+    'WarElephant',
     'Chariot',
     'Horse',
     'Cannon',
