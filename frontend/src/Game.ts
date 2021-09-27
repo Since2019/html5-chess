@@ -9,6 +9,7 @@ import { RedFootSoldier, BlackFootSoldier } from './FootSoldier'
 
 
 import { RedAdvisor, BlackAdvisor } from './Advisor';
+import { BlackWarElephant, RedWarElephant } from './WarElephant'
 
 class Game {
     private currentPlayer: PlayerColor; // 红方先行  Player RED goes first.
@@ -97,7 +98,16 @@ class Game {
         // 黑仕 BlackAdvisor
         let black_advisor_one = new BlackAdvisor(this.board, this.board.getPointFromCoordinates(4, 1))
         let black_advisor_two = new BlackAdvisor(this.board, this.board.getPointFromCoordinates(6, 1))
+
+        // 黑象
+        let black_elephant_one = new BlackWarElephant(this.board, this.board.getPointFromCoordinates(3, 1))
+        let black_elephant_two = new BlackWarElephant(this.board, this.board.getPointFromCoordinates(7, 1))
+
+        // 红象
+        let red_elephant_one = new RedWarElephant(this.board, this.board.getPointFromCoordinates(3, 10))
+        let red_elephant_two = new RedWarElephant(this.board, this.board.getPointFromCoordinates(7, 10))
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 棋子初始化 Initialization of ChessPieces ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 
 
         // 红车
@@ -130,6 +140,14 @@ class Game {
         black_advisor_one.render();
         black_advisor_two.render();
 
+
+        //黑象 black elephants
+        black_elephant_one.render();
+        black_elephant_two.render();
+
+        // 
+        red_elephant_one.render();
+        red_elephant_two.render();
 
     }
 }
