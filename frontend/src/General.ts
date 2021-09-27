@@ -4,7 +4,11 @@ import { Point } from "./frontend-utils";
 
 abstract class General extends Piece {
 
-    constructor(point: Point, board: Board, color: PlayerColor) {
+    constructor(
+        point: Point,
+        board: Board,
+        color: PlayerColor
+    ) {
         super(point, board, PieceRole.General, color);
     }
 
@@ -154,11 +158,18 @@ class BlackGeneral extends General {
     }
 
     private checkPeriphery() {
-        let Y_coor = this.point.y_coor
-        let X_coor = this.point.x_coor
+        let X_coor = this.point.getX();
+        let Y_coor = this.point.getY();
 
         let front = this.board.getPointFromCoordinates(X_coor, Y_coor - 1)
-        let back = this.board.getPointFromCoordinates(X_coor, Y_coor + 1) //out of bound err
+
+        let back = new Point(-1, -1);
+        try {
+            back = this.board.getPointFromCoordinates(X_coor, Y_coor + 1) //out of bound err
+        }
+        catch (err) {
+            console.error(err)
+        }
 
         let left = this.board.getPointFromCoordinates(X_coor - 1, Y_coor)
         let right = this.board.getPointFromCoordinates(X_coor + 1, Y_coor)
@@ -172,7 +183,7 @@ class BlackGeneral extends General {
 
         // 
 
-        console.log("+++++++++++++ debug +++++++++++++++++++++++")
+        console.log("++++++++++++++++++++++ debug +++++++++++++++++++++++")
 
         // 面前的格子
         if (front && this.isValidGeneralPosition(front)) {

@@ -358,6 +358,7 @@ abstract class Piece {
         // 更换到新的点
         this.point = point;
         this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.appendChild(this.elem);
+        this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].piece = this
 
         console.log(this.board.intersections);
         console.log(this.point);
@@ -433,14 +434,22 @@ abstract class Piece {
     * @param point Check if a point has a piece with the same side
     */
     protected isFriendly(piece: Piece): boolean {
-        console.log(piece)
+        // console.log(piece)
 
-        if (!piece) {
+        try {
+            if (!piece) {
 
-            console.log("没有棋子！")
-            return false;
+                console.log("没有棋子！")
+
+            }
+            // FIXME：PROBLEM
+            return piece.getColor() === this.color;
         }
-        return piece.getColor() === this.color;
+        catch (e) {
+            console.log("没有棋子！")
+        }
+        return true;
+
     }
 
     protected isEnemy(piece: Piece): boolean {

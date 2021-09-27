@@ -5,9 +5,12 @@ import { Point } from "./frontend-utils";
 
 abstract class Chariot extends Piece {
 
-    constructor(point: Point, board: Board, color: PlayerColor) {
+    constructor(
+        point: Point,
+        board: Board,
+        color: PlayerColor
+    ) {
         super(point, board, PieceRole.General, color);
-
     }
 
 
@@ -166,8 +169,10 @@ class RedChariot extends Chariot {
         for (let index in piece_row) {
 
             //if the piece in that point is not null, do some checking
+            // 判定敌友
             if (piece_row[index].piece != null) {
                 //checks the indices that are smaller than the point
+                // 车的左边
                 if (parseInt(index) < X_coor - 1) {
                     //if the point holds a friendly piece:
                     if (piece_row[index].piece.color == PlayerColor.RED)
@@ -175,7 +180,7 @@ class RedChariot extends Chariot {
                     else
                         start_flag = parseInt(index)
 
-                    if (start_flag === X_coor - 1) // if a friendly piece is blocking right abovbe it
+                    if (start_flag === X_coor - 1) // if a friendly piece is blocking right above it
                         start_flag = X_coor       // start_flag is set to the next row 
 
                     Log.trace("start_flag:" + start_flag)
@@ -221,19 +226,37 @@ class RedChariot extends Chariot {
     }
 
     protected isValidChariotPosition(x: number, y: number) {
-        return (y >= 8) && (y <= 10) && (x >= 4) && (x <= 6) && !(x > 0 && y > 0);
+        return (y >= 8) && (y <= 10) && (x >= 4) && (x <= 6)
+        // && !(x > 0 && y > 0);
     }
 }
 
 
 class BlackChariot extends Chariot {
 
+    protected board: Board;
+
     constructor(board: Board, point: Point) {
         super(point, board, PlayerColor.BLACK);
         this.elem.src = '../img/pieces/black-ju.png';
         this.board = board;
         this.point.setPiece(this); //sets the piece to the point.
+
+
+        $(this.elem).on('click', () => {
+            // Log.trace("invoked this.checkColumns()")
+            // Log.trace(this.checkColumn())
+            // Log.trace(this.checkRow())
+
+            this.movablePoints()
+
+
+
+        });
+
+
     }
+
 
 
 
@@ -258,26 +281,38 @@ class BlackChariot extends Chariot {
     //returns the grids that General can go in a column
     private checkColumn() {
         Log.trace("in checkColumns")
+        Log.trace("Chariots")
         let Y_coor = this.point.y_coor
-        let X_coor = this.point.x_coor
+        // let X_coor = this.point.x_coor
 
         let piece_col = this.board.getColFromXCoordinate(this.point.x_coor); //Checks the points in this column
-        let piece_row = this.board.getRowFromYCoordinate(this.point.y_coor);//Checks the points in this row
+        // let piece_row = this.board.getRowFromYCoordinate(this.point.y_coor);//Checks the points in this row
 
         let start_flag: number = 0; //row 1
         let end_flag: number = 9;   //row 10 
 
         //trasversing the column (Point [])
         for (let index in piece_col) {
+            Log.trace('piece_col:')
+            Log.trace(piece_col)
             //if the piece in that point is not null, do some checking
             if (piece_col[index].piece != null) {
+                Log.trace("有棋子")
                 //checks the indices that are smaller than the point
+                // 这颗待处理棋子在上方
                 if (parseInt(index) < Y_coor - 1) {
                     //if the point holds a friendly piece:
-                    if (piece_col[index].piece.color == PlayerColor.BLACK)
+                    if (piece_col[index].piece.color == PlayerColor.BLACK) {
+
+                        Log.trace("队友在上方")
                         start_flag = parseInt(index) + 1; // the index is not added, but the next one is.
-                    else
-                        start_flag = parseInt(index)
+
+                    }
+                    else if (piece_col[index].piece.color != PlayerColor.BLACK) {
+                        start_flag = parseInt(index);
+                        console.log("debugging...........................")
+                        console.log(start_flag);
+                    }
 
                     if (start_flag === Y_coor - 1) // if a friendly piece is blocking right abovbe it
                         start_flag = Y_coor       // start_flag is set to the next row 
@@ -285,13 +320,15 @@ class BlackChariot extends Chariot {
                     // Log.trace("start_flag:" + start_flag)
                 }
                 //checks those larger than that point
+                // 这颗待处理棋子在下方
                 else if (parseInt(index) > Y_coor - 1) {
                     //if the point holds a friendly piece:
                     if (piece_col[index].piece.color == PlayerColor.BLACK)
                         end_flag = parseInt(index) - 1; // the index is not added, but the last one is.
-                    else
-                        end_flag = parseInt(index)
 
+                    // 是敌方棋子的话：
+                    else if (piece_col[index].piece.color != PlayerColor.BLACK)
+                        end_flag = parseInt(index)
 
                     if (end_flag === Y_coor - 1) // if a friendly piece is blocking right below it
                         end_flag = Y_coor - 2;  // start_flag is set to the next row 
@@ -343,17 +380,22 @@ class BlackChariot extends Chariot {
             //if the piece in that point is not null, do some checking
             //发现该点内有棋子，判断是敌是友
             if (piece_row[index].piece != null) {
+                Log.trace("有棋子")
+                Log.trace(piece_row)
                 //checks the indices that are smaller than the point
                 // 该枚车的左边
                 if (parseInt(index) < X_coor - 1) {
                     //if the point holds a friendly piece:
-                    if (piece_row[index].piece.isFriendly())
+                    if (piece_row[index].getPiece().isFriendly()) {
+
+                        console.log("---------------------------------debug-----------------------------")
                         start_flag = parseInt(index) + 1; // the index is not added, but the next one is.
+                    }
                     else
                         start_flag = parseInt(index)
 
-                    if (start_flag === X_coor - 1) // if a friendly piece is blocking right abovbe it
-                        start_flag = X_coor       // start_flag is set to the next row 
+                    if (start_flag === X_coor - 1) // if a friendly piece is blocking immediately left to it
+                        start_flag = X_coor        // start_flag is set to the next row 
 
                     Log.trace("start_flag:" + start_flag)
                 }
@@ -361,7 +403,7 @@ class BlackChariot extends Chariot {
                 // 检查该车的右边
                 else if (parseInt(index) > X_coor - 1) {
                     //if the point holds a friendly piece:
-                    if (piece_row[index].piece.isFriendly())
+                    if (piece_row[index].getPiece().isFriendly())
                         end_flag = parseInt(index) - 1; // Friendly blocking: the index is not added, but the previous one is.
                     else
                         end_flag = parseInt(index)
@@ -384,7 +426,7 @@ class BlackChariot extends Chariot {
             //If the coordinate is the one that piece is in
             //It does not push it into the array.
             if (X_coor - 1 === i) {
-                // Log.trace('skip');
+
                 continue
             }
             movable_points_in_this_row.push(piece_row[i]);
@@ -401,7 +443,8 @@ class BlackChariot extends Chariot {
 
 
     protected isValidChariotPosition(x: number, y: number) {
-        return (y >= 0) && (y <= 10) && (x >= 0) && (x <= 9) && !(x > 0 && y > 0);
+        return (y >= 0) && (y <= 10) && (x >= 0) && (x <= 9);
+        // && !(x > 0 && y > 0);
     }
 
 
