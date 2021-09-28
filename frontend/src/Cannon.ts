@@ -53,14 +53,57 @@ abstract class Cannon extends Piece {
 
         moveable_points = moveable_points.concat(this.checkRow());
         moveable_points = moveable_points.concat(this.checkColumn());
-        moveable_points = moveable_points.concat(this.checkShellingRow())
-        moveable_points = moveable_points.concat(this.checkShellingCol())
+
+        moveable_points = moveable_points.concat(this.checkShellingRowLHS())  // HACK: reversed index trasversing
+        moveable_points = moveable_points.concat(this.checkShellingRowRHS())
+
+        moveable_points = moveable_points.concat(this.checkShellingColUpper()) // HACK: reversed index trasversing
+        moveable_points = moveable_points.concat(this.checkShellingColLower())
+
 
         return moveable_points;
     }
 
     // 检查可以炮轰的地方
-    private checkShellingRow() {
+    private checkShellingRowLHS() {
+        Log.trace("in checkShellingRowLHS()");
+        Log.trace("Cannon");
+
+        let X_coor = this.point.x_coor
+        let piece_row = this.board.getRowFromYCoordinate(this.point.y_coor);//Checks the points in this row
+        let cornerstone_flag = false;
+        let shellable_points_in_this_column = []
+
+        for (let index in piece_row) {
+            let cur_idx = (8 - parseInt(index))  // 0 ~ 8
+            console.log(cur_idx)
+
+            if (cur_idx + 1 < X_coor) {
+
+                Log.trace("正在检测该棋子的左侧")
+
+                // 有任何一方的棋子
+                if (piece_row[cur_idx].piece) {
+
+                    // 有了炮台，下一个有棋子的格子就是可以走的
+                    if (cornerstone_flag) {
+                        shellable_points_in_this_column.push(piece_row[cur_idx]);
+                        break; //只加一个点进去就结束了
+                    }
+                    // 没有炮台，这就是炮台
+                    else if (!cornerstone_flag) {
+                        cornerstone_flag = true; // the index is not added, but the next one is.
+                        continue;
+                    }
+                }
+            }
+        }
+
+        return shellable_points_in_this_column
+    }
+
+    // 检查可以炮轰的地方 RHS = right hand side 
+    private checkShellingRowRHS() {
         Log.trace("in checkShelling()");
         Log.trace("Cannon");
 
@@ -77,26 +120,7 @@ abstract class Cannon extends Piece {
         let shellable_points_in_this_column = []
 
         for (let index in piece_row) {
-            if (parseInt(index) < X_coor - 1) {
-
-                Log.trace("正在检测该棋子的左侧")
-
-                // 有任何一方的棋子
-                if (piece_row[index].piece) {
-
-                    // 有了炮台，下一个有棋子的格子就是可以走的
-                    if (cornerstone_flag) {
-                        shellable_points_in_this_column.push(piece_row[index]);
-                        break; //只加一个点进去就结束了
-                    }
-                    // 没有炮台，这就是炮台
-                    else if (!cornerstone_flag) {
-                        cornerstone_flag = true; // the index is not added, but the next one is.
-                        continue;
-                    }
-                }
-            }
-            else if (parseInt(index) > X_coor + 1) {
+            if (parseInt(index) + 1 > X_coor) {
                 Log.trace("正在检测该棋子的右侧")
 
                 // 有任何一方的棋子
@@ -121,10 +145,56 @@ abstract class Cannon extends Piece {
     }
 
     // 检查可以炮轰的地方
-    private checkShellingCol() {
-        Log.trace("in checkShelling()");
+    private checkShellingColUpper() {
+        Log.trace("in checkShellingColUpper()");
         Log.trace("Cannon");
 
+        let Y_coor = this.point.y_coor
+
+        let piece_col = this.board.getColFromXCoordinate(this.point.x_coor); //Checks the points in this column
+
+
+        var cornerstone_flag = false;
+        let cornerstone_point = new Point(-1, -1);
+        let shellable_points_in_this_column: Point[] = []
+
+        for (let index in piece_col) {
+            let cur_idx = 9 - parseInt(index); // 0 ~ 9
+            if (cur_idx + 1 < Y_coor) {
+                Log.trace("正在检测该棋子的上方")
+
+                // 有任何一方的棋子
+                if (piece_col[cur_idx].piece) {
+                    console.log('piece_col[index]piece_col[index] ===================++')
+                    console.log(piece_col[cur_idx])
+
+                    // 有了炮台，下一个有棋子的格子就是可以走的
+                    if (cornerstone_flag) {
+                        Log.trace("有炮台了，添加以下点：")
+                        Log.trace(piece_col[cur_idx])
+                        shellable_points_in_this_column.push(piece_col[cur_idx]);
+                        break; //只加一个点进去就结束了
+                    }
+                    // 没有炮台，这就是炮台
+                    else if (!cornerstone_flag) {
+                        Log.trace("无炮台")
+
+                        cornerstone_point = piece_col[cur_idx]
+                        console.log("炮台找到了！：")
+                        console.log(cornerstone_point);
+
+                        cornerstone_flag = true; // the index is not added, but the next one is.
+                        continue;
+                    }
+                }
+            }
+
+        }
+
+        return shellable_points_in_this_column
+    }
+
+    private checkShellingColLower() {
         let Y_coor = this.point.y_coor
         // let X_coor = this.point.x_coor
 
@@ -133,39 +203,16 @@ abstract class Cannon extends Piece {
 
 
         var cornerstone_flag = false;
+        let cornerstone_point = new Point(-1, -1);
+
         let target_point_flag = -1;
 
-        let shellable_points_in_this_column: Point[] = []
+        let shellable_points_in_this_column: Point[] = [];
 
         for (let index in piece_col) {
 
-            if (parseInt(index) < Y_coor) {
-
-                Log.trace("正在检测该棋子的上方")
-
-                // 有任何一方的棋子
-                if (piece_col[index].piece) {
-                    console.log('piece_col[index]piece_col[index] ===================++')
-
-                    console.log(piece_col[index])
-
-                    // 有了炮台，下一个有棋子的格子就是可以走的
-                    if (cornerstone_flag) {
-                        Log.trace("有炮台了，添加以下点：")
-                        Log.trace(piece_col[index])
-                        shellable_points_in_this_column.push(piece_col[index]);
-                        break; //只加一个点进去就结束了
-                    }
-                    // 没有炮台，这就是炮台
-                    else if (!cornerstone_flag) {
-                        Log.trace("无炮台")
-                        cornerstone_flag = true; // the index is not added, but the next one is.
-                        continue;
-                    }
-                }
-            }
-
-            else if (parseInt(index) > Y_coor) {
+            // HACK 注意 coordinate 都是加过 1 的
+            if (parseInt(index) + 1 > Y_coor) {
 
                 Log.trace("正在检测该棋子的下方")
 
@@ -173,15 +220,10 @@ abstract class Cannon extends Piece {
                 if (piece_col[index].piece) {
                     console.log('piece_col[index] ===================++')
 
-                    console.log(piece_col[index])
-                    console.log("cornerstone_flag:")
-                    console.log(cornerstone_flag)
+                    console.log(piece_col[index]);
+                    console.log("cornerstone_flag:");
+                    console.log(cornerstone_flag);
 
-                    // console.log('piece_col-------------------------------------')
-
-                    // console.log(piece_col)
-
-                    // console.log(shellable_points_in_this_column)
 
                     // 有了炮台，下一个有棋子的格子就是可以走的
                     if (cornerstone_flag == true) {
@@ -196,16 +238,17 @@ abstract class Cannon extends Piece {
 
                         cornerstone_flag = true; // the index is not added, but the next that has a piece is.\
 
-                        Log.trace("之前无炮台，现在有炮台了。")
+                        Log.trace("之前无炮台，现在有炮台了:")
+                        cornerstone_point = piece_col[index];
                         console.log(cornerstone_flag)
+                        console.log(cornerstone_point)
                         continue;
                     }
                 }
             }
-
         }
+        return shellable_points_in_this_column;
 
-        return shellable_points_in_this_column
     }
 
     //returns the grids that General can go in a column
