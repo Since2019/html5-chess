@@ -11,6 +11,8 @@ import { RedFootSoldier, BlackFootSoldier } from './FootSoldier'
 import { RedAdvisor, BlackAdvisor } from './Advisor';
 import { BlackWarElephant, RedWarElephant } from './WarElephant'
 
+import { BlackCavalry, RedCavalry } from './Cavalry';
+
 class Game {
     private currentPlayer: PlayerColor; // 红方先行  Player RED goes first.
 
@@ -77,18 +79,29 @@ class Game {
 
 
         // 红炮 RedCannons
-        let red_cannon_one = new RedCannon(this.board, this.board.getPointFromCoordinates(8, 3))
-        let red_cannon_two = new RedCannon(this.board, this.board.getPointFromCoordinates(8, 4))
+        let red_cannon_one = new RedCannon(this.board, this.board.getPointFromCoordinates(2, 8))
+        let red_cannon_two = new RedCannon(this.board, this.board.getPointFromCoordinates(8, 8))
 
         // 黑炮 BlackCannon
         let black_cannon_one = new BlackCannon(this.board, this.board.getPointFromCoordinates(2, 3))
-        let black_cannon_two = new BlackCannon(this.board, this.board.getPointFromCoordinates(2, 4))
+        let black_cannon_two = new BlackCannon(this.board, this.board.getPointFromCoordinates(8, 3))
 
 
         // 兵、卒 FOOTSOLDIERS
         let red_bing_one = new RedFootSoldier(this.board, this.board.getPointFromCoordinates(1, 7));
+        let red_bing_two = new RedFootSoldier(this.board, this.board.getPointFromCoordinates(3, 7));
+        let red_bing_three = new RedFootSoldier(this.board, this.board.getPointFromCoordinates(5, 7));
+        let red_bing_four = new RedFootSoldier(this.board, this.board.getPointFromCoordinates(7, 7));
+        let red_bing_five = new RedFootSoldier(this.board, this.board.getPointFromCoordinates(9, 7));
+
 
         let black_zu_one = new BlackFootSoldier(this.board, this.board.getPointFromCoordinates(1, 4));
+        let black_zu_two = new BlackFootSoldier(this.board, this.board.getPointFromCoordinates(3, 4));
+        let black_zu_three = new BlackFootSoldier(this.board, this.board.getPointFromCoordinates(5, 4));
+        let black_zu_four = new BlackFootSoldier(this.board, this.board.getPointFromCoordinates(7, 4));
+        let black_zu_five = new BlackFootSoldier(this.board, this.board.getPointFromCoordinates(9, 4));
+
+
 
 
         // 红士 RedAdvisor
@@ -106,6 +119,17 @@ class Game {
         // 红象
         let red_elephant_one = new RedWarElephant(this.board, this.board.getPointFromCoordinates(3, 10))
         let red_elephant_two = new RedWarElephant(this.board, this.board.getPointFromCoordinates(7, 10))
+
+
+        // 黑马
+        let black_calvalry_one = new BlackCavalry(this.board, this.board.getPointFromCoordinates(2, 1))
+        let black_calvalry_two = new BlackCavalry(this.board, this.board.getPointFromCoordinates(8, 1))
+
+        // 红马
+        let red_calvalry_one = new RedCavalry(this.board, this.board.getPointFromCoordinates(2, 10))
+        let red_calvalry_two = new RedCavalry(this.board, this.board.getPointFromCoordinates(8, 10))
+
+
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 棋子初始化 Initialization of ChessPieces ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
@@ -128,9 +152,20 @@ class Game {
 
         // 红兵
         red_bing_one.render();
+        red_bing_two.render();
+        red_bing_three.render();
+        red_bing_four.render();
+        red_bing_five.render();
 
         // 黑兵
         black_zu_one.render();
+        black_zu_one.render();
+        black_zu_two.render();
+        black_zu_three.render();
+        black_zu_four.render();
+        black_zu_five.render();
+
+        // .render();
 
 
         // 
@@ -141,13 +176,22 @@ class Game {
         black_advisor_two.render();
 
 
-        //黑象 black elephants
+        // 黑象 black elephants
         black_elephant_one.render();
         black_elephant_two.render();
 
         // 
         red_elephant_one.render();
         red_elephant_two.render();
+
+
+        // Cavalry 骑兵
+        black_calvalry_one.render();
+        black_calvalry_two.render();
+
+        // Cavalry 骑兵
+        red_calvalry_one.render();
+        red_calvalry_two.render();
 
     }
 }
