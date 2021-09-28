@@ -25,7 +25,7 @@ enum PieceRole {
     'Advisor',
     'WarElephant',
     'Chariot',
-    'Horse',
+    'Cavalry',
     'Cannon',
     'FootSoldier'
 }
