@@ -386,7 +386,7 @@ class BlackChariot extends Chariot {
                 // 该枚车的左边
                 if (parseInt(index) < X_coor - 1) {
                     //if the point holds a friendly piece:
-                    if (piece_row[index].getPiece().isFriendly()) {
+                    if (piece_row[index].piece.color == PlayerColor.BLACK) {
 
                         console.log("---------------------------------debug-----------------------------")
                         start_flag = parseInt(index) + 1; // the index is not added, but the next one is.
@@ -403,7 +403,7 @@ class BlackChariot extends Chariot {
                 // 检查该车的右边
                 else if (parseInt(index) > X_coor - 1) {
                     //if the point holds a friendly piece:
-                    if (piece_row[index].getPiece().isFriendly())
+                    if (piece_row[index].piece.color == PlayerColor.BLACK)
                         end_flag = parseInt(index) - 1; // Friendly blocking: the index is not added, but the previous one is.
                     else
                         end_flag = parseInt(index)
