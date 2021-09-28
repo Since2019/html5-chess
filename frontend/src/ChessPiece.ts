@@ -227,6 +227,13 @@ abstract class Piece {
 
                 console.log(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]))
 
+                let target_point = this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1])
+                if (!this.movablePoints().includes(target_point)) {
+                    console.log("不能这么走！！！")
+                    return
+
+                }
+
                 // ①.a 如果不是 [-1, -1], 说明玩家选择了某个格子
                 if (this.board.target_coordinate[0] != -1 && this.board.target_coordinate[1] != -1) {
 

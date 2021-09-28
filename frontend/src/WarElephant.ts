@@ -148,14 +148,6 @@ abstract class WarElephant extends Piece {
 
     }
 
-
-
-
-
-
-
-
-
 }
 
 class BlackWarElephant extends WarElephant {
