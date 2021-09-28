@@ -1,7 +1,7 @@
 import Log from "../Util";
 import { Board } from "./Boards";
 import { RedChariot, BlackChariot } from "./Chariot";
-import { Point, PlayerColor } from "./frontend-utils";
+import { Point, PlayerColor, fitSize } from "./frontend-utils";
 import { BlackGeneral, RedGeneral } from "./General";
 import { BlackCannon, RedCannon } from "./Cannon"; './Cannon';
 
@@ -201,6 +201,7 @@ class Game {
 const game = new Game();
 
 game.render();
+fitSize()
 
 export {
     Game

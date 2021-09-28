@@ -151,10 +151,21 @@ function fitSize() {
         })
         //fiting sizes for the grids
         .then(() => {
+
             $('.className_grid_div').css('width', parseInt(board.css('width')) / 11)
             $('.className_grid_div').css('height', parseInt(board.css('height')) / 10)
             $('.className_grid_div').css('z-index', 10)
             $('.className_grid_div').css('margin', 0)
+            console.log("board.css++++++++++++++++++++++++++")
+
+            console.log($('.className_grid_div').css('width'));
+
+            $('#board').css("grid-template-columns", `repeat(9,${$('.className_grid_div').css('width')})`);
+            // $('#board').css("grid-column-gap", '0.3em');
+            $('#board').css("column-gap", '0.3em');
+            $('#board').css('justify-content', 'center')
+
+
         })
         //fiting sizes for the pieces
         .then(() => {

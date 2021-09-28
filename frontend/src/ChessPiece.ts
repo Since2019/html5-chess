@@ -484,13 +484,13 @@ abstract class Piece {
             console.log("you have zoomed in the page i.e more than 100%");
             getZoomedRatio();
             getChessBoardSize();
-            $('.className_grid_div').css('width', SIDE_LENGTH * (getZoomedRatio() / 100))
-            $('.className_grid_div').css('height', SIDE_LENGTH * (getZoomedRatio() / 100))
-            $('.pieces').css('width', SIDE_LENGTH * (getZoomedRatio() / 100))
-            $('.pieces').css('height', SIDE_LENGTH * (getZoomedRatio() / 100))
+            $('.className_grid_div').css('width', SIDE_LENGTH * (getZoomedRatio() / 100));
+            $('.className_grid_div').css('height', SIDE_LENGTH * (getZoomedRatio() / 100));
+            $('.pieces').css('width', SIDE_LENGTH * (getZoomedRatio() / 100));
+            $('.pieces').css('height', SIDE_LENGTH * (getZoomedRatio() / 100));
             $("#board").css("width", $("#board").css('height'));
-
-            $("#id_chessboard").css("width", $("#board").css('width'))
+            $('#board').css('column-gap', '0px');
+            $("#id_chessboard").css("width", $("#board").css('width'));
 
         } else {
             console.log("you have zoomed out i.e less than 100%")

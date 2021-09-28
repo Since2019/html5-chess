@@ -50,13 +50,14 @@
 <!-- <script src="../build/frontend/board.js"></script> -->
 
 <script>
-    $("<img width='45%'  src='./img/antontw_chinese_chess_plate.svg'/>");
+    // $("<img width='45%' id='board-svg' src='./img/antontw_chinese_chess_plate.svg'/>");
     // $('#app').css('background-image','url(./img/antontw_chinese_chess_plate.svg)')
 </script>
 
 
 <!-- get position clicked -->
 <script>
+    $('#board').css("grid-template-columns", `repeat(9,${$('.className_grid_div').css('width')})`);
 
     function getPosInViewPort() {
         console.log("inside myfunc()")
