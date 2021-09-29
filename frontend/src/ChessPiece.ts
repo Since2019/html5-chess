@@ -151,7 +151,7 @@ abstract class Piece {
      *  then it highlights all the grids
      */
     private attachSelectPieceListener() {
-        this.board.getUcciString();
+
 
         console.log("attachSelectPieceListener, check active:")
         console.log(this.board.active_piece)
@@ -159,6 +159,7 @@ abstract class Piece {
 
         // 点击了棋子的img之后
         $(this.elem).on('click', (e) => {
+            this.board.getUcciString();
 
             if (this.board.active_piece) {
                 console.log("其他棋子还没走呢！")

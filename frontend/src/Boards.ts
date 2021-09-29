@@ -127,7 +127,8 @@ class Board {
             for (let point of row_arr) {
                 if (point.piece) {
                     if (empty_points != 0) {
-                        ret_string += empty_points + ''
+                        ret_string += empty_points + '';
+                        empty_points = 0;
                     }
                     ret_string += point.piece.piece_role;
                 }
@@ -135,8 +136,14 @@ class Board {
                     empty_points++;
                 }
             }
-            if (row != 9)
-                ret_string += '/'
+
+            if (row != 9) {
+                if (empty_points != 0) {
+                    ret_string += empty_points + ''
+                }
+                ret_string += '/';
+            }
+
 
         }
         // 
