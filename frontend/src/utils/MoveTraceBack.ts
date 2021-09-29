@@ -16,14 +16,14 @@ enum BIG_EVENT {
 // 走的一步
 class MoveRecord {
     playerColor: PlayerColor | null;
-    pieceRole: PieceRole | null;
+    pieceRole: string | null;
     startPoint: Point | null;
     endPoint: Point | null;
 
 
     constructor(
         playerColor: PlayerColor, // 谁走的
-        pieceRole: PieceRole,     // 什么棋子
+        pieceRole: string | null, //     // 什么棋子
         startPoint: Point,        // 从哪里
         endpoint: Point           // 到哪里
 

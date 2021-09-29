@@ -20,16 +20,44 @@ import { getZoomedRatio, getChessBoardSize, Point, SIDE_LENGTH, PlayerColor } fr
 // }
 
 // 棋子类型
-enum PieceRole {
-    'General',
-    'Advisor',
-    'WarElephant',
-    'Chariot',
-    'Cavalry',
-    'Cannon',
-    'FootSoldier'
+var PieceRole = {
+    General: 'General',
+    Advisor: 'Advisor',
+    WarElephant: 'Bishop',
+    Chariot: 'Rook',
+    Cavalry: 'Night', // Knight
+    Cannon: 'Cannon',
+    Soldier: 'Pawn',
 }
 
+var PieceRoleDict = {
+    0: 'General',
+    1: 'Advisor',
+    2: 'WarElephant',
+    3: 'Chariot',
+    4: 'Cavalry',
+    5: 'Cannon',
+    6: 'FootSoldier',
+
+    // // RED
+    // RedGeneral: 'G',
+    // RedAdvisor: 'A',
+    // RedElephant: 'B',
+    // RedChariot: 'R',
+    // RedCavalry: 'N',
+    // RedCannon: 'C',
+    // RedFootSoldier: 'P',
+
+    // // BLACK
+    // BlackGeneral: 'g',
+    // BlackAdvisor: 'A',
+    // BlackElephant: 'B',
+    // BlackChariot: 'R',
+    // BlackCavalry: 'N',
+    // BlackCannon: 'C',
+    // BlackFootSoldier: 'P',
+
+}
 
 abstract class Piece {
     // TODO : Lacking of a function that does valid position check
@@ -42,14 +70,26 @@ abstract class Piece {
     protected ratio: number;       //
     protected point: Point;        // 现在所处的位置
 
-    protected piece_role!: PieceRole;
+    protected piece_role!: string;
     protected color: PlayerColor;
 
     protected elem: HTMLImageElement;
     protected state: number;
 
 
-    constructor(point: Point, board: Board, role: PieceRole, color: PlayerColor) {
+    protected piece_role_dict = {
+        General: 'King',
+        Advisor: 'Advisor',
+        WarElephant: 'Bishop',
+        Chariot: 'Rook',
+        Cavalry: 'Night', // Knight
+        Cannon: 'Cannon',
+        Soldier: 'Pawn',
+
+    }
+
+
+    constructor(point: Point, board: Board, role: string, color: PlayerColor) {
         // 与移动相关      
         this.point = point;                                  // 被置于某个点
         // this.has_moved = false;                           // 是否已经被移动
@@ -58,8 +98,16 @@ abstract class Piece {
 
         // 与棋子属性相关
         this.board = board;
-        this.piece_role = role;
+
         this.color = color;
+
+        if (this.color == PlayerColor.RED) {
+            this.piece_role = role[0].toUpperCase();
+        }
+        else if (this.color == PlayerColor.BLACK) {
+            this.piece_role = role[0].toLowerCase();
+        }
+
 
         this.elem = document.createElement("img");
 
@@ -103,6 +151,8 @@ abstract class Piece {
      *  then it highlights all the grids
      */
     private attachSelectPieceListener() {
+        this.board.getUcciString();
+
         console.log("attachSelectPieceListener, check active:")
         console.log(this.board.active_piece)
         // TODO：需要写一个逻辑，判断是否之前已经点过一个棋子
@@ -384,7 +434,7 @@ abstract class Piece {
      * 获取棋子的类型
      * Get Piece Role
      */
-    public getRole(): PieceRole {
+    public getRole(): string {
         return this.piece_role;
     }
 
@@ -523,7 +573,7 @@ abstract class Piece {
         $(this.elem).addClass('pieces');
 
         //add className for the HTML <img> of the piece - PieceRole
-        $(this.elem).addClass(PieceRole[this.piece_role].toString());
+        $(this.elem).addClass(this.piece_role.toString());
 
         //add className for the HTML <img> of the piece - PieceColor
         $(this.elem).addClass(PlayerColor[this.color].toString());

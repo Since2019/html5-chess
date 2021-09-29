@@ -10,7 +10,7 @@ abstract class Cavalry extends Piece {
         board: Board,
         color: PlayerColor
     ) {
-        super(point, board, PieceRole.WarElephant, color);
+        super(point, board, PieceRole.Cavalry, color);
     }
 
     /**

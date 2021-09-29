@@ -9,7 +9,7 @@ abstract class FootSoldier extends Piece {
         board: Board,
         color: PlayerColor
     ) {
-        super(point, board, PieceRole.FootSoldier, color);
+        super(point, board, PieceRole.Soldier, color);
     }
 
     /**

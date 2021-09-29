@@ -1,7 +1,7 @@
 import { fitSize, getZoomedRatio, Point, SIDE_LENGTH } from "./frontend-utils";
 import { Piece, PieceRole } from './ChessPiece'
 
-import {Game} from './Game'
+import { Game } from './Game'
 
 // 棋盘
 class Board {
@@ -15,14 +15,14 @@ class Board {
 
     image?: HTMLImageElement;
 
-    active_piece?:Piece;
+    active_piece?: Piece;
 
     target_coordinate: number[];
 
-    game : Game;
+    game: Game;
 
 
-    constructor(game:Game) {
+    constructor(game: Game) {
         // 游戏和棋盘要耦合
         this.game = game;
 
@@ -31,7 +31,7 @@ class Board {
         this.side_length = this.ratio * 0.01 * SIDE_LENGTH;
 
         // 玩家选择的下一个位置
-        this.target_coordinate = [-1 , -1]
+        this.target_coordinate = [-1, -1]
 
         //A.K.A points.
         this.intersections = new Array<Array<any>>();
@@ -52,7 +52,7 @@ class Board {
                 // 9
                 // 10
 
-                this.intersections[i][j] = (new Point((i+1), (j+1)));
+                this.intersections[i][j] = (new Point((i + 1), (j + 1)));
             }
         }
     }
@@ -74,25 +74,25 @@ class Board {
     }
 
     // 从HTML Element的ID中获取坐标
-    public getCoordinateFromElemId(id:string){
+    public getCoordinateFromElemId(id: string) {
         // grid_div_5_6
         console.log(id)
         let split_arr = id.split('_');
-        
-        let coor_x =  split_arr[2];
-        let coor_y =  split_arr[3];
 
-        return [parseInt(coor_x) ,parseInt(coor_y)]
+        let coor_x = split_arr[2];
+        let coor_y = split_arr[3];
+
+        return [parseInt(coor_x), parseInt(coor_y)]
 
     }
 
     // Check for valid x coordinate
     private validateXCoordinate(x: number): boolean {
-        return x >= 1 && x <= 9; 
+        return x >= 1 && x <= 9;
     }
 
     // Check for valid y coordinate
-    private validateYCoordinate(y: number):boolean {
+    private validateYCoordinate(y: number): boolean {
         return y >= 1 && y <= 10;
     }
 
@@ -114,7 +114,37 @@ class Board {
         return col;
     }
 
-    
+    public getUcciString() {
+
+        console.log("in getUcciString() +++++++++++++++++=========");
+        let ret_string = ""
+
+
+        for (let row = 0; row <= 9; row++) { // 10行
+            let row_arr = this.getRowFromYCoordinate(row + 1);
+            let empty_points = 0
+
+            for (let point of row_arr) {
+                if (point.piece) {
+                    if (empty_points != 0) {
+                        ret_string += empty_points + ''
+                    }
+                    ret_string += point.piece.piece_role;
+                }
+                else {
+                    empty_points++;
+                }
+            }
+            if (row != 9)
+                ret_string += '/'
+
+        }
+        // 
+        console.log(ret_string);
+        return ret_string;
+    }
+
+
 
 
     detectZoom() {
@@ -162,12 +192,12 @@ class Board {
         $('.className_grid_div').css('background-color', 'rgba(255,0,0,0.3)');
 
         //fits the size when resizing
-        $(window).on('resize',function () {
+        $(window).on('resize', function () {
             fitSize();
         });
 
         //fixed the size issue upon entry
-        $(document).on('ready',()=>{
+        $(document).on('ready', () => {
             fitSize();
         });
 

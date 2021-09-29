@@ -50,6 +50,7 @@ class RedAdvisor extends Advisor {
 
     constructor(board: Board, point: Point) {
         super(point, board, PlayerColor.RED);
+        // this.piece_role = this.piece_role.substring(0, 1).toUpperCase();
         this.elem.src = '../img/pieces/red-shi.png';
         this.board = board;
         this.point.setPiece(this); //sets the piece to the point.
@@ -142,6 +143,8 @@ class BlackAdvisor extends Advisor {
 
     constructor(board: Board, point: Point) {
         super(point, board, PlayerColor.BLACK);
+        // this.piece_role = this.piece_role.substring(0, 1).toLowerCase();
+
         this.elem.src = '../img/pieces/black-shi.png';
         this.board = board;
         this.point.setPiece(this); //sets the piece to the point.
