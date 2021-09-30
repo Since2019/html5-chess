@@ -21,7 +21,7 @@ import { getZoomedRatio, getChessBoardSize, Point, SIDE_LENGTH, PlayerColor } fr
 
 // 棋子类型
 var PieceRole = {
-    General: 'General',
+    General: 'King',
     Advisor: 'Advisor',
     WarElephant: 'Bishop',
     Chariot: 'Rook',
@@ -38,25 +38,6 @@ var PieceRoleDict = {
     4: 'Cavalry',
     5: 'Cannon',
     6: 'FootSoldier',
-
-    // // RED
-    // RedGeneral: 'G',
-    // RedAdvisor: 'A',
-    // RedElephant: 'B',
-    // RedChariot: 'R',
-    // RedCavalry: 'N',
-    // RedCannon: 'C',
-    // RedFootSoldier: 'P',
-
-    // // BLACK
-    // BlackGeneral: 'g',
-    // BlackAdvisor: 'A',
-    // BlackElephant: 'B',
-    // BlackChariot: 'R',
-    // BlackCavalry: 'N',
-    // BlackCannon: 'C',
-    // BlackFootSoldier: 'P',
-
 }
 
 abstract class Piece {
