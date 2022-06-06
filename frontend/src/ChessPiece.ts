@@ -3,6 +3,7 @@ import Log from "../../src/Util";
 import { Board } from "./Boards";
 import { getZoomedRatio, getChessBoardSize, Point, SIDE_LENGTH, PlayerColor } from "./frontend-utils";
 
+import { FenNotation } from "./utils/FenNotation"
 
 
 // used in class Piece
@@ -30,15 +31,6 @@ var PieceRole = {
     Soldier: 'Pawn',
 }
 
-var PieceRoleDict = {
-    0: 'General',
-    1: 'Advisor',
-    2: 'WarElephant',
-    3: 'Chariot',
-    4: 'Cavalry',
-    5: 'Cannon',
-    6: 'FootSoldier',
-}
 
 abstract class Piece {
     // TODO : Lacking of a function that does valid position check
@@ -57,7 +49,6 @@ abstract class Piece {
     protected elem: HTMLImageElement;
     protected state: number;
 
-
     protected piece_role_dict = {
         General: 'King',
         Advisor: 'Advisor',
@@ -66,7 +57,6 @@ abstract class Piece {
         Cavalry: 'Night', // Knight
         Cannon: 'Cannon',
         Soldier: 'Pawn',
-
     }
 
 
@@ -78,10 +68,10 @@ abstract class Piece {
 
 
         // 与棋子属性相关
-        this.board = board;
+        this.board = board;                                  // 所在的棋盘
+        this.color = color;                                  // 棋子颜色
 
-        this.color = color;
-
+        // FEN Notation 当中，小写表示黑方，大写表示红方
         if (this.color == PlayerColor.RED) {
             this.piece_role = role[0].toUpperCase();
         }
@@ -89,7 +79,7 @@ abstract class Piece {
             this.piece_role = role[0].toLowerCase();
         }
 
-
+        // 棋子的数据和显示是分开的 HTML Element
         this.elem = document.createElement("img");
 
         // 与棋子大小有关
@@ -102,6 +92,7 @@ abstract class Piece {
         // 2 -> moved, refesh state to 0
         this.state = 0;
 
+        // this.fenNotation = new FenNotation()
 
         $(window).on('mousedown', (e) => {
             e.preventDefault(); //get rid of non-game experience (selecting pictures and stuff)
@@ -134,21 +125,28 @@ abstract class Piece {
     private attachSelectPieceListener() {
 
 
-        console.log("attachSelectPieceListener, check active:")
+        // console.log("attachSelectPieceListener, check active:")
         console.log(this.board.active_piece)
         // TODO：需要写一个逻辑，判断是否之前已经点过一个棋子
 
         // 点击了棋子的img之后
         $(this.elem).on('click', (e) => {
-            this.board.getUcciString();
 
-            if (this.board.active_piece) {
-                console.log("其他棋子还没走呢！")
+            if (this.board.active_piece &&
+                this.board.active_piece != this) {
+                console.log("之前选中了其他的棋子");
+
+                if (this.board.active_piece && this.getCurrentPlayer() == this.color) {
+                    this.board.active_piece.active = false;
+                    this.board.active_piece = undefined;
+
+                    return;
+                }
+
             }
             else {
-                console.log("其他棋子走过了");
-
-                console.log('点击了棋子：');
+                console.log('新点击了棋子：');
+                console.log(this.piece_role);
                 console.log(this.elem);
 
                 e.preventDefault();
@@ -260,11 +258,14 @@ abstract class Piece {
                 console.log(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]))
 
                 let target_point = this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1])
+
+                // 可以走的点不存在于这个Array上
                 if (!this.movablePoints().includes(target_point)) {
                     console.log("不能这么走！！！")
                     return
-
                 }
+
+
 
                 // ①.a 如果不是 [-1, -1], 说明玩家选择了某个格子
                 if (this.board.target_coordinate[0] != -1 && this.board.target_coordinate[1] != -1) {
@@ -272,10 +273,10 @@ abstract class Piece {
                     // 增加一个判断条件，看这个位置是否有棋子
                     // TODO: check if the point's 'piece' key is available at all?
                     if (this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).hasPiece()) {
-                        console.log("该点有棋子")
 
-                        console.log("=========================== debug =================================")
-                        console.log(this.isFriendly(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).getPiece()))
+                        // console.log("=========================== debug =================================")
+                        // console.log("该点有棋子")
+                        // console.log(this.isFriendly(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).getPiece()))
 
                         // 棋子是自己人的
                         // 那么选中的棋子则换为该棋子
@@ -306,9 +307,8 @@ abstract class Piece {
                             // 目标Point中移除piece
                             delete this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).piece
 
-                            console.log("=========  debug ===========")
-                            console.log(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]))
-
+                            // console.log("=========  debug ===========")
+                            // console.log(this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]))
 
                             // 目标Point.elem 移除 HTML元素
                             this.board.getPointFromCoordinates(this.board.target_coordinate[0], this.board.target_coordinate[1]).elem.innerHTML = '';
@@ -361,6 +361,7 @@ abstract class Piece {
             }
 
 
+
             this.removeMoveToGridListener()
             // $('.className_grid_div').unbind('click');  // HACK after clicking, we need to get rid of the listener
             // $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
@@ -379,6 +380,7 @@ abstract class Piece {
         $('.className_grid_div').css('background', 'rgba(0,0,0,0.0)') // setting back the background to non-colored and transparent
     }
 
+    // 可以走的点
     public movablePoints(): Point[] {
         Log.trace('movable points of a piece')
         return []
@@ -395,18 +397,18 @@ abstract class Piece {
         this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.removeChild(this.elem);
         delete this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].piece;
 
-        // console.log("===================== debug ==============================");
-        // console.log(this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1])
-
         // 更换到新的点
         this.point = point;
         this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.appendChild(this.elem);
         this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].piece = this
 
-        console.log(this.board.intersections);
-        console.log(this.point);
-        console.log(this.point.x_coor);
-        console.log(this.point.y_coor);
+
+
+        this.board.getFenString();
+
+        this.board.increaseFullMoveCount();
+
+        console.log("当前的FEN string:", this.board.getFenString());
     }
 
 
@@ -425,7 +427,9 @@ abstract class Piece {
      * Get Piece Color
      */
     public getColor(): PlayerColor {
+
         return this.color;
+
     }
 
     public getCurrentPlayer(): PlayerColor {
@@ -474,7 +478,8 @@ abstract class Piece {
 
 
     /**
-    * @param point Check if a point has a piece with the same side
+    * @param point Check if a point has a piece with the same side 
+    *              判断传入的参数中的该枚棋子是否是友军
     */
     protected isFriendly(piece: Piece): boolean {
         // console.log(piece)
@@ -585,7 +590,10 @@ abstract class Piece {
 
 
         // TODO: click events:
+    }
 
+    destroy() {
+        this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.remove(this.elem) // encapsulates the next line of code;
     }
 }
 
