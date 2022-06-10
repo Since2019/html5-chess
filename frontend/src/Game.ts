@@ -10,7 +10,7 @@ import { RedPawn, BlackPawn } from './ChessPieces/Pawn'
 
 
 import { RedAdvisor, BlackAdvisor } from './ChessPieces/Advisor';
-import { BlackWarElephant, RedWarElephant } from './ChessPieces/WarElephant'
+import { BlackWarElephant, RedWarElephant } from './ChessPieces/Bishop'
 
 import { BlackKnight, RedKnight } from './ChessPieces/Knight';
 

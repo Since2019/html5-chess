@@ -1,7 +1,7 @@
 // 阿拉伯数字暗示是黑棋
 // 中文数字则是红棋
 
-import { PieceRole } from '../ChessPiece';
+import { PieceRole } from '../ChessPieces/ChessPiece';
 import { PlayerColor, Point } from '../frontend-utils'
 
 

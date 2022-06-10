@@ -1,5 +1,5 @@
 import { Console } from "console";
-import Log from "../../src/Util";
+import Log from "../../../src/Util";
 import { Board } from "../Boards";
 import { getZoomedRatio, getChessBoardSize, Point, SIDE_LENGTH, PlayerColor } from "../frontend-utils";
 

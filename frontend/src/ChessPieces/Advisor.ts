@@ -1,4 +1,4 @@
-import Log from "../Util";
+import Log from "../../../src/Util";
 import { Board } from "../Boards";
 import { Piece, PieceRole, PlayerColor } from "./ChessPiece";
 import { Point } from "../frontend-utils";

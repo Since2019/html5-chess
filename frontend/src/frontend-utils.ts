@@ -1,6 +1,6 @@
 import Log from "../../src/Util";
 import { Board } from "./Boards";
-import { Piece } from './ChessPiece'
+import { Piece } from './ChessPieces/ChessPiece'
 
 // // used in class Piece
 // enum PieceColor {

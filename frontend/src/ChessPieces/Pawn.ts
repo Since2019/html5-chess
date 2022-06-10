@@ -1,6 +1,6 @@
-import { Board } from "./Boards";
+import { Board } from "../Boards";
 import { Piece, PieceRole, PlayerColor } from "./ChessPiece";
-import { Point } from "./frontend-utils";
+import { Point } from "../frontend-utils";
 
 abstract class Pawn extends Piece {
 
