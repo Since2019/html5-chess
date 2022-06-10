@@ -49,12 +49,48 @@ function getChessBoardSize() {
 }
 
 
+
+
 // The vertical lines are known as files (Chinese: 路; pinyin: lù; "road")
 // the horizontal lines are known as ranks 线 xiàn; "line"
 class Point {
+
+    UcciXCoorMap = new Map<number, string>(
+        [
+            [1, "a"],
+            [2, "b"],
+            [3, "c"],
+            [4, "d"],
+            [5, "e"],
+            [6, "f"],
+            [7, "g"],
+            [8, "h"],
+            [9, "i"],
+        ]
+    );
+
+    UcciYCoorMap = new Map<number, string>(
+        [
+            [0, "10"],
+            [1, "9"],
+            [2, "8"],
+            [3, "7"],
+            [4, "6"],
+            [5, "5"],
+            [6, "4"],
+            [7, "3"],
+            [8, "2"],
+            [9, "1"],
+        ]
+    );
+
     // 坐标
     x_coor: number;
     y_coor: number;
+
+
+    ucci_x_coor: string | undefined;
+    ucci_y_coor: string | undefined;
 
     elem: HTMLElement; // HTML <div> elements are bound with each point
 
@@ -96,6 +132,11 @@ class Point {
         // this.board = board;
         this.x_coor = col; //col -> verticle
         this.y_coor = row; //row -> horizontal
+
+        // 点所在的 UCCI  坐标
+        this.ucci_x_coor = this.UcciXCoorMap.get(col);
+        this.ucci_y_coor = this.UcciYCoorMap.get(row);
+
 
         // A dummy element for initialization first and then update in method
         this.elem = document.createElement('div');
