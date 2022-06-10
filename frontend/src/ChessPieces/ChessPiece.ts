@@ -1,9 +1,9 @@
 import { Console } from "console";
 import Log from "../../src/Util";
-import { Board } from "./Boards";
-import { getZoomedRatio, getChessBoardSize, Point, SIDE_LENGTH, PlayerColor } from "./frontend-utils";
+import { Board } from "../Boards";
+import { getZoomedRatio, getChessBoardSize, Point, SIDE_LENGTH, PlayerColor } from "../frontend-utils";
 
-import { FenNotation } from "./utils/FenNotation"
+import { FenNotation } from "../utils/FenNotation"
 
 
 // used in class Piece
@@ -393,7 +393,7 @@ abstract class Piece {
     //sets the point of the piece
     public moveToPoint(point: Point) {
 
-        // 删除原来的元素
+        // 删除原来的html元素
         this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.removeChild(this.elem);
         delete this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].piece;
 

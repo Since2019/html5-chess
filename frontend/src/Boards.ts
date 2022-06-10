@@ -1,7 +1,9 @@
 import { fitSize, getZoomedRatio, Point, SIDE_LENGTH } from "./frontend-utils";
-import { Piece, PieceRole } from './ChessPiece'
+import { Piece, PieceRole } from './ChessPieces/ChessPiece'
 
 import { Game } from './Game'
+
+import { FenNotation } from "./utils/FenNotation"
 
 // 棋盘
 class Board {
@@ -21,6 +23,12 @@ class Board {
 
     game: Game;
 
+    moves: number;
+
+    half_move_counter: number;
+
+    full_move_counter: number;
+
 
     constructor(game: Game) {
         // 游戏和棋盘要耦合
@@ -36,21 +44,30 @@ class Board {
         //A.K.A points.
         this.intersections = new Array<Array<any>>();
 
+        this.moves = 0;
+        this.half_move_counter = 0;
+        this.full_move_counter = 1;
+
         for (let i = 0; i < 9; i++) {
             this.intersections[i] = [];
             for (let j = 0; j < 10; j++) {
 
-                // 1 2 3 4 5 6 7 8 9
-                // 2
-                // 3
-                // 4
-                // 5
 
-                // 6
-                // 7
-                // 8
-                // 9
-                // 10
+                // UCCI坐标
+
+                //     a b c d e f g h i
+
+                // (9) 1 2 3 4 5 6 7 8 9
+                // (8) 2
+                // (7) 3
+                // (6) 4
+                // (5) 5
+
+                // (4) 6
+                // (3) 7
+                // (2) 8
+                // (1) 9
+                // (0) 10
 
                 this.intersections[i][j] = (new Point((i + 1), (j + 1)));
             }
@@ -114,17 +131,19 @@ class Board {
         return col;
     }
 
-    public getUcciString() {
 
-        console.log("in getUcciString() +++++++++++++++++=========");
+
+    // 获取局面字符串
+    private getPiecePlacementString() {
+        console.log("Getting Piece Placement:");
         let ret_string = ""
-
 
         for (let row = 0; row <= 9; row++) { // 10行
             let row_arr = this.getRowFromYCoordinate(row + 1);
             let empty_points = 0
 
             for (let point of row_arr) {
+                // 坐标中有棋子
                 if (point.piece) {
                     if (empty_points != 0) {
                         ret_string += empty_points + '';
@@ -132,6 +151,7 @@ class Board {
                     }
                     ret_string += point.piece.piece_role;
                 }
+                // 
                 else {
                     empty_points++;
                 }
@@ -150,6 +170,45 @@ class Board {
         console.log(ret_string);
         return ret_string;
     }
+
+
+    private getActiveColor(): string {
+        if (this.active_piece)
+            return this.active_piece.getColor().toString();
+        else
+            return ""
+    }
+
+
+
+
+    public increaseHalfMovementCount() {
+        this.half_move_counter++;
+
+    }
+
+
+    public increaseFullMoveCount() {
+        // TODO:   write a full move counter updater
+        this.full_move_counter++;
+    }
+
+
+
+
+    /**
+     * 
+     * @returns the FEN notation, for the use of chess engines
+     */
+    public getFenString() {
+        return new FenNotation(
+            this.getPiecePlacementString(),
+            this.getActiveColor(),
+            this.half_move_counter,
+            this.full_move_counter)
+            .getFenNotation()
+    }
+
 
 
 

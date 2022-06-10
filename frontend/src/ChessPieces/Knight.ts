@@ -1,9 +1,9 @@
-import Log from "../../src/Util";
-import { Board } from "./Boards";
+import Log from "../Util";
+import { Board } from "../Boards";
 import { Piece, PieceRole, PlayerColor } from "./ChessPiece";
-import { Point } from "./frontend-utils";
+import { Point } from "../frontend-utils";
 
-abstract class Cavalry extends Piece {
+abstract class Knight extends Piece {
 
     constructor(
         point: Point,
@@ -278,7 +278,7 @@ abstract class Cavalry extends Piece {
 
 }
 
-class BlackCavalry extends Cavalry {
+class BlackKnight extends Knight {
 
     protected board: Board;
 
@@ -295,7 +295,7 @@ class BlackCavalry extends Cavalry {
     }
 }
 
-class RedCavalry extends Cavalry {
+class RedKnight extends Knight {
 
     protected board: Board;
 
@@ -312,6 +312,6 @@ class RedCavalry extends Cavalry {
     }
 }
 export {
-    BlackCavalry,
-    RedCavalry
+    BlackKnight,
+    RedKnight
 }

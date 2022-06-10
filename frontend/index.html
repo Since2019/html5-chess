@@ -18,6 +18,8 @@
 
         </div>
 
+        <div>Chat Box</div>
+
 
         <!-- id 的名字应该 intuitive -->
         <div id='button-container-div'>
@@ -35,9 +37,7 @@
             <button id='restart-button'>
                 Restart
             </button>
-
         </div>
-
 
     </div>
     <!-- Assume index.js is the compiled output of index.ts -->
@@ -48,11 +48,6 @@
 <!-- <script src="../build/frontend/chesspieces.js"></script> -->
 <script src="./bundle.js"></script>
 <!-- <script src="../build/frontend/board.js"></script> -->
-
-<script>
-    // $("<img width='45%' id='board-svg' src='./img/antontw_chinese_chess_plate.svg'/>");
-    // $('#app').css('background-image','url(./img/antontw_chinese_chess_plate.svg)')
-</script>
 
 
 <!-- get position clicked -->
@@ -87,13 +82,16 @@
     let start_button = document.getElementById('start-button')
     start_button.addEventListener('click', (e) => {
         // 开始
+
     })
 
     let restart_button = document.getElementById('restart-button')
     restart_button.addEventListener('click', (e) => {
         // 重开
+        // 调用 Game.restart()
     })
     // ^^^^^^^^^^^^^^^ UCI engine related ^^^^^^^^^^^^^^^^^^^^^
+
 
 
 

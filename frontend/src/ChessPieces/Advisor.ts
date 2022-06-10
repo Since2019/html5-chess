@@ -1,8 +1,10 @@
-import Log from "../../src/Util";
-import { Board } from "./Boards";
+import Log from "../Util";
+import { Board } from "../Boards";
 import { Piece, PieceRole, PlayerColor } from "./ChessPiece";
-import { Point } from "./frontend-utils";
+import { Point } from "../frontend-utils";
 
+
+// 士 
 abstract class Advisor extends Piece {
 
     constructor(
@@ -11,6 +13,8 @@ abstract class Advisor extends Piece {
         color: PlayerColor
     ) {
         super(point, board, PieceRole.Advisor, color);
+
+
     }
 
     /**
@@ -234,6 +238,6 @@ class BlackAdvisor extends Advisor {
 }
 
 export {
-    RedAdvisor,
-    BlackAdvisor
+    RedAdvisor as RedAdvisor,
+    BlackAdvisor as BlackAdvisor
 }

@@ -1,7 +1,7 @@
-import Log from "../../src/Util";
-import { Board } from "./Boards";
+import Log from "../Util";
+import { Board } from "../Boards";
 import { Piece, PieceRole, PlayerColor } from "./ChessPiece";
-import { Point } from "./frontend-utils";
+import { Point } from "../frontend-utils";
 
 abstract class WarElephant extends Piece {
 

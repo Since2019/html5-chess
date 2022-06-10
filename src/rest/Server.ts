@@ -20,12 +20,12 @@ export default class Server {
     }
 
 
-     /**
-     * Stops the server. Again returns a promise so we know when the connections have
-     * actually been fully closed and the port has been released.
-     *
-     * @returns {Promise<boolean>}
-     */
+    /**
+    * Stops the server. Again returns a promise so we know when the connections have
+    * actually been fully closed and the port has been released.
+    *
+    * @returns {Promise<boolean>}
+    */
     public stop(): Promise<boolean> {
         Log.info("Server::close()");
         const that = this;
@@ -34,9 +34,9 @@ export default class Server {
                 fulfill(true);
             });
         });
-    } 
-    
-    
+    }
+
+
     /**
     * Starts the server. Returns a promise with a boolean value. Promises are used
     * here because starting the server takes some time and we want to know when it
@@ -44,51 +44,52 @@ export default class Server {
     *
     * @returns {Promise<boolean>}
     */
-   public start(): Promise<boolean> {
-       const that = this;
-       return new Promise(function (fulfill, reject) {
-           try {
-               Log.info("Server::start() - start");
+    public start(): Promise<boolean> {
+        const that = this;
+        return new Promise(function (fulfill, reject) {
+            try {
+                Log.info("Server::start() - start");
 
-               that.rest = 
-               that.rest.use(restify.plugins.bodyParser({mapFiles: true, mapParams: true}));
-               that.rest.use(
-                   function crossOrigin(req, res, next) {
-                       res.header("Access-Control-Allow-Origin", "*");
-                       res.header("Access-Control-Allow-Headers", "X-Requested-With");
-                       return next();
-                   });
+                that.rest =
+                    that.rest.use(restify.plugins.bodyParser({ mapFiles: true, mapParams: true }));
+                that.rest.use(
+                    function crossOrigin(req, res, next) {
+                        res.header("Access-Control-Allow-Origin", "*");
+                        res.header("Access-Control-Allow-Headers", "X-Requested-With");
+                        return next();
+                    });
 
-               // This is an example endpoint that you can invoke by accessing this URL in your browser:
-               // http://localhost:4321/echo/hello
-               that.rest.get("/echo/:msg", Server.echo);
+                that.rest.get("/restart", () => console.log("restart"))
+                // This is an example endpoint that you can invoke by accessing this URL in your browser:
+                // http://localhost:4321/echo/hello
+                that.rest.get("/echo/:msg", Server.echo);
 
-               // NOTE: your endpoints should go here
-               
+                // NOTE: your endpoints should go here
 
-               // This must be the last endpoint!
-               that.rest.get("/*", Server.getStatic);
 
-               that.rest.listen(that.port, function () {
-                   Log.info("Server::start() - restify listening: " + that.rest.url);
-                   fulfill(true);
-               });
+                // This must be the last endpoint!
+                that.rest.get("/*", Server.getStatic);
 
-               that.rest.on("error", function (err: string) {
-                   // catches errors in restify start; unusual syntax due to internal
-                   // node not using normal exceptions here
-                   Log.info("Server::start() - restify ERROR: " + err);
-                   reject(err);
-               });
+                that.rest.listen(that.port, function () {
+                    Log.info("Server::start() - restify listening: " + that.rest.url);
+                    fulfill(true);
+                });
 
-           } catch (err) {
-               Log.error("Server::start() - ERROR: " + err);
-               reject(err);
-           }
-       });
-   }
+                that.rest.on("error", function (err: string) {
+                    // catches errors in restify start; unusual syntax due to internal
+                    // node not using normal exceptions here
+                    Log.info("Server::start() - restify ERROR: " + err);
+                    reject(err);
+                });
 
-   // The next two methods handle the echo service.
+            } catch (err) {
+                Log.error("Server::start() - ERROR: " + err);
+                reject(err);
+            }
+        });
+    }
+
+    // The next two methods handle the echo service.
     // These are almost certainly not the best place to put these, but are here for your reference.
     // By updating the Server.echo function pointer above, these methods can be easily moved.
     private static echo(req: restify.Request, res: restify.Response, next: restify.Next) {
@@ -96,10 +97,10 @@ export default class Server {
         try {
             const response = Server.performEcho(req.params.msg);
             Log.info("Server::echo(..) - responding " + 200);
-            res.json(200, {result: response});
+            res.json(200, { result: response });
         } catch (err) {
             Log.error("Server::echo(..) - responding 400");
-            res.json(400, {error: err});
+            res.json(400, { error: err });
         }
         return next();
     }

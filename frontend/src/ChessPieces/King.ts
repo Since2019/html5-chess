@@ -2,7 +2,7 @@ import { Board } from "./Boards";
 import { Piece, PieceRole, PlayerColor } from "./ChessPiece";
 import { Point } from "./frontend-utils";
 
-abstract class General extends Piece {
+abstract class King extends Piece {
 
     constructor(
         point: Point,
@@ -44,7 +44,7 @@ abstract class General extends Piece {
 
 }
 
-class RedGeneral extends General {
+class RedKing extends King {
 
     protected board: Board;
     constructor(board: Board, point: Point) {
@@ -142,7 +142,7 @@ class RedGeneral extends General {
 }
 
 
-class BlackGeneral extends General {
+class BlackKing extends King {
 
     constructor(board: Board, point: Point) {
         super(point, board, PlayerColor.BLACK);
@@ -240,6 +240,6 @@ class BlackGeneral extends General {
 }
 
 export {
-    RedGeneral,
-    BlackGeneral
+    RedKing,
+    BlackKing
 }

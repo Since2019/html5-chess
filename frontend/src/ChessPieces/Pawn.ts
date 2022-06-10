@@ -2,7 +2,7 @@ import { Board } from "./Boards";
 import { Piece, PieceRole, PlayerColor } from "./ChessPiece";
 import { Point } from "./frontend-utils";
 
-abstract class FootSoldier extends Piece {
+abstract class Pawn extends Piece {
 
     constructor(
         point: Point,
@@ -41,7 +41,7 @@ abstract class FootSoldier extends Piece {
         return !super.checkSameColorPieceInPoint(dest);
     }
 
-    protected isValidFootSoldierPosition(targetPoint: Point): boolean {
+    protected isValidPawnPosition(targetPoint: Point): boolean {
         return (targetPoint.getY() >= 1) && (targetPoint.getY() <= 10) && (targetPoint.getX() >= 1) && (targetPoint.getX() <= 9);
     }
 
@@ -49,7 +49,7 @@ abstract class FootSoldier extends Piece {
 }
 
 
-class RedFootSoldier extends FootSoldier {
+class RedPawn extends Pawn {
 
     constructor(board: Board, point: Point) {
         super(point, board, PlayerColor.RED);
@@ -81,7 +81,7 @@ class RedFootSoldier extends FootSoldier {
         let movable_points_before_landing: Point[] = [];
 
         // 面前的格子
-        if (front && this.isValidFootSoldierPosition(front)) {
+        if (front && this.isValidPawnPosition(front)) {
             movable_points_before_landing.push(front)
         }
 
@@ -103,19 +103,19 @@ class RedFootSoldier extends FootSoldier {
         let movable_points_after_landing: Point[] = [];
 
         // 面前的格子
-        if (front && this.isValidFootSoldierPosition(front)) {
+        if (front && this.isValidPawnPosition(front)) {
             movable_points_after_landing.push(front);
         }
 
         // 左边 
-        if (left && this.isValidFootSoldierPosition(left)) {
+        if (left && this.isValidPawnPosition(left)) {
             console.log('back.getPiece()');
             console.log(left.getPiece());
             movable_points_after_landing.push(left);
         }
 
         // 右边
-        if (right && this.isValidFootSoldierPosition(right)) {
+        if (right && this.isValidPawnPosition(right)) {
             console.log('back.getPiece()');
             console.log(right.getPiece());
             movable_points_after_landing.push(right);
@@ -127,7 +127,7 @@ class RedFootSoldier extends FootSoldier {
 }
 
 
-class BlackFootSoldier extends FootSoldier {
+class BlackPawn extends Pawn {
 
     constructor(board: Board, point: Point) {
         super(point, board, PlayerColor.BLACK);
@@ -161,7 +161,7 @@ class BlackFootSoldier extends FootSoldier {
         let movable_points_before_landing: Point[] = [];
 
         // 面前的格子
-        if (front && this.isValidFootSoldierPosition(front)) {
+        if (front && this.isValidPawnPosition(front)) {
             movable_points_before_landing.push(front)
         }
 
@@ -183,19 +183,19 @@ class BlackFootSoldier extends FootSoldier {
         let movable_points_after_landing: Point[] = [];
 
         // 面前的格子
-        if (front && this.isValidFootSoldierPosition(front)) {
+        if (front && this.isValidPawnPosition(front)) {
             movable_points_after_landing.push(front);
         }
 
         // 左边 
-        if (left && this.isValidFootSoldierPosition(left)) {
+        if (left && this.isValidPawnPosition(left)) {
             console.log('back.getPiece()');
             console.log(left.getPiece());
             movable_points_after_landing.push(left);
         }
 
         // 右边
-        if (right && this.isValidFootSoldierPosition(right)) {
+        if (right && this.isValidPawnPosition(right)) {
             console.log('back.getPiece()');
             console.log(right.getPiece());
             movable_points_after_landing.push(right);
@@ -207,6 +207,6 @@ class BlackFootSoldier extends FootSoldier {
 }
 
 export {
-    RedFootSoldier,
-    BlackFootSoldier
+    RedPawn,
+    BlackPawn
 }
