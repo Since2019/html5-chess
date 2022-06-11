@@ -38,6 +38,14 @@ class Game {
         return this.currentPlayer;
     }
 
+    public  getChessPieces(){
+        return this.chess_pieces;
+    }
+
+    public getBoard(): Board {
+        return this.board;
+    }
+
     //Switch current player to the other player
     //到另一个人下
     public alternatePlayer(): void {
@@ -217,13 +225,43 @@ class Game {
 
 }
 
+var game = new Game;
+
+const newGame = new Promise<Game>((resolve, reject) => {
+    
+    game.render();
+    resolve(game);
+
+}) 
+
+newGame.then((game)=>{
+    try{ 
+
+        console.log("game.getChessPieces()")
+        console.log(game.getChessPieces())
+
+        setTimeout(() => {
+            game.getChessPieces()[0].moveToPoint(game.getBoard().getPointFromCoordinates(5,9));
+
+        }, 1000);
+
+    
+    }
+    catch(e){
+        console.error(e)
+    } 
+ 
+})
 
 
 
-const game = new Game();
+ 
 
-game.render();
+
+// game.render();
 // game.destroy();
+
+
 
 
 fitSize()
