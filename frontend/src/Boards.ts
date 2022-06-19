@@ -1,9 +1,11 @@
 import { fitSize, getZoomedRatio, Point, SIDE_LENGTH } from "./frontend-utils";
-import { Piece, PieceRole } from './ChessPieces/ChessPiece'
+import { Piece, PieceRole, PlayerColor } from './ChessPieces/ChessPiece'
 
 import { Game } from './Game'
 
 import { FenNotation } from "./utils/FenNotation"
+import { wsClient } from './utils/WebSocketConnection'
+import { socketIoClient } from "./utils/SocketIoClient"
 
 // 棋盘
 class Board {
@@ -173,10 +175,14 @@ class Board {
 
 
     private getActiveColor(): string {
-        if (this.active_piece)
-            return this.active_piece.getColor().toString();
+        if (this.active_piece) {
+            console.log("this.active_piece.getColor().toString()", this.active_piece.getColor().toString());
+            console.log("PlayerColor.RED", PlayerColor.RED);
+            // 当前的棋子是红，那么下一步轮到黑走，所以这里反过来的
+            return this.active_piece.getColor() === PlayerColor.RED ? 'b' : 'w';
+        }
         else
-            return ""
+            return "w"
     }
 
 
@@ -209,6 +215,56 @@ class Board {
             .getFenNotation()
     }
 
+
+    public sendFenNotationToServer() {
+        // wsClient.send(`{ "fen_string" : "${this.getFenString()}" }`);
+        socketIoClient.emit("fen_string", this.getFenString());
+
+        socketIoClient.on("bestmove", (data: any) => {
+            console.log("socketIoClient bestmove data");
+            console.log(data);
+
+
+            const from_x_coor = Point.UcciXCoorMap.get(data[0]);
+            const from_y_coor = Point.UcciYCoorMap.get(data[1]);
+            if (from_x_coor != undefined && from_y_coor != undefined) {
+                console.log(this.getPointFromCoordinates(from_x_coor, from_y_coor));
+            }
+
+
+
+        });
+
+        // console.log("sending FenNotation To Server")
+
+        // const Http = new XMLHttpRequest();
+        // const url = 'http://localhost:4321/ai/fen/position';
+        // Http.open("POST", url);
+
+        // Http.setRequestHeader("Accept", "application/json");
+        // Http.setRequestHeader("Content-Type", "application/json");
+
+
+
+        // Http.send(`{ "fen_string" : "${this.getFenString()}" }`);
+
+
+        // Http.onreadystatechange = (e) => {
+        //     console.log("服务器返还运算结果");
+        //     console.log(Http.responseText);
+
+        //     let start_pos_x = Http.responseText[0];
+        //     let start_pos_y = Http.responseText[1];
+        //     let end_pos_x = Http.responseText[2];
+        //     let end_pos_y = Http.responseText[3];
+
+        //     // HACK: Had to use static for UCCIXCOORMAP properties
+        //     let interpreted_pos_x =  Point.UcciXCoorMap.get(start_pos_x);
+        //     let interpreted_pos_y = Point.UcciYCoorMap.get(start_pos_y);
+        // }
+
+        // console.log(this.getFenString());
+    }
 
 
 
