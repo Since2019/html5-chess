@@ -26,9 +26,13 @@ class FenNotation {
     }
 
     public getFenNotation(): string {
-        let ret_string = `${this.piece_placement} ${this.active_color} ${this.castling_availability} ${this.en_passant_end_coordinate} ${this.half_move_counter} ${this.full_move_counter}`;
+        // let ret_string = `${this.piece_placement} ${this.active_color} ${this.castling_availability} ${this.en_passant_end_coordinate} ${this.half_move_counter} ${this.full_move_counter}`;
+        let ret_string = `${this.piece_placement} ${this.active_color} ${this.castling_availability} ${this.en_passant_end_coordinate} ${this.half_move_counter} 1`;
+
         return ret_string;
     }
+
+
 
 }
 
