@@ -393,18 +393,28 @@ abstract class Piece {
     //sets the point of the piece
     public moveToPoint(point: Point) {
 
-        // 删除原来的html元素
-        this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.removeChild(this.elem);
-        delete this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].piece;
+        try {
+            // 删除原来的html元素
+            console.log("removing child ", this.elem , "from " , this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem)
+            this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.removeChild(this.elem);
+            delete this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].piece;
 
-        // 更换到新的点
-        this.point = point;
-        this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.appendChild(this.elem);
-        this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].piece = this
+            // 更换到新的点
+            this.point = point;
+            console.log("appending child ", this.elem , "from " , this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem)
+            $(this.elem).css("z-index",-1);
+            this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].elem.appendChild(this.elem);
+            this.board.intersections[this.point.x_coor - 1][this.point.y_coor - 1].piece = this
+        }
+        catch (e) {
+            console.error(e)
+        }
 
 
+        // this.board.getFenString();
 
-        this.board.getFenString();
+
+        this.board.sendFenNotationToServer();
 
         this.board.increaseFullMoveCount();
 
