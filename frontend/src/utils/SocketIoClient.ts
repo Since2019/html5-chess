@@ -20,7 +20,16 @@ socketIoClient.on("connect", () => {
     socketIoClient.emit('chat message', "HEY HEY HEY");
 
     console.log(socketIoClient.id); // "G5p5..."
+
+    // socketIoClient.on("bestmove", (data:any) => { 
+    //     console.log("socketIoClient bestmove data");
+    //     console.log(data);
+    // });
+
   });
+
+
+
 
 export {
     socketIoClient
