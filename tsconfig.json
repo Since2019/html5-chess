@@ -47,6 +47,7 @@
     // "paths": ["src", "frontend"],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
     "rootDirs": [
       "frontend/src/",
+      "frontend/",
       "src"
     ], /* List of root folders whose combined content represents the structure of the project at runtime. */
     // "typeRoots": [],                       /* List of folders to include type definitions from. */
@@ -74,8 +75,9 @@
   // ]
   "include": [
     "src/*",
-    "frontend/**/*",
     "frontend/*",
+    "frontend/**/*",
+  
     "frontend/src/.ts",
     "frontend/src/*.ts"
   ]
