@@ -240,10 +240,10 @@ newGame.then((game)=>{
         console.log("game.getChessPieces()")
         console.log(game.getChessPieces())
 
-        setTimeout(() => {
-            game.getChessPieces()[0].moveToPoint(game.getBoard().getPointFromCoordinates(5,9));
+        // setTimeout(() => {
+        //     game.getChessPieces()[0].moveToPoint(game.getBoard().getPointFromCoordinates(5,9));
 
-        }, 1000);
+        // }, 1000);
 
     
     }
