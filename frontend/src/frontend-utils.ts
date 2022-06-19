@@ -9,7 +9,7 @@ import { Piece } from './ChessPieces/ChessPiece'
 // }
 
 // used in class Game, 
-enum PlayerColor {
+ enum PlayerColor {
     'BLACK',
     'RED',
     'NEUTRAL',    // Controls both sides 双方都可以控制
@@ -55,33 +55,62 @@ function getChessBoardSize() {
 // the horizontal lines are known as ranks 线 xiàn; "line"
 class Point {
 
-    UcciXCoorMap = new Map<number, string>(
+    static UcciXCoorMap = new Map< string,number>(
         [
-            [1, "a"],
-            [2, "b"],
-            [3, "c"],
-            [4, "d"],
-            [5, "e"],
-            [6, "f"],
-            [7, "g"],
-            [8, "h"],
-            [9, "i"],
+            ["a", 1 ],
+            ["b", 2 ],
+            ["c", 3 ],
+            ["d", 4 ],
+            ["e", 5 ],
+            ["f", 6 ],
+            ["g", 7 ],
+            ["h", 8 ],
+            ["i", 9 ],
         ]
     );
 
-    UcciYCoorMap = new Map<number, string>(
+    static XCoorUcciMap = new Map< number,string>(
         [
-            [0, "10"],
-            [1, "9"],
-            [2, "8"],
-            [3, "7"],
-            [4, "6"],
-            [5, "5"],
-            [6, "4"],
-            [7, "3"],
-            [8, "2"],
-            [9, "1"],
+            [1 ,"a" ],
+            [2 ,"b" ],
+            [3 ,"c" ],
+            [4 ,"d" ],
+            [5 ,"e" ],
+            [6 ,"f" ],
+            [7 ,"g" ],
+            [8 ,"h" ],
+            [9 ,"i" ],
         ]
+    );
+
+    static UcciYCoorMap = new Map<string,number>(
+        [
+            ["0",1],
+            ["1" ,2],
+            ["2" ,3],
+            ["3" ,4],
+            ["4" ,5],
+            ["5" ,6],
+            ["6" ,7],
+            ["7" ,8],
+            ["8" ,9],
+            ["9" ,10],
+        ] 
+    );
+
+    static YCoorUcciMap = new Map<number,string>(
+        [
+            [1,"0"],
+            [2,"1" ],
+            [3,"2" ],
+            [4,"3" ],
+            [5,"4" ],
+            [6,"5" ],
+            [7,"6" ],
+            [8,"7" ],
+            [9,"8" ],
+            [10,"9" ],
+        ] 
     );
 
     // 坐标
@@ -97,6 +126,7 @@ class Point {
     board!: Board;     // 棋子所属的棋盘
 
     piece?: Piece | null; // Points can hold pieces 
+
 
     /** when piece moves in
         it binds the piece with the grid.
@@ -134,8 +164,8 @@ class Point {
         this.y_coor = row; //row -> horizontal
 
         // 点所在的 UCCI  坐标
-        this.ucci_x_coor = this.UcciXCoorMap.get(col);
-        this.ucci_y_coor = this.UcciYCoorMap.get(row);
+        this.ucci_x_coor = Point.XCoorUcciMap.get(col);
+        this.ucci_y_coor = Point.YCoorUcciMap.get(row);
 
 
         // A dummy element for initialization first and then update in method
