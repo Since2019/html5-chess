@@ -19,16 +19,16 @@ class PlayerSocketArray {
 
     // 
     public paring( newPlayer : ChessPlayer){    
+        // 遍历这个数组，寻找孤单的玩家
         for(let i = 0; i < this.gameArray.length; i++){
-            //孤单的玩家
+            //帮孤单的玩家配对
             if(!this.gameArray[i].player2){
                 this.gameArray[i].player2 = newPlayer;
-            }
-            else{
-
-            }
-
+            }          
         }
+        // 遍历结束，所有棋局都满人，则开一个新的对局
+        this.gameArray.push(new OpponentPlayers(newPlayer));
+
     }
 
 }
@@ -37,6 +37,15 @@ class PlayerSocketArray {
 class OpponentPlayers{
     public player1 : ChessPlayer;
     public player2 : ChessPlayer;
+
+    constructor(player1: ChessPlayer, player2?:ChessPlayer ){
+        this.player1 = player1;
+
+        if(player2){
+            this.player2 = player2;
+        }
+        
+    }
 }
 
 // 玩家的名字以及client socket
