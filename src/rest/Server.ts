@@ -8,7 +8,9 @@ import {
     InterServerEvents,
     SocketIoServer,
     SocketData
-} from "../SocketIo/SocketIoServer"
+} from "../utils/SocketIoServer"
+
+import { Socket} from "socket.io"
 
 var WebSocketServer = require('websocket').server;
 
@@ -29,6 +31,9 @@ function originIsAllowed(origin: any) {
  * This configures the REST endpoints for the server.
  */
 export default class Server {
+    
+    // PVE的引擎Mapping
+    private chess_engine_map : Map<Socket, any>;
 
     // private chess_engine = cp.spawn(__dirname + "/../ChessEngine/anita/ANITA.EXE", []); //the array is the arguments
     private chess_engine = cp.spawn(__dirname + "/../ChessEngine/YSSY.EXE", []); //the array is the arguments
@@ -50,19 +55,96 @@ export default class Server {
         // that ref 用于 call back functions
         const that = this;
 
+        // PVE的引擎Mapping
+        this.chess_engine_map = new Map<Socket, any>();
+
+
         Log.info("Server::<init>( " + port + " )");
         this.port = port;
 
 
+        this.io = new SocketIoServer(this.rest.server);
+
+        this.io.on("connection", (socket: Socket) => {
+            
+            try {
+                
+                // Deep Shallow Copy?
+                if("pve"){
+                    console.log("socket.io, on connection, socket id:",socket.id);
+
+                    const chess_engine = cp.spawn(__dirname + "/../ChessEngine/YSSY.EXE", []);
+                    
+                    that.chess_engine_map.set(socket, chess_engine);
+                    
+                }
+                
+
+
+
+                // 聊天
+                socket.on('chat message', (msg: any) => {
+                    console.log('message: ' + msg);
+                });
+
+                // 局面
+                socket.on('fen_string', (fen_string: any) => {
+                    console.log('fen_string: ' + fen_string);
+                  
+                    that.chess_engine_map.get(socket).stdout.on('data', function (data: any) {
+                        console.log('stdout: ' + data);
+                    });
+
+                    that.chess_engine_map.get(socket).stdin.write('ucci\n'); //my command takes a markdown string...
+                    that.chess_engine_map.get(socket).stdin.write(`position fen ${fen_string}\n`);
+                    that.chess_engine_map.get(socket).stdin.write('go time 15000 increment 0\n');
+
+
+                    that.chess_engine_map.get(socket).stdout.on("data",(data:any) => { 
+
+                        console.log("data.toString('utf8')",data.toString("utf8"));
+
+
+
+                        if(data.toString("utf8").includes("bestmove")){
+                            if(data.toString("utf8").includes("ponder")){
+                                let trimmed_data = (data.toString("utf8") + '').replace(/\n|\r/g, "").trim();
+                                console.log("trimmed_data: '", trimmed_data, "'");
+                                let retval = trimmed_data.substring(trimmed_data.length - 4, trimmed_data.length);
+    
+                                socket.emit('bestmove', retval)
+                            }
+                            else{
+                                let trimmed_data = (data.toString("utf8") + '').replace(/\n|\r/g, "").trim();
+                                console.log("trimmed_data: '", trimmed_data, "'");
+                                let retval = trimmed_data.substring(trimmed_data.length - 4, trimmed_data.length);
+    
+                                socket.emit('bestmove', retval)
+                            }
+  
+                        }
+                    });
+
+
+
+                    // that.chess_engine.stdin.write(`position fen ${fen_string}\n`);
+                    // that.chess_engine.stdin.write('go time 15000 increment 0\n');
+                    
+                });
 
 
 
 
 
+            }
+            catch (err) {
+                console.log(err)
+            }
+
+        });
 
 
-
-        // this.wsServer = new WebSocketServer({
+               // this.wsServer = new WebSocketServer({
         //     httpServer: this.rest,
         //     // You should not use autoAcceptConnections for production
         //     // applications, as it defeats all standard cross-origin protection
@@ -138,26 +220,6 @@ export default class Server {
         // });
 
 
-
-        this.io = new SocketIoServer(this.rest.server);
-
-        this.io.on("connection", (socket: any) => {
-            try {
-                // ...
-                console.log("socket.io, on connection");
-
-                socket.on('chat message', (msg: any) => {
-                    console.log('message: ' + msg);
-                });
-                socket.on('fen_string', (msg: any) => {
-                    console.log('fen_string: ' + msg);
-                });
-            }
-            catch (err) {
-                console.log(err)
-            }
-
-        });
     }
 
 
@@ -217,6 +279,7 @@ export default class Server {
 
                     that.chess_engine.stdout.on('data', function (data: any) {
                         console.log('stdout: ' + data);
+
                     });
 
                     res.send("restarting...")
@@ -355,7 +418,7 @@ export default class Server {
         if (req.url !== "/") {
             path = "frontend/" + req.url;
 
-            if(req.url?.includes("socket.io")){
+            if (req.url?.includes("socket.io")) {
                 res.end();
                 return next();;
             }
