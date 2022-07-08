@@ -4,15 +4,10 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "@types/socket.io": "^3.0.2",
     "express": "^4.17.1",
     "jquery": "^3.5.1",
-    "os-browserify": "^0.3.0",
-    "socket.io": "^4.5.1",
-    "socket.io-client": "^4.5.1",
-    "socket.io-stream": "^0.9.1",
-    "util": "^0.12.3",
-    "websocket": "^1.0.34"
+    "typescript": "^4.1.3",
+    "util": "^0.12.3"
   },
   "devDependencies": {
     "@types/jquery": "^3.5.6",
@@ -23,14 +18,12 @@
     "restify": "^8.5.1",
     "ts-loader": "^8.0.12",
     "ts-node": "^9.1.1",
-    "ts-node-dev": "^1.1.8",
-    "typescript": "^4.5.4",
     "webpack": "^5.11.0",
     "webpack-cli": "^4.8.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --respawn --inspect --transpile-only --watch frontend src/App.ts ",
+    "dev": "nodemon -e",
     "build": "webpack --config webpack.config.js"
   },
   "repository": {

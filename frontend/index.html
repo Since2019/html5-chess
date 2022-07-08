@@ -1,17 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chinese Chess</title>
+
+    <link rel="stylesheet" href="./stylesheets/board.css">
 </head>
+
 <body>
-    <div id="app">
-        <p>This is an example of a simple HTML page with one paragraph.</p>
+    <div id="app" style="margin: 0; padding: 0%;">
+        <!-- <p>It's still under development</p> -->
+        <div id="board">
+            <!-- This is the board -->
+            <!-- <img width='45%'  src='./img/antontw_chinese_chess_plate.svg'/> -->
+
+        </div>
+
+        <div>Chat Box</div>
+
+
+        <!-- id 的名字应该 intuitive -->
+        <div id='button-container-div'>
+
+            <button id='start-button'>
+                Start
+            </button>
+
+            <!-- 放弃 -->
+            <button id='surrender-button'>
+                Give Up
+            </button>
+
+            <!-- 重开 -->
+            <button id='restart-button'>
+                Restart
+            </button>
+        </div>
+
     </div>
     <!-- Assume index.js is the compiled output of index.ts -->
     <!-- <script src="../build/index.js"></script> -->
     <!-- <script type="text/javascript" src="test.js"></script> -->
-    <script type="text/javascript" src="../build/frontend/test.js"></script>
 </body>
+<script src='https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js'></script>
+<!-- Socket.io -->
+<!-- <script src="./libs/socket.io/socket.io.js"></script> -->
+<!-- Webpack Bundle -->
+<script src="./bundle.js"></script>
+ 
+
+
+<!-- get position clicked -->
+<script>
+
+
+    $('#board').css("grid-template-columns", `repeat(9,${$('.className_grid_div').css('width')})`);
+
+    function getPosInViewPort() {
+        console.log("inside myfunc()")
+        if (window.innerWidth !== undefined && window.innerHeight !== undefined) {
+            var clientWidth = window.innerWidth;
+            var clientHeight = window.innerHeight;
+        } else {
+            var clientWidth = document.documentElement.clientWidth;
+            var clientHeight = document.documentElement.clientHeight;
+        }
+
+        console.log('clientWidth')
+        console.log(clientWidth)
+        console.log('clientHeight')
+        console.log(clientHeight)
+
+        console.log("x_coor in vw")
+        console.log(event.clientX / clientWidth)
+        console.log("y_coor in vh")
+        console.log(event.clientY / clientHeight)
+
+
+    }
+
+
+    // ============== UCI engine related ======================
+    let start_button = document.getElementById('start-button')
+    start_button.addEventListener('click', (e) => {
+        // 开始
+        const Http = new XMLHttpRequest();
+        const url = 'http://localhost:4321/ai/start';
+        Http.open("GET", url);
+        Http.send();
+
+    })
+
+    let restart_button = document.getElementById('restart-button')
+    restart_button.addEventListener('click', (e) => {
+        // 重开
+        // 调用 Game.restart()
+        const Http = new XMLHttpRequest();
+        const url = 'http://localhost:4321/ai/restart';
+        Http.open("GET", url);
+        Http.send();
+    })
+    // ^^^^^^^^^^^^^^^ UCI engine related ^^^^^^^^^^^^^^^^^^^^^
+
+
+
+
+    // function printMousePos(event) {
+
+    //     console.log("event.clientX")
+    //     console.log(event.clientX)
+    //     console.log("event.clientY")
+    //     console.log(event.clientY)
+
+    //     getPosInViewPort()
+    // }
+
+    // document.addEventListener("click", printMousePos);
+
+</script>
+
+
+
+
+
 </html>

@@ -1,0 +1,142 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <style>
+        body {
+            background-color: #242526
+        }
+
+
+        .center {
+            /* margin: auto; */
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+
+
+        #div__menu {
+            background-image: url("./img/game_ui/background.png");
+            background-repeat: no-repeat;
+            width: 100vw;
+            height: 100vh;
+            max-height: 100vh;
+            background-position: center center;
+        }
+
+        #div__button_container {
+            position: relative;
+            top: 25vh;
+            text-align: center;
+        }
+
+
+        .game_option {
+            margin: auto;
+            background-size: 100% 100%;
+            width: auto;
+            height: auto;
+            max-width: 10vw;
+            max-height: 3.3vh;
+            min-height: 3.3vh;
+        }
+
+
+
+
+
+
+
+        /* 双人对决 */
+        #button__multiplayer {
+            background-repeat: no-repeat;
+            background-image: url("./img/game_ui/Menu1_0.png");
+        }
+
+
+        #button__multiplayer:active {
+            background-image: url("./img/game_ui/Menu1_1.png");
+        }
+
+
+        #button__multiplayer:hover {
+            background-image: url("./img/game_ui/Menu1_1.png");
+        }
+
+        /* 单机游戏 */
+        #button__singleplayer {
+            background-repeat: no-repeat;
+            background-image: url("./img/game_ui/Menu2_0.png");
+        }
+
+
+        #button__singleplayer:active {
+            background-image: url("./img/game_ui/Menu2_1.png");
+        }
+
+        #button__singleplayer:hover {
+            background-image: url("./img/game_ui/Menu2_1.png");
+        }
+
+        /* 退出游戏 */
+        #button__quit {
+            background-repeat: no-repeat;
+            background-image: url("./img/game_ui/Menu4_0.png");
+        }
+
+
+        #button__quit:active {
+            background-image: url("./img/game_ui/Menu4_1.png");
+        }
+
+        #button__quit:hover {
+            background-image: url("./img/game_ui/Menu4_1.png");
+        }
+    </style>
+
+</head>
+
+
+
+
+<body>
+    <div id="div__menu">
+
+        <div id="div__button_container">
+
+            <div id='button__multiplayer' class="game_option">
+
+            </div>
+
+            <br />
+
+            <div id='button__singleplayer' class="game_option">
+
+            </div>
+
+            <br />
+
+            <div id='button__quit' class="game_option">
+
+            </div>
+
+            <br />
+
+        </div>
+
+</body>
+
+<script type="text/javascript">
+    button__quit.onclick = () => {
+        window.close();
+    }
+</script>
+
+
+
+</html>
